@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Chakra_Petch, Sansation } from "next/font/google";
-import MicroSlatsBackground from "../components/ui/MicroSlatsBackground";
+import MicroSlatsBackground from "../components/ui/background/MicroSlatsBackground";
 import "./globals.css";
 
 //? Configurando a Chakra Petch
