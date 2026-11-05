@@ -4,7 +4,7 @@ import { Sidebar } from '@/src/components/ui/sidebar/sidebar';
 
 export default function ToDoPage() {
   return (
-    <main className="mainContainer">
+    <main>
       <Sidebar />
     </main>
   );

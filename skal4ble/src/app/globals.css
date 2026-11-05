@@ -1,10 +1,17 @@
 @import "tailwindcss";
 
+/*! Prevenção de conflito de CSS Modules com Preflight */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+}
+
 /*? ===================== */
 /*?   Variáveis Globais   */
 /*? ===================== */
 :root{
-    /* Cores: Roxos */
+    /** Cores: Roxos */
     --roxo-escuro1: #390c88;
     --roxo-escuro2: #5810b1;
     --roxo-escuro3: #710ec8;
@@ -12,20 +19,41 @@
     --roxo-claro2: #BCB1F8;
     --roxo-claro3: #e5dcf9;
     
-    /* Cores: Outros */
+    /** Cores: Outros */
     --preto: #110e00;
     --branco: #fffdf4;
     --verde: #1cda88;
     --vermelho: #f2381f;
     --amarelo1: #f9ee72;
     --amarelo2: #fcf5b3;
+
+    /** "Universalização" */
+    --sombra: 0px 4px 10px 0px #110e00;
+    --borda: 20px;
 }
 
 /*? ======================== */
 /*?   Layout & Utilitários   */
 /*? ======================= */
-.mainContainer{
-    display: flex;
-    min-height: 100vh;
-    width: 100%;
+main {
+  display: flex;
+  
+  /* Define o tamanho da caixa principal */
+  width: calc(100vw - 4rem);   /* Ocupa a largura total menos 2rem de folga em cada lado */
+  height: calc(100vh - 4rem);  /* Ocupa a altura total menos 2rem de folga em cima e embaixo */
+  
+  /* Centralização perfeita na viewport */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+  /* Estilização da caixa flutuante */
+  background-color: #110e00;
+  border-radius: 20px;          /* Arredonda os cantos para revelar o fundo animado */
+  overflow: hidden;             /* Corta qualquer conteúdo interno que ultrapasse o raio das bordas */
+  
+  /* Borda sutil e sombra para dar efeito de profundidade (3D/glassmorphism) */
+  border: var(--borda);
+  box-shadow: var(--sombra);
 }
