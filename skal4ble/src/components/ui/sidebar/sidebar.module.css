@@ -17,6 +17,8 @@
   z-index: 20;
   overflow: hidden;
   box-shadow: var(--sombra);
+
+  font-family: var(--font-chakra-petch), system-ui, sans-serif;
 }
 
 .header {
@@ -45,7 +47,7 @@
   padding: 0.5rem 0.4rem;
   text-decoration: none;
   color: #111111;
-  font-size: 1.15rem;
+  font-size: 1.4rem;
   font-weight: 700;
   border-radius: 8px;
   transition: all 0.2s ease;
