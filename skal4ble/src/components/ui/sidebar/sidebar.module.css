@@ -27,7 +27,8 @@
 
 .logo {
   font-size: 2.5rem;
-  font-weight: 800;
+  font-weight: bold;
+  font-style: normal;
   color: var(--preto);
   margin: 0;
   display: inline-block;

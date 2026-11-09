@@ -32,6 +32,29 @@
     --borda: 20px;
 }
 
+/*? ============================ */
+/*?   Textos, Inputs & Botões   */
+/*? =========================== */
+
+h1, h2, h3, h4 {
+  color: var(--preto);
+  font-family: var(--font-chakra-petch), system-ui, sans-serif;
+}
+
+h1 {
+  font-weight: bold;
+  font-style: italic;
+  font-size: 3rem;
+}
+
+h2 {
+  font-weight: bold;
+  font-style: italic;
+  font-size: 2rem;
+}
+
+
+
 /*? ======================== */
 /*?   Layout & Utilitários   */
 /*? ======================= */
@@ -63,5 +86,29 @@ main {
 
   /* Borda sutil e sombra para dar efeito de profundidade (3D/glassmorphism) */
   border: var(--borda);
+  box-shadow: var(--sombra);
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  padding: 1% 2%;
+
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+section {
+  display: flex;
+  background-color: rgba(255, 253, 244, 0.25),   /* var(--branco) com 25% opacidade */;
+  margin: 0;
+
+  width: calc(50vw - 4rem);   /* Ocupa a largura total menos 2rem de folga em cada lado */
+  height: calc(50vh - 4rem);  /* Ocupa a altura total menos 2rem de folga em cima e embaixo */
+
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  border-radius: var(--borda);
   box-shadow: var(--sombra);
 }
