@@ -32,6 +32,29 @@
     --borda: 20px;
 }
 
+/*? ============================ */
+/*?   Textos, Inputs & Botões   */
+/*? =========================== */
+
+h1, h2, h3, h4 {
+  color: var(--preto);
+  font-family: var(--font-chakra-petch), system-ui, sans-serif;
+}
+
+h1 {
+  font-weight: bold;
+  font-style: italic;
+  font-size: 3rem;
+}
+
+h2 {
+  font-weight: bold;
+  font-style: italic;
+  font-size: 2rem;
+}
+
+
+
 /*? ======================== */
 /*?   Layout & Utilitários   */
 /*? ======================= */
@@ -49,11 +72,65 @@ main {
   transform: translate(-50%, -50%);
   
   /* Estilização da caixa flutuante */
-  background-color: #110e00;
-  border-radius: 20px;          /* Arredonda os cantos para revelar o fundo animado */
-  overflow: hidden;             /* Corta qualquer conteúdo interno que ultrapasse o raio das bordas */
-  
+  background: linear-gradient(
+    180deg,
+    rgba(255, 253, 244, 0.80) 50%,   /* var(--branco) com 80% opacidade */
+    rgba(188, 177, 248, 0.80) 100%  /* var(--roxo-claro2) com 80% opacidade */
+  );
+
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  border-radius: var(--borda);          /* Arredonda os cantos para revelar o fundo animado */
+  overflow: hidden;                     /* Corta qualquer conteúdo interno que ultrapasse o raio das bordas */
+
   /* Borda sutil e sombra para dar efeito de profundidade (3D/glassmorphism) */
   border: var(--borda);
   box-shadow: var(--sombra);
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+div {
+  display: flex;
+}
+
+/* Container de Glassmorphism Genérico */
+.container-25op {
+  background-color: rgba(255, 253, 244, 0.25);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: var(--borda);
+  box-shadow: var(--sombra);
+  padding: 1.25rem;
+}
+
+/* Utilitário para preencher todo o espaço flexível */
+.flex-1 {
+  flex: 1;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.padding-sidebar {
+  padding: 1rem 2rem;
+}
+
+.hidden {
+  overflow: hidden;
 }

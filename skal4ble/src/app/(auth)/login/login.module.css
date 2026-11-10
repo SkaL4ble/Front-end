@@ -89,6 +89,7 @@
 
 .tituloDestaque {
   font-size: 5rem;
+  color: var(--branco);
 }
 
 .painelFormulario {
@@ -190,7 +191,7 @@
   border: var(--borda);
   box-shadow: var(--sombra);
   overflow: hidden;
-  border-radius: var(--borda  );
+  border-radius: var(--borda);
 }
 
 @media (max-width: 820px) {
@@ -217,4 +218,3 @@
     background-size: 55%;
   }
 }
-
