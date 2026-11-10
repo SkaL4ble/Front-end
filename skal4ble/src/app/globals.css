@@ -30,6 +30,7 @@
     /** "Universalização" */
     --sombra: 0px 4px 10px 0px #110e00;
     --borda: 20px;
+    --borda-menor: 10px;
 }
 
 /*? ============================ */
@@ -53,7 +54,74 @@ h2 {
   font-size: 2rem;
 }
 
+h3 {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
 
+button {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  background-color: var(--roxo-escuro1);
+  padding: .2rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 400;
+  font-family: var(--font-sansation), system-ui, sans-serif;;
+  border-radius: var(--borda-menor);
+  cursor: pointer;
+  &:hover{
+    transition: ease-in-out .2s;
+    background-color: var(--roxo-escuro2);
+  }&:active{
+    transition: ease-in-out .2s;
+    background-color: var(--preto);
+  }
+}
+
+.big-button {
+  align-items: center;
+  gap: .5rem;
+  background-color: var(--roxo-escuro1);
+  padding: .2rem 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 400;
+  font-family: var(--font-sansation), system-ui, sans-serif;;
+  border-radius: var(--borda-menor);
+  cursor: pointer;
+  &:hover{
+    transition: ease-in-out .2s;
+    background-color: var(--roxo-escuro2);
+  }&:active{
+    transition: ease-in-out .2s;
+    background-color: var(--preto);
+  }
+}
+
+.button-todo {
+  background-color: var(--roxo-claro3);
+  padding: .4rem 1rem;
+  color: var(--preto);
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: var(--font-sansation), system-ui, sans-serif;;
+  border-radius: var(--borda);
+  box-shadow: var(--sombra);
+  cursor: pointer;
+  &:hover{
+    transition: ease-in-out .2s;
+    background-color: var(--roxo-claro2);
+  }&:active{
+    transition: ease-in-out .2s;
+    background-color: var(--branco);
+  }
+}
+
+.button-icon {
+  width: 1.5rem;
+  height: auto;
+  object-fit: contain;
+}
 
 /*? ======================== */
 /*?   Layout & Utilitários   */
@@ -91,24 +159,49 @@ main {
 
 header {
   display: flex;
-  flex-direction: column;
-  padding: 1% 2%;
-
   overflow: hidden;
   box-sizing: border-box;
+  justify-content: space-between;
+  align-items: center;
 }
 
-section {
+div {
   display: flex;
-  background-color: rgba(255, 253, 244, 0.25),   /* var(--branco) com 25% opacidade */;
-  margin: 0;
+}
 
-  width: calc(50vw - 4rem);   /* Ocupa a largura total menos 2rem de folga em cada lado */
-  height: calc(50vh - 4rem);  /* Ocupa a altura total menos 2rem de folga em cima e embaixo */
-
+/* Container de Glassmorphism Genérico */
+.container-25op {
+  background-color: rgba(255, 253, 244, 0.25);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-
   border-radius: var(--borda);
   box-shadow: var(--sombra);
+  padding: 1rem;
+  overflow: visible;
+  align-items: center;
 }
+
+/* Utilitário para preencher todo o espaço flexível */
+.flex-1 {
+  flex: 1;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.padding-sidebar {
+  padding: 1rem 2rem;
+}
+
+.hidden {
+  overflow: hidden;
+}
+
