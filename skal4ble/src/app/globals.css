@@ -88,6 +88,7 @@ button {
   font-weight: 400;
   font-family: var(--font-sansation), system-ui, sans-serif;;
   border-radius: var(--borda-menor);
+  box-shadow: var(--sombra);
   cursor: pointer;
   &:hover{
     transition: ease-in-out .2s;
@@ -209,4 +210,86 @@ div {
 
 .hidden {
   overflow: hidden;
+}
+
+/*? =============================== */
+/*?   Form Inputs & Floating Label */
+/*? =============================== */
+
+/* Container wrapper do campo de formulário */
+.campo_form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Estilo base dos Inputs e Textareas */
+.input,
+.textarea,
+.select {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background-color: var(--branco);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: var(--borda-menor, 10px);
+  color: var(--preto);
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+  border-color: var(--roxo-escuro1);
+  box-shadow: 0 0 0 2px rgba(57, 12, 136, 0.15);
+}
+
+/* Estilo Base da Label Flutuante */
+.label {
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+  padding: 0 0.4rem;
+  color: rgba(17, 14, 0, 0.6); /* Cor base derivada do var(--preto) */
+  font-weight: 700;
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  font-size: 0.95rem;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  transition:
+    top 0.15s ease,
+    font-size 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease,
+    background-color 0.15s ease;
+}
+
+/* Estado Ativo/Subido (Focus ou com Conteúdo) */
+:is(.input, .textarea):focus ~ .label,
+:is(.input, .textarea):not(:placeholder-shown) ~ .label,
+.select:focus ~ .label,
+.select:valid ~ .label,
+.campo_select:is(.open, .has-value) .label {
+  top: 0;
+  color: var(--roxo-escuro1);
+  font-size: 0.8rem;
+  background: var(--branco);
+  transform: translateY(-50%);
+}
+
+/* Ajustes Específicos para Textarea */
+.campo_form:has(.textarea) .label {
+  top: 1.2rem;
+  transform: none;
+}
+
+.campo_form:has(.textarea) .textarea:is(:focus, :not(:placeholder-shown)) ~ .label {
+  top: 0;
+  transform: translateY(-50%);
 }
