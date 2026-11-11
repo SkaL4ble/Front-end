@@ -1,0 +1,128 @@
+/* Container principal da área de conteúdo ao lado da Sidebar */
+.conteudoPagina {
+  gap: 1.25rem;
+  overflow-y: auto; /* Permite rolar suavemente caso a tela seja menor */
+}
+
+.tituloPagina {
+  margin: 0;
+  font-style: normal; /* Remove o itálico global do h1 para ficar mais limpo */
+  font-size: 2.25rem;
+  color: var(--preto);
+}
+
+/* Grid das 3 colunas principais */
+.gradeCards {
+  gap: 1.25rem;
+  align-items: stretch;
+  min-height: 0;
+}
+
+/* Colunas 1 e 2 (que empilham 2 cards cada) */
+.colunaCards {
+  gap: 1.25rem;
+  min-height: 0;
+}
+
+.colunaEsquerda {
+  width: 280px;
+  flex-shrink: 0; /* Impede que a coluna da foto seja esmagada */
+}
+
+.colunaMeio {
+  flex: 1.4;
+}
+
+.colunaDireita {
+  flex: 1;
+}
+
+/* Ajustes internos dos cards que já usam .container-25op do globals */
+.card {
+  align-items: stretch; /* Sobrescreve o align-items: center do .container-25op global */
+  justify-content: flex-start;
+  gap: 1rem;
+  padding: 1.25rem;
+  overflow: hidden;
+}
+
+.subtituloCard {
+  margin: 0;
+  font-style: normal;
+  font-size: 1.35rem;
+  color: var(--roxo-escuro1);
+  border-bottom: 1px solid rgba(57, 12, 136, 0.12);
+  padding-bottom: 0.5rem;
+}
+
+/* Área da Foto do Funcionário */
+.containerFoto {
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 0.5rem 0;
+}
+
+.fotoFuncionario {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--roxo-escuro1);
+  box-shadow: 0 4px 12px rgba(57, 12, 136, 0.2);
+  background-color: var(--roxo-claro3);
+}
+
+/* Campos e Inputs padronizados com o globals */
+.grupoCampo {
+  gap: 0.35rem;
+  width: 100%;
+}
+
+.grupoCampo label {
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--preto);
+}
+
+.grupoCampo input {
+  width: 100%;
+  height: 40px;
+  padding: 0 0.75rem;
+  border: 1px solid rgba(57, 12, 136, 0.2);
+  border-radius: var(--borda-menor);
+  background-color: rgba(255, 253, 244, 0.85);
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  font-size: 0.95rem;
+  color: var(--preto);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.grupoCampo input:focus {
+  outline: none;
+  border-color: var(--roxo-escuro1);
+  background-color: var(--branco);
+  box-shadow: 0 0 0 3px rgba(188, 177, 248, 0.45);
+}
+
+/* Áreas reservadas para Aptidão, Gráfico e Ferramentas */
+.areaConteudoCard {
+  flex: 1;
+  width: 100%;
+  background-color: rgba(255, 253, 244, 0.35);
+  border-radius: var(--borda-menor);
+  padding: 0.75rem;
+  overflow-y: auto;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 1024px) {
+  .gradeCards {
+    flex-direction: column;
+  }
+
+  .colunaEsquerda {
+    width: 100%;
+  }
+}
