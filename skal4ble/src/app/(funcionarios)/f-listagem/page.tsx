@@ -21,6 +21,7 @@ export default function ListagemFuncionarios() {
 
         <div className='row'>
           <div className='campo_form'>
+            <img src="/icon/IPesquisa.svg" alt="" className="input-icon" />
             <input type="text" id="pesquisa" className="input" placeholder=" "/>
             <label htmlFor="pesquisa" className='label'>Pesquise o Funcionário</label>
           </div>

@@ -222,17 +222,18 @@ div {
   display: flex;
   flex-direction: column;
   width: 100%;
+  align-items: stretch;
 }
 
 /* Estilo base dos Inputs e Textareas */
 .input,
 .textarea,
 .select {
-  width: 100%;
-  padding: 0.8rem 1rem;
-  background-color: var(--branco);
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: var(--borda-menor, 10px);
+  width: 18.5rem;
+  padding: .2rem 1rem;
+  background-color: transparent;
+  border: .15rem solid var(--roxo-escuro1);
+  border-radius: var(--borda-menor);
   color: var(--preto);
   font-family: var(--font-sansation), system-ui, sans-serif;
   font-size: 1rem;
@@ -244,7 +245,6 @@ div {
 .textarea:focus,
 .select:focus {
   border-color: var(--roxo-escuro1);
-  box-shadow: 0 0 0 2px rgba(57, 12, 136, 0.15);
 }
 
 /* Estilo Base da Label Flutuante */
@@ -252,14 +252,14 @@ div {
   position: absolute;
   top: 50%;
   left: 1rem;
-  padding: 0 0.4rem;
-  color: rgba(17, 14, 0, 0.6); /* Cor base derivada do var(--preto) */
-  font-weight: 700;
+  padding: 0rem .5rem;
+  color: var(--roxo-escuro1);
+  font-weight: normal;
   font-family: var(--font-sansation), system-ui, sans-serif;
   font-size: 0.95rem;
   background: transparent;
   border: 1px solid transparent;
-  border-radius: 4px;
+  border-radius: var(--borda-menor);
   transform: translateY(-50%);
   pointer-events: none;
   transition:
@@ -277,9 +277,9 @@ div {
 .select:valid ~ .label,
 .campo_select:is(.open, .has-value) .label {
   top: 0;
-  color: var(--roxo-escuro1);
+  color: var(--branco);
   font-size: 0.8rem;
-  background: var(--branco);
+  background: var(--roxo-escuro1);
   transform: translateY(-50%);
 }
 
