@@ -10,34 +10,37 @@
 /*? ===================== */
 /*?   Variáveis Globais   */
 /*? ===================== */
-:root{
-    /** Cores: Roxos */
-    --roxo-escuro1: #390c88;
-    --roxo-escuro2: #5810b1;
-    --roxo-escuro3: #710ec8;
-    --roxo-claro1: #9660e0;
-    --roxo-claro2: #BCB1F8;
-    --roxo-claro3: #e5dcf9;
-    
-    /** Cores: Outros */
-    --preto: #110e00;
-    --branco: #fffdf4;
-    --verde: #1cda88;
-    --vermelho: #f2381f;
-    --amarelo1: #f9ee72;
-    --amarelo2: #fcf5b3;
+:root {
+  /** Cores: Roxos */
+  --roxo-escuro1: #390c88;
+  --roxo-escuro2: #5810b1;
+  --roxo-escuro3: #710ec8;
+  --roxo-claro1: #9660e0;
+  --roxo-claro2: #BCB1F8;
+  --roxo-claro3: #e5dcf9;
 
-    /** "Universalização" */
-    --sombra: 0px 4px 10px 0px #110e00;
-    --borda: 20px;
-    --borda-menor: 10px;
+  /** Cores: Outros */
+  --preto: #110e00;
+  --branco: #fffdf4;
+  --verde: #1cda88;
+  --vermelho: #f2381f;
+  --amarelo1: #f9ee72;
+  --amarelo2: #fcf5b3;
+
+  /** "Universalização" */
+  --sombra: 0px 4px 10px 0px #110e00;
+  --borda: 20px;
+  --borda-menor: 10px;
 }
 
 /*? ============================ */
 /*?   Textos, Inputs & Botões   */
 /*? =========================== */
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   color: var(--preto);
   font-family: var(--font-chakra-petch), system-ui, sans-serif;
 }
@@ -67,13 +70,17 @@ button {
   padding: .2rem 1.5rem;
   font-size: 1rem;
   font-weight: 400;
-  font-family: var(--font-sansation), system-ui, sans-serif;;
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  ;
   border-radius: var(--borda-menor);
   cursor: pointer;
-  &:hover{
+
+  &:hover {
     transition: ease-in-out .2s;
     background-color: var(--roxo-escuro2);
-  }&:active{
+  }
+
+  &:active {
     transition: ease-in-out .2s;
     background-color: var(--preto);
   }
@@ -86,14 +93,18 @@ button {
   padding: .5rem 1.5rem;
   font-size: 1.5rem;
   font-weight: 400;
-  font-family: var(--font-sansation), system-ui, sans-serif;;
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  ;
   border-radius: var(--borda-menor);
   box-shadow: var(--sombra);
   cursor: pointer;
-  &:hover{
+
+  &:hover {
     transition: ease-in-out .2s;
     background-color: var(--roxo-escuro2);
-  }&:active{
+  }
+
+  &:active {
     transition: ease-in-out .2s;
     background-color: var(--preto);
   }
@@ -105,14 +116,18 @@ button {
   color: var(--preto);
   font-size: 1rem;
   font-weight: 700;
-  font-family: var(--font-sansation), system-ui, sans-serif;;
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  ;
   border-radius: var(--borda);
   box-shadow: var(--sombra);
   cursor: pointer;
-  &:hover{
+
+  &:hover {
     transition: ease-in-out .2s;
     background-color: var(--roxo-claro2);
-  }&:active{
+  }
+
+  &:active {
     transition: ease-in-out .2s;
     background-color: var(--branco);
   }
@@ -135,29 +150,34 @@ button {
 /*? ======================= */
 main {
   display: flex;
-  
+
   /* Define o tamanho da caixa principal */
-  width: calc(100vw - 4rem);   /* Ocupa a largura total menos 2rem de folga em cada lado */
-  height: calc(100vh - 4rem);  /* Ocupa a altura total menos 2rem de folga em cima e embaixo */
-  
+  width: calc(100vw - 4rem);
+  /* Ocupa a largura total menos 2rem de folga em cada lado */
+  height: calc(100vh - 4rem);
+  /* Ocupa a altura total menos 2rem de folga em cima e embaixo */
+
   /* Centralização perfeita na viewport */
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  
+
   /* Estilização da caixa flutuante */
-  background: linear-gradient(
-    180deg,
-    rgba(255, 253, 244, 0.80) 50%,   /* var(--branco) com 80% opacidade */
-    rgba(188, 177, 248, 0.80) 100%  /* var(--roxo-claro2) com 80% opacidade */
-  );
+  background: linear-gradient(180deg,
+      rgba(255, 253, 244, 0.80) 50%,
+      /* var(--branco) com 80% opacidade */
+      rgba(188, 177, 248, 0.80) 100%
+      /* var(--roxo-claro2) com 80% opacidade */
+    );
 
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 
-  border-radius: var(--borda);          /* Arredonda os cantos para revelar o fundo animado */
-  overflow: hidden;                     /* Corta qualquer conteúdo interno que ultrapasse o raio das bordas */
+  border-radius: var(--borda);
+  /* Arredonda os cantos para revelar o fundo animado */
+  overflow: hidden;
+  /* Corta qualquer conteúdo interno que ultrapasse o raio das bordas */
 
   /* Borda sutil e sombra para dar efeito de profundidade (3D/glassmorphism) */
   border: var(--borda);
@@ -217,41 +237,72 @@ div {
 /*? =============================== */
 
 /* Container wrapper do campo de formulário */
-.campo_form {
+.campo-form {
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: fit-content;
   align-items: stretch;
+}
+
+.input-icon {
+  position: absolute;
+  top: 50%;
+  left: .5rem;
+  transform: translateY(-50%);
+  width: 1.2rem;
+  height: auto;
+  object-fit: contain;
+  pointer-events: none;
 }
 
 /* Estilo base dos Inputs e Textareas */
 .input,
-.textarea,
-.select {
+.textarea {
   width: 18.5rem;
-  padding: .2rem 1rem;
+  padding: .4rem 2rem;
   background-color: transparent;
   border: .15rem solid var(--roxo-escuro1);
   border-radius: var(--borda-menor);
   color: var(--preto);
   font-family: var(--font-sansation), system-ui, sans-serif;
-  font-size: 1rem;
+  font-size: .8rem;
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .input:focus,
-.textarea:focus,
-.select:focus {
+.textarea:focus {
   border-color: var(--roxo-escuro1);
+}
+
+.select {
+  width: 18.5rem;
+  padding: .4rem 2rem;
+  background-color: transparent;
+  border-radius: var(--borda-menor);
+  background-color: var(--roxo-escuro1);
+  color: var(--branco);
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  font-size: 1rem;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  &::-ms-expand {
+    display: none;
+  }
+
+  transition: border-color 0.2s ease,
+  box-shadow 0.2s ease;
 }
 
 /* Estilo Base da Label Flutuante */
 .label {
   position: absolute;
   top: 50%;
-  left: 1rem;
+  left: 1.5rem;
   padding: 0rem .5rem;
   color: var(--roxo-escuro1);
   font-weight: normal;
@@ -271,25 +322,25 @@ div {
 }
 
 /* Estado Ativo/Subido (Focus ou com Conteúdo) */
-:is(.input, .textarea):focus ~ .label,
-:is(.input, .textarea):not(:placeholder-shown) ~ .label,
-.select:focus ~ .label,
-.select:valid ~ .label,
-.campo_select:is(.open, .has-value) .label {
+:is(.input, .textarea):focus~.label,
+:is(.input, .textarea):not(:placeholder-shown)~.label,
+.select:focus~.label,
+.select:valid~.label,
+.campo-select:is(.open, .has-value) .label {
   top: 0;
   color: var(--branco);
   font-size: 0.8rem;
   background: var(--roxo-escuro1);
-  transform: translateY(-50%);
+  transform: translateY(-75%);
 }
 
 /* Ajustes Específicos para Textarea */
-.campo_form:has(.textarea) .label {
+.campo-form:has(.textarea) .label {
   top: 1.2rem;
   transform: none;
 }
 
-.campo_form:has(.textarea) .textarea:is(:focus, :not(:placeholder-shown)) ~ .label {
+.campo-form:has(.textarea) .textarea:is(:focus, :not(:placeholder-shown))~.label {
   top: 0;
   transform: translateY(-50%);
 }
