@@ -59,6 +59,12 @@ h3 {
   font-size: 1.5rem;
 }
 
+p{
+  color: var(--preto);
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  font-size: 1rem;
+}
+
 button {
   display: flex;
   align-items: center;
@@ -79,11 +85,22 @@ button {
   }
 }
 
+input, select{
+  width: 70%;
+  padding: 2%;
+  background-color: aliceblue;
+  color: var(--preto);
+  font-size: 1rem;
+  border-radius: var(--borda-menor);
+  box-shadow: var(--sombra);
+  margin-bottom: 5%;
+}
+
 .big-button {
   align-items: center;
   gap: .5rem;
   background-color: var(--roxo-escuro1);
-  padding: .2rem 1.5rem;
+  padding: .5rem 1.5rem;
   font-size: 1.5rem;
   font-weight: 400;
   font-family: var(--font-sansation), system-ui, sans-serif;;
@@ -123,28 +140,11 @@ button {
   object-fit: contain;
 }
 
-/*? ============================ */
-/*?   Textos, Inputs & Botões   */
-/*? =========================== */
-
-h1, h2, h3, h4 {
-  color: var(--preto);
-  font-family: var(--font-chakra-petch), system-ui, sans-serif;
+.button-icon-big {
+  width: 2rem;
+  height: auto;
+  object-fit: contain;
 }
-
-h1 {
-  font-weight: bold;
-  font-style: italic;
-  font-size: 3rem;
-}
-
-h2 {
-  font-weight: bold;
-  font-style: italic;
-  font-size: 2rem;
-}
-
-
 
 /*? ======================== */
 /*?   Layout & Utilitários   */
@@ -228,4 +228,44 @@ div {
   overflow: hidden;
 }
 
+.margin-left{
+  margin-left: 15%;
+}
+.margin-left-button{
+  margin-left: 38%;
+}
+.margin-left-anexar-foto{
+  margin-left: 35%;
+}
 
+.anexar-foto{
+  width: 45%;
+  padding: 1%;
+  background-color: aliceblue;
+  color: var(--preto);
+  font-size: 1rem;
+  border-radius: var(--borda-menor);
+  box-shadow: var(--sombra);
+  margin-bottom: 5%;
+}
+
+.big-button-voltar {
+  align-items: center;
+  gap: .5rem;
+  background-color: transparent;
+  padding: .5rem 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 400;
+  font-family: var(--font-sansation), system-ui, sans-serif;;
+  border-radius: var(--borda-menor);
+  border-color: var(--roxo-escuro1);
+  border-width: 0.2rem;
+  cursor: pointer;
+  &:hover{
+    transition: ease-in-out .2s;
+    background-color: var(--roxo-escuro2);
+  }&:active{
+    transition: ease-in-out .2s;
+    background-color: var(--preto);
+  }
+}
