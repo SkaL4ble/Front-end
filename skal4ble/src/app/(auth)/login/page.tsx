@@ -7,9 +7,10 @@ export default function LoginPage() {
     <main className={estilos.conteinerPrincipal}>
       <section className={estilos.painelLogo}>
         <div className={estilos.overlayConteudo}>
-          <p className={estilos.rotuloBoasVindas}>Bem-vindo(a)</p>
-          <h1 className={estilos.tituloDestaque}>ao Skal4ble!</h1>
-        </div>
+  <p className={estilos.rotuloBoasVindas}>Bem</p>
+  <p className={estilos.rotuloBoasVindas}>vindo(a) ao</p>
+  <h1 className={estilos.tituloDestaque}>Skal4ble!</h1>
+</div>
       </section>
 
       <section className={estilos.painelFormulario}>
