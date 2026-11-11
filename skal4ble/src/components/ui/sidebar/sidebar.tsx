@@ -2,21 +2,20 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Users, Briefcase, SquareCheckBig, GraduationCap, Settings } from "lucide-react";
 import styles from "./sidebar.module.css";
 
 interface NavItem {
   label: string;
   href: string;
-  icon: React.ComponentType<{ className?: string; size?: number }>;
+  iconSrc: string; // Atualizado de React.ComponentType para string
 }
 
 const navItems: NavItem[] = [
-  { label: "Funcionários", href: "/funcionarios", icon: Users },
-  { label: "Projetos", href: "/projetos", icon: Briefcase },
-  { label: "To-Do List", href: "/todo", icon: SquareCheckBig },
-  { label: "Treinamento", href: "/treinamento", icon: GraduationCap },
-  { label: "Configurações", href: "/configuracoes", icon: Settings },
+  { label: "Funcionários", href: "/funcionarios", iconSrc: "/icon/IFuncionarios.svg" },
+  { label: "Projetos", href: "/projetos", iconSrc: "/icon/IProjetos.svg" },
+  { label: "To-Do List", href: "/to-do", iconSrc: "/icon/IToDoList.svg" },
+  { label: "Treinamento", href: "/treinamento", iconSrc: "/icon/ITreino.svg" },
+  { label: "Configurações", href: "/configuracoes", iconSrc: "/icon/IConfiguracoes.svg" },
 ];
 
 export const Sidebar = () => {
@@ -32,7 +31,6 @@ export const Sidebar = () => {
       {/* Navegação */}
       <nav className={styles.nav}>
         {navItems.map((item) => {
-          const Icon = item.icon;
           const isActive = pathname === item.href;
 
           return (
@@ -41,8 +39,11 @@ export const Sidebar = () => {
               href={item.href}
               className={`${styles.navItem} ${isActive ? styles.active : ''}`}
             >
-              {/* Forçando o size do Lucide para garantir que o SVG não estoure */}
-              <Icon size={22} className={styles.icon} />
+              <img 
+                src={item.iconSrc} 
+                alt={item.label} 
+                className={styles.icon} 
+              />
               <span>{item.label}</span>
             </Link>
           );
@@ -51,7 +52,6 @@ export const Sidebar = () => {
 
       {/* Marca d'água geométrica no fundo */}
       <div className={styles.watermarkContainer}>
-        {/* Corrigido de id={styles.img} para className={styles.watermarkSvg} */}
         <img className={styles.watermarkSvg} src="/svg/LogoPreta.svg" alt="Logo Watermark" />
       </div>
     </aside>

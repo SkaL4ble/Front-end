@@ -12,11 +12,9 @@ export default function LoginPage() {
   <h1 className={estilos.tituloDestaque}>Skal4ble!</h1>
 </div>
       </section>
-
       <section className={estilos.painelFormulario}>
         <div className={estilos.cartaoFormulario}>
           <h2 className={estilos.titulo}>Login</h2>
-
           <form className={estilos.formulario}>
             <label className={estilos.campo}>
               <span>Email</span>
