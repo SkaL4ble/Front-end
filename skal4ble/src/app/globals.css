@@ -83,7 +83,7 @@ button {
   align-items: center;
   gap: .5rem;
   background-color: var(--roxo-escuro1);
-  padding: .2rem 1.5rem;
+  padding: .5rem 1.5rem;
   font-size: 1.5rem;
   font-weight: 400;
   font-family: var(--font-sansation), system-ui, sans-serif;;
@@ -119,6 +119,12 @@ button {
 
 .button-icon {
   width: 1.5rem;
+  height: auto;
+  object-fit: contain;
+}
+
+.button-icon-big {
+  width: 2rem;
   height: auto;
   object-fit: contain;
 }
@@ -204,4 +210,3 @@ div {
 .hidden {
   overflow: hidden;
 }
-

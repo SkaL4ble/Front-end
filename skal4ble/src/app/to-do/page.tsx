@@ -13,12 +13,18 @@ export default function ToDoPage() {
             <h2>*Nome do Projeto*</h2>
           </div>
 
-          <div className='row'>
+          <div className='row' style={{ marginRight: '1rem' }}>
             <div style={{ alignSelf: 'center' }}>
-              <button>Tickets</button>
+              <button>
+                <span>Tickets</span>
+                <img src="/icon/IDown.svg" alt="" className="button-icon" />
+              </button>
             </div>
             <div>
-              <button className='big-button'>Trocar Projeto</button>
+              <button className='big-button'>
+                <img src="/icon/ITrocarProjeto.svg" alt="" className="button-icon-big" />
+                <span>Trocar Projeto</span>
+              </button>
             </div>
           </div>
         </header>
