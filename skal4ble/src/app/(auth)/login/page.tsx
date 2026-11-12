@@ -34,13 +34,14 @@ export default function LoginPage() {
               </div>
             </label>
 
-            <a href="#" className={estilos.linkRecuperarSenha}>
-              Esqueceu sua senha?
-            </a>
+            
 
             <button type="submit" className={estilos.botaoPrimario}>
               Entrar
             </button>
+            <a href="#" className='linkRecuperarSenha'>
+              Esqueceu sua senha?
+            </a>
           </form>
         </div>
       </section>

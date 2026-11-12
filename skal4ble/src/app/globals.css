@@ -210,3 +210,13 @@ div {
 .hidden {
   overflow: hidden;
 }
+
+.linkRecuperarSenha {
+  margin-top: -0.1rem;
+  align-self: center;
+  color: var(--roxo-claro3); /* Roxo bem claro quase branco para destacar no gradiente */
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 700;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
