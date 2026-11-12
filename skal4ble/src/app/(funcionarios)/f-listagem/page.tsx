@@ -19,29 +19,39 @@ export default function ListagemFuncionarios() {
           </div>
         </header>
 
-        <div className='row'>
+        <div className='row'
+        style={{ padding: "1rem 0rem" }}>
           <div className='campo-form'>
             <img src="/icon/IPesquisa.svg" alt="" className="input-icon" />
             <input type="text" id="pesquisa" className="input" placeholder=" " />
             <label htmlFor="pesquisa" className='label'>Pesquise o Funcionário</label>
           </div>
 
-          <div>
+          <div className='campo-select'>
             <select className="select">
-              <option value="">Filtrar por Departamento</option>
-              <option value="rh">Recursos Humanos</option>
-              <option value="financeiro">Financeiro</option>
-              <option value="TI">TI</option>
+              <option value="">Atuação</option>
+              <option value="">Todos</option>
+              <option value="">Back-End</option>
+              <option value="">Full-Stack</option>
+              <option value="">Front-End</option>
             </select>
+            <img src="/icon/IDown.svg" alt="" className='button-icon' />
           </div>
 
-          <div>
+          <div className='campo-select'>
             <select className="select">
-              <option value="">Filtrar por Departamento</option>
-              <option value="rh">Recursos Humanos</option>
-              <option value="financeiro">Financeiro</option>
-              <option value="TI">TI</option>
+              <option value="">Cargo</option>
+              <option value="">Todos</option>
             </select>
+            <img src="/icon/IDown.svg" alt="" className='button-icon' />
+          </div>
+
+          <div className='campo-select'>
+            <select className="select">
+              <option value="">Apto a Ensinar</option>
+              <option value="">Todos</option>
+            </select>
+            <img src="/icon/IDown.svg" alt="" className='button-icon' />
           </div>
         </div>
       </section>

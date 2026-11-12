@@ -245,6 +245,13 @@ div {
   align-items: stretch;
 }
 
+.campo-select {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: fit-content;
+}
+
 .input-icon {
   position: absolute;
   top: 50%;
@@ -266,6 +273,7 @@ div {
   border-radius: var(--borda-menor);
   color: var(--preto);
   font-family: var(--font-sansation), system-ui, sans-serif;
+  box-shadow: var(--sombra);
   font-size: .8rem;
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -277,14 +285,16 @@ div {
 }
 
 .select {
-  width: 18.5rem;
-  padding: .4rem 2rem;
+  width: fit-content;
+  field-sizing: content;
+  padding: .4rem 3rem .4rem 1rem;
   background-color: transparent;
   border-radius: var(--borda-menor);
   background-color: var(--roxo-escuro1);
   color: var(--branco);
   font-family: var(--font-sansation), system-ui, sans-serif;
   font-size: 1rem;
+  box-shadow: var(--sombra);
   outline: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -296,6 +306,24 @@ div {
 
   transition: border-color 0.2s ease,
   box-shadow 0.2s ease;
+}
+
+/* Seta customizada do Select */
+.campo-select .button-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.6rem;
+  height: auto;
+  object-fit: contain;
+  pointer-events: none;
+  transition: transform 0.2s ease;
+}
+
+/* Gira a seta quando o select está em foco */
+.campo-select .select:focus + .button-icon {
+  transform: translateY(-50%) rotate(180deg);
 }
 
 /* Estilo Base da Label Flutuante */
