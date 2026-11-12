@@ -269,6 +269,26 @@ div {
   margin-bottom: 5%;
 }
 
+.link{
+  width: 85%;
+  background-color: aliceblue;
+  color: var(--preto);
+  font-size: 1rem;
+  border-radius: var(--borda-menor);
+  box-shadow: var(--sombra);
+  margin-bottom: 1%;
+}
+.descricao{
+  width: 85%;
+  padding: 5%;
+  background-color: aliceblue;
+  color: var(--preto);
+  font-size: 1rem;
+  border-radius: var(--borda-menor);
+  box-shadow: var(--sombra);
+  margin-bottom: 5%;
+}
+
 .big-button-voltar {
   align-items: center;
   gap: .5rem;

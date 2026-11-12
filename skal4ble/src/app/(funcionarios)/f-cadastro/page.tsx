@@ -1,5 +1,4 @@
-import Sidebar from "../../components/ui/sidebar/sidebar";
-import Styles from './cadastro.module.css'
+import Sidebar from "../../../components/ui/sidebar/sidebar";
 export default function CadastroFuncionarios() {
   return (
     <main>
