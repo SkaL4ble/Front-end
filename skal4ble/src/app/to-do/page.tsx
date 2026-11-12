@@ -13,13 +13,14 @@ export default function ToDoPage() {
             <h2>*Nome do Projeto*</h2>
           </div>
 
-          <div className='row' style={{ marginRight: '1rem' }}>
-            <div style={{ alignSelf: 'center' }}>
-              <button>
-                <span>Tickets</span>
-                <img src="/icon/IDown.svg" alt="" className="button-icon" />
-              </button>
-            </div>
+          <div className='row' style={{ marginRight: '1rem', transform: 'translateY(-50%)' }}>
+            <div className='campo-select'>
+            <select className="select">
+              <option value="">Tickets</option>
+              <option value="">Todos</option>
+            </select>
+            <img src="/icon/IDown.svg" alt="" className='button-icon' />
+          </div>
             <div>
               <button className='big-button'>
                 <img src="/icon/ITrocarProjeto.svg" alt="" className="button-icon-big" />

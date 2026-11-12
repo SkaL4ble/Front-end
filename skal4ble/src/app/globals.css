@@ -10,34 +10,37 @@
 /*? ===================== */
 /*?   Variáveis Globais   */
 /*? ===================== */
-:root{
-    /** Cores: Roxos */
-    --roxo-escuro1: #390c88;
-    --roxo-escuro2: #5810b1;
-    --roxo-escuro3: #710ec8;
-    --roxo-claro1: #9660e0;
-    --roxo-claro2: #BCB1F8;
-    --roxo-claro3: #e5dcf9;
-    
-    /** Cores: Outros */
-    --preto: #110e00;
-    --branco: #fffdf4;
-    --verde: #1cda88;
-    --vermelho: #f2381f;
-    --amarelo1: #f9ee72;
-    --amarelo2: #fcf5b3;
+:root {
+  /** Cores: Roxos */
+  --roxo-escuro1: #390c88;
+  --roxo-escuro2: #5810b1;
+  --roxo-escuro3: #710ec8;
+  --roxo-claro1: #9660e0;
+  --roxo-claro2: #BCB1F8;
+  --roxo-claro3: #e5dcf9;
 
-    /** "Universalização" */
-    --sombra: 0px 4px 10px 0px #110e00;
-    --borda: 20px;
-    --borda-menor: 10px;
+  /** Cores: Outros */
+  --preto: #110e00;
+  --branco: #fffdf4;
+  --verde: #1cda88;
+  --vermelho: #f2381f;
+  --amarelo1: #f9ee72;
+  --amarelo2: #fcf5b3;
+
+  /** "Universalização" */
+  --sombra: 0px 4px 10px 0px #110e00;
+  --borda: 20px;
+  --borda-menor: 10px;
 }
 
 /*? ============================ */
 /*?   Textos, Inputs & Botões   */
 /*? =========================== */
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   color: var(--preto);
   font-family: var(--font-chakra-petch), system-ui, sans-serif;
 }
@@ -73,13 +76,17 @@ button {
   padding: .2rem 1.5rem;
   font-size: 1rem;
   font-weight: 400;
-  font-family: var(--font-sansation), system-ui, sans-serif;;
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  ;
   border-radius: var(--borda-menor);
   cursor: pointer;
-  &:hover{
+
+  &:hover {
     transition: ease-in-out .2s;
     background-color: var(--roxo-escuro2);
-  }&:active{
+  }
+
+  &:active {
     transition: ease-in-out .2s;
     background-color: var(--preto);
   }
@@ -103,13 +110,18 @@ input, select{
   padding: .5rem 1.5rem;
   font-size: 1.5rem;
   font-weight: 400;
-  font-family: var(--font-sansation), system-ui, sans-serif;;
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  ;
   border-radius: var(--borda-menor);
+  box-shadow: var(--sombra);
   cursor: pointer;
-  &:hover{
+
+  &:hover {
     transition: ease-in-out .2s;
     background-color: var(--roxo-escuro2);
-  }&:active{
+  }
+
+  &:active {
     transition: ease-in-out .2s;
     background-color: var(--preto);
   }
@@ -121,14 +133,18 @@ input, select{
   color: var(--preto);
   font-size: 1rem;
   font-weight: 700;
-  font-family: var(--font-sansation), system-ui, sans-serif;;
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  ;
   border-radius: var(--borda);
   box-shadow: var(--sombra);
   cursor: pointer;
-  &:hover{
+
+  &:hover {
     transition: ease-in-out .2s;
     background-color: var(--roxo-claro2);
-  }&:active{
+  }
+
+  &:active {
     transition: ease-in-out .2s;
     background-color: var(--branco);
   }
@@ -151,29 +167,34 @@ input, select{
 /*? ======================= */
 main {
   display: flex;
-  
+
   /* Define o tamanho da caixa principal */
-  width: calc(100vw - 4rem);   /* Ocupa a largura total menos 2rem de folga em cada lado */
-  height: calc(100vh - 4rem);  /* Ocupa a altura total menos 2rem de folga em cima e embaixo */
-  
+  width: calc(100vw - 4rem);
+  /* Ocupa a largura total menos 2rem de folga em cada lado */
+  height: calc(100vh - 4rem);
+  /* Ocupa a altura total menos 2rem de folga em cima e embaixo */
+
   /* Centralização perfeita na viewport */
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  
+
   /* Estilização da caixa flutuante */
-  background: linear-gradient(
-    180deg,
-    rgba(255, 253, 244, 0.80) 50%,   /* var(--branco) com 80% opacidade */
-    rgba(188, 177, 248, 0.80) 100%  /* var(--roxo-claro2) com 80% opacidade */
-  );
+  background: linear-gradient(180deg,
+      rgba(255, 253, 244, 0.80) 50%,
+      /* var(--branco) com 80% opacidade */
+      rgba(188, 177, 248, 0.80) 100%
+      /* var(--roxo-claro2) com 80% opacidade */
+    );
 
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 
-  border-radius: var(--borda);          /* Arredonda os cantos para revelar o fundo animado */
-  overflow: hidden;                     /* Corta qualquer conteúdo interno que ultrapasse o raio das bordas */
+  border-radius: var(--borda);
+  /* Arredonda os cantos para revelar o fundo animado */
+  overflow: hidden;
+  /* Corta qualquer conteúdo interno que ultrapasse o raio das bordas */
 
   /* Borda sutil e sombra para dar efeito de profundidade (3D/glassmorphism) */
   border: var(--borda);
@@ -273,4 +294,144 @@ div {
     transition: ease-in-out .2s;
     background-color: var(--preto);
   }
+}
+/*? =============================== */
+/*?   Form Inputs & Floating Label */
+/*? =============================== */
+
+/* Container wrapper do campo de formulário */
+.campo-form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  align-items: stretch;
+}
+
+.campo-select {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: fit-content;
+}
+
+.input-icon {
+  position: absolute;
+  top: 50%;
+  left: .5rem;
+  transform: translateY(-50%);
+  width: 1.2rem;
+  height: auto;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* Estilo base dos Inputs e Textareas */
+.input,
+.textarea {
+  width: 18.5rem;
+  padding: .4rem 2rem;
+  background-color: transparent;
+  border: .15rem solid var(--roxo-escuro1);
+  border-radius: var(--borda-menor);
+  color: var(--preto);
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  box-shadow: var(--sombra);
+  font-size: .8rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input:focus,
+.textarea:focus {
+  border-color: var(--roxo-escuro1);
+}
+
+.select {
+  width: fit-content;
+  field-sizing: content;
+  padding: .4rem 3rem .4rem 1rem;
+  background-color: transparent;
+  border-radius: var(--borda-menor);
+  background-color: var(--roxo-escuro1);
+  color: var(--branco);
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  font-size: 1rem;
+  box-shadow: var(--sombra);
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  &::-ms-expand {
+    display: none;
+  }
+
+  transition: border-color 0.2s ease,
+  box-shadow 0.2s ease;
+}
+
+/* Seta customizada do Select */
+.campo-select .button-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.6rem;
+  height: auto;
+  object-fit: contain;
+  pointer-events: none;
+  transition: transform 0.2s ease;
+}
+
+/* Gira a seta quando o select está em foco */
+.campo-select .select:focus + .button-icon {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+/* Estilo Base da Label Flutuante */
+.label {
+  position: absolute;
+  top: 50%;
+  left: 1.5rem;
+  padding: 0rem .5rem;
+  color: var(--roxo-escuro1);
+  font-weight: normal;
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  font-size: 0.95rem;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--borda-menor);
+  transform: translateY(-50%);
+  pointer-events: none;
+  transition:
+    top 0.15s ease,
+    font-size 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease,
+    background-color 0.15s ease;
+}
+
+/* Estado Ativo/Subido (Focus ou com Conteúdo) */
+:is(.input, .textarea):focus~.label,
+:is(.input, .textarea):not(:placeholder-shown)~.label,
+.select:focus~.label,
+.select:valid~.label,
+.campo-select:is(.open, .has-value) .label {
+  top: 0;
+  color: var(--branco);
+  font-size: 0.8rem;
+  background: var(--roxo-escuro1);
+  transform: translateY(-75%);
+}
+
+/* Ajustes Específicos para Textarea */
+.campo-form:has(.textarea) .label {
+  top: 1.2rem;
+  transform: none;
+}
+
+.campo-form:has(.textarea) .textarea:is(:focus, :not(:placeholder-shown))~.label {
+  top: 0;
+  transform: translateY(-50%);
 }
