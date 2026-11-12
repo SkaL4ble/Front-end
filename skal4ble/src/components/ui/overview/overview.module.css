@@ -20,8 +20,9 @@
 .statsGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1.25rem;
+  gap: 1rem;
   flex: 1;
+  align-items: center;
 }
 
 .statCard {
@@ -29,7 +30,7 @@
   border-radius: var(--borda, 20px);
   box-shadow: var(--sombra);
   padding: .6rem .6rem;
-  
+  height: 14rem;
   display: flex;
   flex-direction: column;
   align-items: center;

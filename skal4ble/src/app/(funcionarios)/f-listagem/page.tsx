@@ -70,17 +70,13 @@ export default function ListagemFuncionarios() {
         </div>
 
         <section className="row flex-1"
-        style={{ minHeight: 0, alignItems: 'stretch', gap: '1.5rem' }}>
+        style={{ minHeight: 0, alignItems: 'center', gap: '2rem' }}>
           <div style={{ flex: 1, minWidth: 0, height: '100%' }}>
             <ListaF members={mockMembers} /> {/* MUDAR NO CONSUMO */}
           </div>
 
-          <OverviewPanel
-    totalEmployees={mockMembers.length}
-    assignedTickets={248}
-    toolsCount={8}
-    productivityAvg={82}
-  />
+          <OverviewPanel totalEmployees={mockMembers.length} assignedTickets={248}
+            toolsCount={8} productivityAvg={82}/>
         </section>
       </section>
     </main>
