@@ -1,6 +1,7 @@
 import React from 'react';
 import { Sidebar } from '@/src/components/ui/sidebar/sidebar';
 import { ListaF, Member } from '@/src/components/ui/(listas)/lista-funcionarios/lista';
+import { OverviewPanel } from '@/src/components/ui/overview/overview';
 
 const mockMembers: Member[] = Array.from({ length: 12 }, (_, index) => ({
   id: String(index + 1),
@@ -68,8 +69,18 @@ export default function ListagemFuncionarios() {
           </div>
         </div>
 
-        <section className="column flex-1" style={{ minHeight: 0 }}>
-          <ListaF members={mockMembers} />
+        <section className="row flex-1"
+        style={{ minHeight: 0, alignItems: 'stretch', gap: '1.5rem' }}>
+          <div style={{ flex: 1, minWidth: 0, height: '100%' }}>
+            <ListaF members={mockMembers} /> {/* MUDAR NO CONSUMO */}
+          </div>
+
+          <OverviewPanel
+    totalEmployees={mockMembers.length}
+    assignedTickets={248}
+    toolsCount={8}
+    productivityAvg={82}
+  />
         </section>
       </section>
     </main>

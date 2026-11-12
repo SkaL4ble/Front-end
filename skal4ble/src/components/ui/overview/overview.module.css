@@ -1,0 +1,80 @@
+.overviewContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  width: auto;
+  flex-shrink: 0;
+}
+
+.title {
+  font-family: var(--font-chakra-petch), system-ui, sans-serif;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--preto, #110e00);
+  text-align: center;
+  font-style: normal;
+  margin: 0;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  flex: 1;
+}
+
+.statCard {
+  background-color: var(--branco, #fffdf4);
+  border-radius: var(--borda, 20px);
+  box-shadow: var(--sombra);
+  padding: .6rem .6rem;
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.5rem;
+  transition: transform 0.15s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-2px);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-chakra-petch), system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--preto, #110e00);
+}
+
+.cardIcon {
+  width: 2rem;
+  height: auto;
+  color: var(--roxo-escuro1, #390c88);
+  flex-shrink: 0;
+}
+
+.metricValue {
+  font-family: var(--font-chakra-petch), system-ui, sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--roxo-escuro1, #390c88);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 2.5px;
+  line-height: 1.1;
+}
+
+.metricSubtitle {
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--preto, #110e00);
+}
