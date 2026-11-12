@@ -299,6 +299,7 @@ div {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  cursor: pointer;
 
   &::-ms-expand {
     display: none;
@@ -371,4 +372,45 @@ div {
 .campo-form:has(.textarea) .textarea:is(:focus, :not(:placeholder-shown))~.label {
   top: 0;
   transform: translateY(-50%);
+}
+
+/*? ============================ */
+/*?   Scrollbar Personalizada    */
+/*? ============================ */
+
+/* Suporte apenas para Firefox (não deixa vazar para Chrome/Edge) */
+@supports (-moz-appearance: none) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--roxo-escuro1, #390c88) var(--roxo-claro2, #BCB1F8);
+  }
+}
+
+/* Estilização para Chrome, Edge e Safari */
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* Zera o tamanho real dos botões em vez de usar display: none */
+*::-webkit-scrollbar-button:single-button {
+  width: 0;
+  height: 0;
+  background-color: transparent;
+}
+
+*::-webkit-scrollbar-track {
+  background-color: var(--roxo-claro3);
+  border-radius: 999px;
+  box-shadow: inset 0 2px 5px rgba(57, 12, 136, 0.35),
+              inset 0 0 2px rgba(17, 14, 0, 0.25);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--roxo-escuro1, #390c88);
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--roxo-escuro2, #5810b1);
 }

@@ -1,0 +1,73 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Mesma estrutura de colunas para cabeçalho e linhas */
+.headerGrid,
+.rowCard {
+  display: grid;
+  grid-template-columns: 56px 1fr 1.3fr 1.2fr 1.2fr;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Cabeçalho fixo no topo */
+.headerGrid {
+  /* Compensa o padding lateral do scrollContainer + largura da scrollbar */
+  padding: 0 2.25rem 0.75rem 1.75rem;
+  color: var(--roxo-escuro1);
+  font-family: var(--font-chakra-petch), system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+/* Container com rolagem vertical */
+.scrollContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  
+  /* Respiro interno para que box-shadow não seja cortada nas bordas */
+  padding: 0.25rem 1.25rem 1rem 0.75rem;
+}
+
+/* Card individual de cada linha */
+.rowCard {
+  background-color: var(--branco, #fffdf4);
+  color: var(--preto, #110e00);
+  border-radius: var(--borda, 20px);
+  padding: 0.75rem 1.25rem;
+  box-shadow: var(--sombra, 0px 4px 10px 0px rgba(17, 14, 0, 0.35));
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  font-size: 1rem;
+  transition: transform 0.15s ease;
+}
+
+.rowCard:hover {
+  transform: translateY(-2px);
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: var(--roxo-claro3, #e5dcf9);
+}
+
+.name {
+  font-weight: 700;
+}
+
+.githubCell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
