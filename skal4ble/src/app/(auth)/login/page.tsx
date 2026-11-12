@@ -4,45 +4,38 @@ import estilos from './login.module.css';
 
 export default function LoginPage() {
   return (
-    <main className={estilos.conteinerPrincipal}>
+    <main className='main'>
       <section className={estilos.painelLogo}>
         <div className={estilos.overlayConteudo}>
-  <p className={estilos.rotuloBoasVindas}>Bem</p>
-  <p className={estilos.rotuloBoasVindas}>vindo(a) ao</p>
-  <h1 className={estilos.tituloDestaque}>Skal4ble!</h1>
-</div>
+          <p className={estilos.rotuloBoasVindas}>Bem</p>
+          <p className={estilos.rotuloBoasVindas}>vindo(a) ao</p>
+          <h1 className={estilos.tituloDestaque}>Skal4ble!</h1>
+        </div>
       </section>
 
-      <section className={estilos.painelFormulario}>
-        <div className={estilos.cartaoFormulario}>
-          <h2 className={estilos.titulo}>Login</h2>
+      <section className='flex-1 padding-sidebar hidden column'>
+        <div className='flex-1 padding-sidebar hidden column'>
+          <div className='column flex-1 padding-sidebar hidden'>
+          <h1 className='margin-login'>Login</h1>
 
-          <form className={estilos.formulario}>
-            <label className={estilos.campo}>
-              <span>Email</span>
-              <div className={estilos.entradaComIcone}>
-                <Mail className={estilos.iconeEntrada} size={18} />
-                <input type="email" placeholder="email@email.com" />
-              </div>
-            </label>
+          <div className='column padding-sidebar hidden'>
+           
+                <p className='margin-left'>Email</p>
+                <input type="email" placeholder="email@email.com" className='input-login'/>
 
-            <label className={estilos.campo}>
-              <span>Senha</span>
-              <div className={estilos.entradaComIcone}>
-                <Lock className={estilos.iconeEntrada} size={18} />
-                <input type="password" placeholder="••••••••" />
-              </div>
-            </label>
+                <p className='margin-left'>Senha</p>
+                <input type="password" placeholder="••••••••" className='input-login'/>
 
-            
 
-            <button type="submit" className={estilos.botaoPrimario}>
+
+            <button type="submit" className='botao-login'>
               Entrar
             </button>
             <a href="#" className='linkRecuperarSenha'>
               Esqueceu sua senha?
             </a>
-          </form>
+          </div>
+        </div>
         </div>
       </section>
     </main>
