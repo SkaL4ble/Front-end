@@ -232,15 +232,14 @@ div {
   margin-left: 15%;
 }
 .margin-left-button{
-  margin-left: 38%;
+  margin-left: 36%;
 }
 .margin-left-anexar-foto{
-  margin-left: 35%;
+  margin-left: 38%;
 }
 
 .anexar-foto{
-  width: 45%;
-  padding: 1%;
+  padding: 2.5%;
   background-color: aliceblue;
   color: var(--preto);
   font-size: 1rem;
@@ -253,17 +252,23 @@ div {
   align-items: center;
   gap: .5rem;
   background-color: transparent;
+  margin-right: 1%;
   padding: .5rem 1.5rem;
   font-size: 1.5rem;
-  font-weight: 400;
+  font-weight: 600;
+  color: var(--preto);
+  width: 10rem;
   font-family: var(--font-sansation), system-ui, sans-serif;;
   border-radius: var(--borda-menor);
   border-color: var(--roxo-escuro1);
   border-width: 0.2rem;
+  justify-content: center;
   cursor: pointer;
   &:hover{
     transition: ease-in-out .2s;
-    background-color: var(--roxo-escuro2);
+    background-color: var(--roxo-claro1);
+    color: var(--branco);
+    border-color: var(--roxo-claro1);
   }&:active{
     transition: ease-in-out .2s;
     background-color: var(--preto);
