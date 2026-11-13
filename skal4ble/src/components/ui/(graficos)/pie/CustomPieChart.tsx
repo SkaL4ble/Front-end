@@ -109,6 +109,9 @@ export function CustomPieChart({
             direction: "horizontal",
             position: { vertical: "bottom", horizontal: "center" },
           },
+          tooltip: {
+            disablePortal: true,
+          },
         }}
       />
     </div>

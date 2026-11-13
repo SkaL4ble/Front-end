@@ -15,10 +15,10 @@ const mockProjects: Project[] = Array.from({ length: 10 }, (_, index) => ({
 
 // Dados de exemplo vinculados ao projeto selecionado
 const getProjectChartData = (project: Project): PieDataItem[] => [
-  { id: 0, value: 40, label: '.NET (C#)' },
-  { id: 1, value: 10, label: 'Dockerfile' },
-  { id: 2, value: 20, label: 'CSS' },
-  { id: 2, value: 25, label: 'TypeScript' },
+  { id: 0, value: 4, label: '.NET (C#)' },
+  { id: 1, value: 1, label: 'Dockerfile' },
+  { id: 3, value: 2, label: 'CSS' },
+  { id: 4, value: 2, label: 'TypeScript' },
 ];
 
 export default function ListagemProjetos() {
@@ -119,7 +119,9 @@ export default function ListagemProjetos() {
                     fontStyle: 'normal',
                     margin: 0,
                     flexShrink: 0,
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textAlign: 'center'
                   }}
                 >
                   {selectedProject.name}

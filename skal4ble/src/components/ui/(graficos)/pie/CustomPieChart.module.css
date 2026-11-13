@@ -109,3 +109,35 @@
     font-size: 0.92rem;
   }
 }
+
+/* Contorno das fatias do gráfico */
+.chart :global(.MuiPieArc-root) {
+  stroke: transparent !important; /* Use transparent para remover ou var(--roxo-escuro1) para colorir */
+  stroke-width: 2px !important;
+  transition: opacity 0.2s ease, stroke 0.2s ease;
+}
+
+/* Caixa flutuante de hover (Tooltip) */
+.chart :global(.MuiChartsTooltip-paper) {
+  background-color: rgba(255, 253, 244, 0.88) !important; /* --branco translúcido */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 0.15rem solid var(--roxo-escuro1, #390c88) !important;
+  border-radius: var(--borda-menor, 12px) !important;
+  box-shadow: var(--sombra, 0px 4px 10px 0px rgba(17, 14, 0, 0.35)) !important;
+  font-family: var(--font-sansation), system-ui, sans-serif !important;
+}
+
+/* Nome do tópico no Tooltip (ex: "TypeScript") */
+.chart :global(.MuiChartsTooltip-labelCell) {
+  color: var(--preto, #110e00) !important;
+  font-family: var(--font-sansation), system-ui, sans-serif !important;
+  font-weight: 700 !important;
+}
+
+/* Valor numérico no Tooltip (ex: "25") */
+.chart :global(.MuiChartsTooltip-valueCell) {
+  color: var(--roxo-escuro1, #390c88) !important;
+  font-family: var(--font-chakra-petch), system-ui, sans-serif !important;
+  font-weight: 700 !important;
+}
