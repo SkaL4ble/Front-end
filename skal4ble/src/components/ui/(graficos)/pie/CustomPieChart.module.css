@@ -1,0 +1,31 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.chart {
+  font-family: var(--font-sansation), system-ui, sans-serif;
+}
+
+/* Textos e itens da legenda */
+.chart :global(.MuiChartsLegend-root),
+.chart :global(.MuiChartsLegend-label) {
+  color: var(--branco);
+  fill: var(--branco);
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  font-size: 0.85rem;
+}
+
+/* Marcadores coloridos da legenda */
+.chart :global(.MuiChartsLegend-mark) {
+  rx: 4px;
+}
+
+/* Fatias do gráfico */
+.chart :global(.MuiPieArc-root) {
+  stroke: transparent;
+  transition: opacity 0.2s ease;
+}

@@ -22,7 +22,7 @@ export function ListaF({ members, onSelectMember, selectedMemberId }: ListaFProp
       <div className={styles.headerGrid}>
         <span className={styles.avatarSpacer} />
         <span>Nome</span>
-        <span>Nome GitHub</span>
+        <span>N. GitHub</span>
         <span>Cargo</span>
         <span>Afinidade</span>
       </div>
