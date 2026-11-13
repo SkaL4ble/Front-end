@@ -8,6 +8,25 @@
 }
 
 /*? ===================== */
+/*?   Animações Globais   */
+/*? ===================== */
+
+@keyframes panelSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(18px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.panel-enter {
+  animation: panelSlideIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/*? ===================== */
 /*?   Variáveis Globais   */
 /*? ===================== */
 :root {

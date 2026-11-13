@@ -92,16 +92,23 @@ export default function ListagemFuncionarios() {
           <div style={{ height: '95%' }}>
             {selectedMember ? (
               <div
-                className="container-25op"
+                key={`details-${selectedMember.id}`}
+                className="container-25op panel-enter"
                 style={{ width: '420px', height: '100%', flexShrink: 0 }}
               />
             ) : (
-              <OverviewPanel
-                totalEmployees={mockMembers.length}
-                assignedTickets={248}
-                toolsCount={8}
-                productivityAvg={82}
-              />
+              <div
+                key="overview"
+                className="panel-enter"
+                style={{ height: '100%' }}
+              >
+                <OverviewPanel
+                  totalEmployees={mockMembers.length}
+                  assignedTickets={248}
+                  toolsCount={8}
+                  productivityAvg={82}
+                />
+              </div>
             )}
           </div>
         </section>
