@@ -328,6 +328,45 @@ div {
   box-shadow 0.2s ease;
 }
 
+.select::picker-icon {
+  display: none;
+}
+
+/* Caixa flutuante que abre com as opções */
+.select::picker(select) {
+  appearance: base-select;
+  background-color: var(--branco);
+  border: 0.15rem solid var(--roxo-escuro1);
+  border-radius: var(--borda-menor);
+  box-shadow: var(--sombra);
+  padding: 0.25rem;
+  margin-top: 0.35rem;
+}
+
+/* Cada opção dentro da lista */
+.select option {
+  background-color: transparent;
+  color: var(--preto);
+  padding: 0.45rem 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* Cor ao passar o mouse (substitui o azul padrão) */
+.select option:hover,
+.select option:focus {
+  background-color: var(--roxo-claro2); /* Troque pela cor desejada */
+  color: var(--preto);
+}
+
+/* Cor da opção atualmente selecionada */
+.select option:checked {
+  background-color: var(--roxo-escuro2); /* Troque pela cor desejada */
+  color: var(--branco);
+  font-weight: 700;
+}
+
 /* Seta customizada do Select */
 .campo-select .button-icon {
   position: absolute;
