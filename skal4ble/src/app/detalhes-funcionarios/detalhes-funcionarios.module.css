@@ -1,128 +1,342 @@
-/* Container principal da área de conteúdo ao lado da Sidebar */
+/* Container principal da página ao lado da Sidebar */
 .conteudoPagina {
-  gap: 1.25rem;
-  overflow-y: auto; /* Permite rolar suavemente caso a tela seja menor */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 2rem;
+  gap: 1rem;
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* Topo com Título e Botão Editar */
+.cabecalhoPagina {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 0.5rem;
 }
 
 .tituloPagina {
   margin: 0;
-  font-style: normal; /* Remove o itálico global do h1 para ficar mais limpo */
-  font-size: 2.25rem;
+  font-style: italic;
+  font-size: 2.5rem;
+  font-weight: bold;
   color: var(--preto);
 }
 
-/* Grid das 3 colunas principais */
-.gradeCards {
+/* Estilo compartilhado entre os botões Editar, Trilha de aptidão e Período */
+.conteudoPagina .botaoPrimario {
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--roxo-escuro1);
+  color: var(--branco);
+  padding: 0.4rem 1.25rem;
+  font-size: 1.1rem;
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  border-radius: var(--borda-menor);
+  box-shadow: var(--sombra);
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.conteudoPagina .botaoPrimario:hover {
+  background-color: var(--roxo-escuro2);
+}
+
+.conteudoPagina .botaoPrimario:active {
+  background-color: var(--preto);
+}
+
+.conteudoPagina .botaoTrilha {
+  margin-top: 0.35rem;
+}
+
+.conteudoPagina .botaoPeriodo {
+  align-self: center;
+  padding: 0.3rem 0.9rem;
+  font-size: 0.95rem;
+}
+
+/* Esqueleto das 3 Colunas usando CSS Grid */
+.gradePrincipal {
+  display: grid;
+  grid-template-columns: 280px 1.3fr 1fr;
   gap: 1.25rem;
-  align-items: stretch;
-  min-height: 0;
-}
-
-/* Colunas 1 e 2 (que empilham 2 cards cada) */
-.colunaCards {
-  gap: 1.25rem;
-  min-height: 0;
-}
-
-.colunaEsquerda {
-  width: 280px;
-  flex-shrink: 0; /* Impede que a coluna da foto seja esmagada */
-}
-
-.colunaMeio {
-  flex: 1.4;
-}
-
-.colunaDireita {
   flex: 1;
+  min-height: 0;
 }
 
-/* Ajustes internos dos cards que já usam .container-25op do globals */
+/* Colunas 1 e 2 empilhando 2 cards cada */
+.colunaDupla {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-height: 0;
+}
+
+/* Estilo único para todos os 5 Cards */
 .card {
-  align-items: stretch; /* Sobrescreve o align-items: center do .container-25op global */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   justify-content: flex-start;
-  gap: 1rem;
-  padding: 1.25rem;
-  overflow: hidden;
+  background-color: rgba(255, 253, 244, 0.25);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: var(--borda);
+  box-shadow: var(--sombra);
+  padding: 1rem 1.25rem;
+  gap: 0.65rem;
+}
+
+.cardFlex {
+  flex: 1;
+  min-height: 140px;
+}
+
+.cabecalhoCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(57, 12, 136, 0.15);
+  padding-bottom: 0.45rem;
+  gap: 0.5rem;
 }
 
 .subtituloCard {
   margin: 0;
   font-style: normal;
-  font-size: 1.35rem;
+  font-size: 1.25rem;
   color: var(--roxo-escuro1);
-  border-bottom: 1px solid rgba(57, 12, 136, 0.12);
-  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(57, 12, 136, 0.15);
+  padding-bottom: 0.4rem;
 }
 
-/* Área da Foto do Funcionário */
+.subtituloCardSemBorda {
+  margin: 0;
+  font-style: normal;
+  font-size: 1.25rem;
+  color: var(--roxo-escuro1);
+}
+
+/* Card 1: Foto grande e informações compactas */
 .containerFoto {
+  display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 0.5rem 0;
+  padding: 0.25rem 0;
 }
 
 .fotoFuncionario {
-  width: 110px;
-  height: 110px;
+  width: 130px;
+  height: 130px;
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid var(--roxo-escuro1);
-  box-shadow: 0 4px 12px rgba(57, 12, 136, 0.2);
   background-color: var(--roxo-claro3);
 }
 
-/* Campos e Inputs padronizados com o globals */
-.grupoCampo {
-  gap: 0.35rem;
+.campoCompacto {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
   width: 100%;
 }
 
-.grupoCampo label {
+.campoCompacto .rotulo {
+  margin: 0;
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--preto);
+}
+
+.valorBoxCompacto {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  height: 32px;
+  padding: 0 0.65rem;
+  border: 1px solid rgba(57, 12, 136, 0.2);
+  border-radius: var(--borda-menor);
+  background-color: rgba(255, 253, 244, 0.85);
+  overflow: hidden;
+}
+
+/* Campos padrão (Card Informações Gerais) */
+.campoPadrao {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+}
+
+.campoPadrao .rotulo {
+  margin: 0;
   font-family: var(--font-sansation), system-ui, sans-serif;
   font-size: 0.875rem;
   font-weight: 700;
   color: var(--preto);
 }
 
-.grupoCampo input {
+.valorBoxPadrao {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
   width: 100%;
-  height: 40px;
+  height: 38px;
   padding: 0 0.75rem;
   border: 1px solid rgba(57, 12, 136, 0.2);
   border-radius: var(--borda-menor);
   background-color: rgba(255, 253, 244, 0.85);
+  overflow: hidden;
+}
+
+.textoValor {
+  margin: 0;
   font-family: var(--font-sansation), system-ui, sans-serif;
-  font-size: 0.95rem;
   color: var(--preto);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.grupoCampo input:focus {
-  outline: none;
-  border-color: var(--roxo-escuro1);
-  background-color: var(--branco);
-  box-shadow: 0 0 0 3px rgba(188, 177, 248, 0.45);
+.valorBoxCompacto .textoValor {
+  font-size: 0.85rem;
 }
 
-/* Áreas reservadas para Aptidão, Gráfico e Ferramentas */
-.areaConteudoCard {
+.valorBoxPadrao .textoValor {
+  font-size: 0.95rem;
+}
+
+.icone {
+  color: var(--roxo-escuro2);
+  flex-shrink: 0;
+}
+
+/* Área interna base dos cards */
+.areaInterna {
   flex: 1;
   width: 100%;
   background-color: rgba(255, 253, 244, 0.35);
   border-radius: var(--borda-menor);
   padding: 0.75rem;
-  overflow-y: auto;
 }
 
-/* Responsividade para telas menores */
-@media (max-width: 1024px) {
-  .gradeCards {
-    flex-direction: column;
-  }
+/* ========================================= */
+/* Gráfico de Desempenho (Colunas)           */
+/* ========================================= */
+.containerGraficoBarras {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-around;
+  gap: 0.75rem;
+  padding-top: 1rem;
+}
 
-  .colunaEsquerda {
-    width: 100%;
+.colunaBarra {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+  height: 100%;
+  gap: 0.35rem;
+}
+
+.valorBarra {
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--roxo-escuro1);
+}
+
+.trilhoBarra {
+  display: flex;
+  align-items: flex-end;
+  width: 34px;
+  flex: 1;
+  min-height: 60px;
+  background-color: rgba(57, 12, 136, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.preenchimentoBarra {
+  width: 100%;
+  background: linear-gradient(180deg, var(--roxo-escuro2), var(--roxo-escuro1));
+  border-radius: 8px 8px 0 0;
+  transition: height 0.4s ease;
+}
+
+.rotuloBarra {
+  margin: 0;
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--preto);
+  text-align: center;
+}
+
+/* ========================================= */
+/* Gráfico de Pizza (Ferramentas)            */
+/* ========================================= */
+.containerPizza {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.graficoPizza {
+  width: 180px;
+  height: 180px;
+  filter: drop-shadow(0 4px 10px rgba(17, 14, 0, 0.12));
+}
+
+.legendaPizza {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  width: 100%;
+  max-width: 220px;
+}
+
+.itemLegenda {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background-color: rgba(255, 253, 244, 0.75);
+  padding: 0.45rem 0.75rem;
+  border-radius: var(--borda-menor);
+  border: 1px solid rgba(57, 12, 136, 0.12);
+}
+
+.bolinhaCor {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.itemLegenda p {
+  margin: 0;
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--preto);
+}
+
+@media (max-width: 1024px) {
+  .gradePrincipal {
+    grid-template-columns: 1fr;
   }
 }
