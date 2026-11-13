@@ -10,7 +10,7 @@
 .headerGrid,
 .rowCard {
   display: grid;
-  grid-template-columns: 56px 1fr 1.3fr 1.2fr 1.2fr;
+  grid-template-columns: 5rem 1fr 1.2fr 1.2fr 1.2fr;
   align-items: center;
   gap: 1rem;
 }
@@ -22,7 +22,7 @@
   color: var(--roxo-escuro1);
   font-family: var(--font-chakra-petch), system-ui, sans-serif;
   font-weight: 700;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
 }
 
 /* Container com rolagem vertical */
@@ -43,8 +43,8 @@
   background-color: var(--branco, #fffdf4);
   color: var(--preto, #110e00);
   border-radius: var(--borda, 20px);
-  padding: 0.75rem 1.25rem;
-  box-shadow: var(--sombra, 0px 4px 10px 0px rgba(17, 14, 0, 0.35));
+  padding: 0.8rem 1rem;
+  box-shadow: var(--sombra);
   font-family: var(--font-sansation), system-ui, sans-serif;
   font-size: 1rem;
   transition: transform 0.15s ease;
@@ -69,5 +69,9 @@
 .githubCell {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.2rem;
+}
+
+.selectedCard {
+  border: .2rem solid var(--roxo-escuro1, #390c88);
 }

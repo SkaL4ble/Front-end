@@ -1,4 +1,6 @@
-import React from 'react';
+"use client";
+
+import React, { useState } from 'react';
 import { Sidebar } from '@/src/components/ui/sidebar/sidebar';
 import { ListaF, Member } from '@/src/components/ui/(listas)/lista-funcionarios/lista';
 import { OverviewPanel } from '@/src/components/ui/overview/overview';
@@ -13,6 +15,14 @@ const mockMembers: Member[] = Array.from({ length: 12 }, (_, index) => ({
 }));
 
 export default function ListagemFuncionarios() {
+  const [selectedMember, setSelectedMember] = useState<Member | null>(null);
+
+  const handleSelectMember = (member: Member) => {
+    // Alterna: se clicar no mesmo card já selecionado, volta para o Overview;
+    // se clicar em outro card, troca o funcionário selecionado.
+    setSelectedMember((prev) => (prev?.id === member.id ? null : member));
+  };
+
   return (
     <main>
       <Sidebar />
@@ -57,11 +67,9 @@ export default function ListagemFuncionarios() {
               </button>
             </div>
           </section>
-
         </header>
 
-        <div className='row'
-        style={{ padding: "1rem 0rem" }}>
+        <div className='row' style={{ padding: "1rem 0rem" }}>
           <div className='campo-form'>
             <img src="/icon/IPesquisa.svg" alt="" className="input-icon" />
             <input type="text" id="pesquisa" className="input" placeholder=" " />
@@ -69,14 +77,33 @@ export default function ListagemFuncionarios() {
           </div>
         </div>
 
-        <section className="row flex-1"
-        style={{ minHeight: 0, alignItems: 'center', gap: '2rem' }}>
-          <div style={{ flex: 1, minWidth: 0, height: '100%' }}>
-            <ListaF members={mockMembers} /> {/* MUDAR NO CONSUMO */}
+        <section
+          className="row flex-1"
+          style={{ minHeight: 0, alignItems: 'stretch', gap: '2rem' }}
+        >
+          <div style={{ flex: 1, minWidth: 0, height: '95%' }}>
+            <ListaF
+              members={mockMembers}
+              onSelectMember={handleSelectMember}
+              selectedMemberId={selectedMember?.id ?? null}
+            />
           </div>
 
-          <OverviewPanel totalEmployees={mockMembers.length} assignedTickets={248}
-            toolsCount={8} productivityAvg={82}/>
+          <div style={{ height: '95%' }}>
+            {selectedMember ? (
+              <div
+                className="container-25op"
+                style={{ width: '420px', height: '100%', flexShrink: 0 }}
+              />
+            ) : (
+              <OverviewPanel
+                totalEmployees={mockMembers.length}
+                assignedTickets={248}
+                toolsCount={8}
+                productivityAvg={82}
+              />
+            )}
+          </div>
         </section>
       </section>
     </main>
