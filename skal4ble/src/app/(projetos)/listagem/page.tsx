@@ -15,9 +15,10 @@ const mockProjects: Project[] = Array.from({ length: 10 }, (_, index) => ({
 
 // Dados de exemplo vinculados ao projeto selecionado
 const getProjectChartData = (project: Project): PieDataItem[] => [
-  { id: 0, value: 14, label: 'Concluídas' },
-  { id: 1, value: 8, label: 'Em Progresso' },
-  { id: 2, value: project.collaboratorsCount, label: 'Pendentes' },
+  { id: 0, value: 40, label: '.NET (C#)' },
+  { id: 1, value: 10, label: 'Dockerfile' },
+  { id: 2, value: 20, label: 'CSS' },
+  { id: 2, value: 25, label: 'TypeScript' },
 ];
 
 export default function ListagemProjetos() {
@@ -66,7 +67,7 @@ export default function ListagemProjetos() {
               </select>
               <img src="/icon/IDown.svg" alt="" className='button-icon' />
             </div>
-            
+
             <div>
               <button className='big-button'>
                 <img src="/icon/I+Projeto.svg" alt="" className="button-icon-big" />
@@ -96,7 +97,7 @@ export default function ListagemProjetos() {
             />
           </div>
 
-          <div style={{ height: '95%' }}>
+          <div style={{ height: '95%', minHeight: 0 }}>
             {selectedProject ? (
               <div
                 key={`details-${selectedProject.id}`}
@@ -105,18 +106,37 @@ export default function ListagemProjetos() {
                   width: '420px',
                   height: '100%',
                   flexShrink: 0,
-                  padding: '1.5rem',
+                  padding: 'clamp(1rem, 2.2vh, 1.5rem)',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '1rem',
+                  gap: '0.75rem',
                 }}
               >
-                <h2 style={{ fontFamily: 'var(--font-chakra-petch)', fontSize: '1.6rem', fontStyle: 'normal' }}>
+                <h2
+                  style={{
+                    fontFamily: 'var(--font-chakra-petch)',
+                    fontSize: '1.6rem',
+                    fontStyle: 'normal',
+                    margin: 0,
+                    flexShrink: 0,
+                    alignItems: 'center'
+                  }}
+                >
                   {selectedProject.name}
                 </h2>
 
-                <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-                  <CustomPieChart data={getProjectChartData(selectedProject)}/>
+                <div
+                  style={{
+                    flex: 1,
+                    minHeight: 0,
+                    minWidth: 0,
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <CustomPieChart data={getProjectChartData(selectedProject)} />
                 </div>
               </div>
             ) : (
