@@ -274,9 +274,9 @@ main {
 
   /* Estilização da caixa flutuante */
   background: linear-gradient(180deg,
-      rgba(255, 253, 244, 0.80) 50%,
+      rgba(255, 253, 244, 0.60) 50%,
       /* var(--branco) com 80% opacidade */
-      rgba(188, 177, 248, 0.80) 100%
+      rgba(188, 177, 248, 0.60) 100%
       /* var(--roxo-claro2) com 80% opacidade */
     );
 

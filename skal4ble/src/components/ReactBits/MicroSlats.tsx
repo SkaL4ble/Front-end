@@ -88,15 +88,15 @@ type Splat = [number, number, number, number, number | null];
 
 const SWELL_PRESETS: Record<SwellPreset, WaveValues> = {
   swell: {
-    scale: 1.5,
-    speed: 0.6,
+    scale: 1.8,        // Ondas mais largas e espaçadas (era 1.5)
+    speed: 0.18,       // Movimento bem lento e ambiental (era 0.6)
     direction: 250,
-    chop: 0.55,
+    chop: 0.18,        // Ondulação suave, sem picos agressivos (era 0.55)
     stretch: 0,
-    glint: 0.7,
-    contrast: 1.25,
-    perspective: 0.55,
-    fog: 0.55
+    glint: 0.12,       // Quase sem reflexos estourados (era 0.7)
+    contrast: 0.85,    // Menor diferença entre barras claras e escuras (era 1.25)
+    perspective: 0.5,
+    fog: 0.7           // Desvanece mais as barras distantes (era 0.55)
   },
   tide: {
     scale: 1.3,
@@ -432,8 +432,8 @@ void main() {
 
 const MicroSlats = ({
   preset = 'swell',
-  color = '#A855F7',
-  glintColor = '#ffffff',
+  color = '#710ec8',        // Roxo mais fechado para não competir com a UI (era '#A855F7')
+  glintColor = '#BCB1F8',   // Reflexo lilás suave em vez de branco puro (era '#ffffff')
   backgroundColor = '#000000',
   slatWidth = 10,
   slatHeight = 25,
@@ -448,13 +448,13 @@ const MicroSlats = ({
   contrast,
   perspective,
   fog,
-  interactive = true,
-  cursorStrength = 1,
+  interactive = false,      // Desativa o rastro e clique do mouse (era true)
+  cursorStrength = 0,
   cursorSize = 40,
   swirl = 0,
   trail = 1.4,
   lean = 0,
-  intro = true,
+  intro = false,            // Remove o clarão de varredura ao abrir a tela (era true)
   introDuration = 1.5,
   paused = false,
   className = '',
@@ -713,6 +713,8 @@ const MicroSlats = ({
       height = Math.max(1, container.clientHeight);
       renderer.dpr = Math.min(window.devicePixelRatio || 1, 2, Math.sqrt(PIXEL_BUDGET / (width * height)));
       renderer.setSize(width, height);
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
       buildFluid();
       start();
     };
@@ -926,8 +928,12 @@ const MicroSlats = ({
 
     const onPointerMove = (e: PointerEvent) => {
       const s = settingsRef.current;
+      if (!fluid || !s || !s.interactive || reducedMotion) {
+        pointer.tracked = false;
+        return;
+      }
       const spot = locate(e);
-      if (!fluid || !s || !s.interactive || reducedMotion || !spot.inside) {
+      if (!spot.inside) {
         pointer.tracked = false;
         return;
       }
@@ -941,8 +947,9 @@ const MicroSlats = ({
 
     const onPointerDown = (e: PointerEvent) => {
       const s = settingsRef.current;
+      if (!fluid || !s || !s.interactive || reducedMotion) return;
       const spot = locate(e);
-      if (!fluid || !s || !s.interactive || reducedMotion || !spot.inside) return;
+      if (!spot.inside) return;
       splashTurn += 2.39996;
       queue(spot.u, spot.v, 0, 0, splashTurn);
     };
