@@ -8,13 +8,14 @@ export default function DetalhesFuncionariosPage() {
     { nome: 'Complexidade', valor: 82 },
     { nome: 'Qualidade', valor: 94 },
     { nome: 'Quantidade', valor: 76 },
-    { nome: 'Velocidade', valor: 88 },
+    { nome: 'Velocidade', valor: 88 }, 
+
+    /*Exemplo de dados isso vai ser chamado na API posteriormente*/
   ];
 
   return (
     <main>
       <Sidebar />
-
       <section className={estilos.conteudoPagina}>
         <div className={estilos.cabecalhoPagina}>
           <h1 className={estilos.tituloPagina}>Detalhes do Funcionário</h1>
@@ -32,8 +33,8 @@ export default function DetalhesFuncionariosPage() {
             <section className={estilos.card}>
               <div className={estilos.containerFoto}>
                 <img
-                  src="/avatar-placeholder.png"
-                  alt="Foto do Funcionário"
+                  src="/icon/IShouldFuncionario.SVG"
+                  alt="Foto do Funcionário  "
                   className={estilos.fotoFuncionario}
                 />
               </div>
@@ -41,15 +42,15 @@ export default function DetalhesFuncionariosPage() {
               <div className={estilos.campoCompacto}>
                 <p className={estilos.rotulo}>Gmail</p>
                 <div className={estilos.valorBoxCompacto}>
-                  <Mail className={estilos.icone} size={15} />
-                  <p className={estilos.textoValor}>funcionario@gmail.com</p>
+                  <Mail className={estilos.icone} size={18} />
+                  <p className={estilos.textoValor}>ShouldBe@gmail.com</p>
                 </div>
               </div>
 
               <div className={estilos.campoCompacto}>
                 <p className={estilos.rotulo}>Nome do GitHub</p>
                 <div className={estilos.valorBoxCompacto}>
-                  <Code2 className={estilos.icone} size={15} />
+                  <Code2 className={estilos.icone} size={18} />
                   <p className={estilos.textoValor}>@usuario</p>
                 </div>
               </div>
@@ -57,7 +58,7 @@ export default function DetalhesFuncionariosPage() {
               <div className={estilos.campoCompacto}>
                 <p className={estilos.rotulo}>Email</p>
                 <div className={estilos.valorBoxCompacto}>
-                  <Mail className={estilos.icone} size={15} />
+                  <Mail className={estilos.icone} size={18} />
                   <p className={estilos.textoValor}>email@skal4ble.com</p>
                 </div>
               </div>
