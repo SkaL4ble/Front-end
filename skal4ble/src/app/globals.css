@@ -78,7 +78,7 @@ h2 {
 
 h3 {
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
 }
 
 button {
@@ -90,8 +90,8 @@ button {
   font-size: 1rem;
   font-weight: 400;
   font-family: var(--font-sansation), system-ui, sans-serif;
-  ;
   border-radius: var(--borda-menor);
+  box-shadow: var(--sombra);
   cursor: pointer;
 
   &:hover {
@@ -113,7 +113,6 @@ button {
   font-size: 1.5rem;
   font-weight: 400;
   font-family: var(--font-sansation), system-ui, sans-serif;
-  ;
   border-radius: var(--borda-menor);
   box-shadow: var(--sombra);
   cursor: pointer;
@@ -153,7 +152,7 @@ button {
 }
 
 .button-icon {
-  width: 1.5rem;
+  width: 1.4rem;
   height: auto;
   object-fit: contain;
 }

@@ -127,6 +127,18 @@ export default function ListagemProjetos() {
                   {selectedProject.name}
                 </h2>
 
+                <div className='row'>
+                  <button>
+                    <img src="/icon/IDetalhes.svg" alt="" className="button-icon" />
+                    <span>Detalhes</span>
+                  </button>
+
+                  <button className='button'>
+                    <img src="/icon/ITrocarProjeto.svg" alt="" className="button-icon" />
+                    <span>To-Do List</span>
+                  </button>
+                </div>
+
                 <div
                   style={{
                     flex: 1,
