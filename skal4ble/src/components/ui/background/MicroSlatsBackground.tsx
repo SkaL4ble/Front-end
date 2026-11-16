@@ -3,7 +3,7 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 
-const MicroSlats = dynamic(() => import('@/src/components/ReactBits/MicroSlats'), { ssr: false });
+const MicroSlats = dynamic(() => import('../../ReactBits/MicroSlats'), { ssr: false });
 
 export default function MicroSlatsBackground({ children }: { children: React.ReactNode }) {
   return (
