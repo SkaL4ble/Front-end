@@ -19,6 +19,8 @@ interface ItemTicket {
 
 export default function ToDoPage() {
   const [filtro, setFiltro] = useState<'tickets' | 'todos'>('todos');
+  const [ticketArrastadoId, setTicketArrastadoId] = useState<string | null>(null);
+  const [colunaEmFoco, setColunaEmFoco] = useState<StatusTicket | null>(null);
 
   const [tickets, setTickets] = useState<ItemTicket[]>([
     {
@@ -53,6 +55,31 @@ export default function ToDoPage() {
     },
   ]);
 
+  // Funções de Drag and Drop
+  const iniciarArrasto = (id: string) => {
+    setTicketArrastadoId(id);
+  };
+
+  const permitirSoltar = (e: React.DragEvent<HTMLDivElement>, statusColuna: StatusTicket) => {
+    e.preventDefault();
+    if (colunaEmFoco !== statusColuna) {
+      setColunaEmFoco(statusColuna);
+    }
+  };
+
+  const soltarNaColuna = (statusDestino: StatusTicket) => {
+    if (!ticketArrastadoId) return;
+
+    setTickets((listaAtual) =>
+      listaAtual.map((ticket) =>
+        ticket.id === ticketArrastadoId ? { ...ticket, status: statusDestino } : ticket
+      )
+    );
+
+    setTicketArrastadoId(null);
+    setColunaEmFoco(null);
+  };
+
   // Alterna a prioridade ao clicar na etiqueta do card (Baixa -> Média -> Alta)
   const alternarPrioridade = (idDoTicket: string) => {
     setTickets((listaAtual) =>
@@ -83,16 +110,16 @@ export default function ToDoPage() {
   };
 
   const voltarTicket = (id: string) => {
-  setTickets((listaAtual) =>
-    listaAtual.map((ticket) => {
-      if (ticket.id !== id) return ticket;
-      if (ticket.status === 'Concluídos') return { ...ticket, status: 'Em Andamento' };
-      if (ticket.status === 'Em Andamento') return { ...ticket, status: 'Pendentes' };
-      if (ticket.status === 'Transferência') return { ...ticket, status: 'Pendentes' };
-      return ticket;
-    })
-  );
-};
+    setTickets((listaAtual) =>
+      listaAtual.map((ticket) => {
+        if (ticket.id !== id) return ticket;
+        if (ticket.status === 'Concluídos') return { ...ticket, status: 'Em Andamento' };
+        if (ticket.status === 'Em Andamento') return { ...ticket, status: 'Pendentes' };
+        if (ticket.status === 'Transferência') return { ...ticket, status: 'Pendentes' };
+        return ticket;
+      })
+    );
+  };
 
   // Envia o ticket para a coluna de Transferência
   const transferirTicket = (id: string) => {
@@ -189,44 +216,60 @@ export default function ToDoPage() {
           className='row flex-1'
           style={{ padding: '1rem', overflowX: 'auto', marginLeft: '-1rem', minHeight: 0 }}
         >
-          {colunas.map((coluna) => (
-            <div key={coluna.titulo} className='column container-25op flex-1'>
-              <h3>{coluna.titulo}</h3>
-              <div className='column flex-1' style={estiloListaCards}>
-                {listarPorStatus(coluna.titulo).map((ticket) => (
-                  <Ticket
-                    key={ticket.id}
-                    {...ticket}
-                    aoVoltar={
-                      coluna.titulo !== 'Pendentes'
-                        ? () => voltarTicket(ticket.id)
-                        : undefined
-                    }
-                    aoAvancar={
-                      coluna.titulo !== 'Concluídos'
-                        ? () => avancarTicket(ticket.id)
-                        : undefined
-                    }
-                    aoTransferir={
-                      coluna.titulo !== 'Concluídos' && coluna.titulo !== 'Transferência'
-                        ? () => transferirTicket(ticket.id)
-                        : undefined
-                    }
-                    aoMudarPrioridade={() => alternarPrioridade(ticket.id)}
-                  />
-                ))}
-              </div>
+          {colunas.map((coluna) => {
+            const estaDestacada = colunaEmFoco === coluna.titulo;
 
-              <button
-                type='button'
-                className='button-todo'
-                onClick={() => adicionarTicket(coluna.titulo)}
+            return (
+              <div
+                key={coluna.titulo}
+                className='column container-25op flex-1'
+                onDragOver={(e) => permitirSoltar(e, coluna.titulo)}
+                onDragLeave={() => setColunaEmFoco(null)}
+                onDrop={() => soltarNaColuna(coluna.titulo)}
+                style={{
+                  outline: estaDestacada ? '2px dashed var(--roxo-escuro1)' : 'none',
+                  backgroundColor: estaDestacada ? 'rgba(188, 177, 248, 0.35)' : undefined,
+                  transition: 'background-color 0.2s ease',
+                }}
               >
-                <img src={coluna.iconeBotao} alt='' className='button-icon' />
-                <span>{coluna.textoBotao}</span>
-              </button>
-            </div>
-          ))}
+                <h3>{coluna.titulo}</h3>
+                <div className='column flex-1' style={estiloListaCards}>
+                  {listarPorStatus(coluna.titulo).map((ticket) => (
+                    <Ticket
+                      key={ticket.id}
+                      {...ticket}
+                      aoIniciarArrasto={() => iniciarArrasto(ticket.id)}
+                      aoVoltar={
+                        coluna.titulo !== 'Pendentes'
+                          ? () => voltarTicket(ticket.id)
+                          : undefined
+                      }
+                      aoAvancar={
+                        coluna.titulo !== 'Concluídos'
+                          ? () => avancarTicket(ticket.id)
+                          : undefined
+                      }
+                      aoTransferir={
+                        coluna.titulo !== 'Concluídos' && coluna.titulo !== 'Transferência'
+                          ? () => transferirTicket(ticket.id)
+                          : undefined
+                      }
+                      aoMudarPrioridade={() => alternarPrioridade(ticket.id)}
+                    />
+                  ))}
+                </div>
+
+                <button
+                  type='button'
+                  className='button-todo'
+                  onClick={() => adicionarTicket(coluna.titulo)}
+                >
+                  <img src={coluna.iconeBotao} alt='' className='button-icon' />
+                  <span>{coluna.textoBotao}</span>
+                </button>
+              </div>
+            );
+          })}
         </section>
       </section>
     </main>

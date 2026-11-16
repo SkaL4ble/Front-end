@@ -15,6 +15,7 @@ export interface TicketProps {
   prazo?: string;
   responsavel?: string;
   fotoResponsavel?: string;
+  aoIniciarArrasto?: (e: React.DragEvent<HTMLElement>) => void;
   aoVoltar?: () => void;
   aoAvancar?: () => void;
   aoTransferir?: () => void;
@@ -31,6 +32,7 @@ export default function Ticket({
   prazo,
   responsavel,
   fotoResponsavel,
+  aoIniciarArrasto,
   aoVoltar,
   aoAvancar,
   aoTransferir,
@@ -53,7 +55,11 @@ export default function Ticket({
       : estilos.prioridadeBaixa;
 
   return (
-    <article className={`${estilos.ticket} ${classeBordaStatus}`}>
+    <article
+      className={`${estilos.ticket} ${classeBordaStatus}`}
+      draggable={Boolean(aoIniciarArrasto)}
+      onDragStart={aoIniciarArrasto}
+    >
       <div className={estilos.cabecalho}>
         <div className={estilos.grupoEsquerda}>
           <span className={estilos.codigo}>#{id}</span>
@@ -81,7 +87,7 @@ export default function Ticket({
 
       {prazo && (
         <div className={estilos.linhaPrazo}>
-          <Calendar size={13} />
+          <Calendar size={11} />
           <span>Entrega: {prazo}</span>
         </div>
       )}
@@ -96,7 +102,7 @@ export default function Ticket({
                 className={estilos.fotoAvatar}
               />
             ) : (
-              <User size={15} />
+              <User size={18} />
             )}
           </div>
           <span className={estilos.nomeFuncionario}>
@@ -113,7 +119,7 @@ export default function Ticket({
               onClick={aoVoltar}
               title="Voltar etapa"
             >
-              <ArrowLeft size={14} />
+              <ArrowLeft size={20} />
             </button>
           )}
 
