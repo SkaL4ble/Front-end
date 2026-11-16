@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import styles from "./sidebar.module.css";
@@ -7,7 +8,7 @@ import styles from "./sidebar.module.css";
 interface NavItem {
   label: string;
   href: string;
-  iconSrc: string; // Atualizado de React.ComponentType para string
+  iconSrc: string;
 }
 
 const navItems: NavItem[] = [
@@ -20,16 +21,41 @@ const navItems: NavItem[] = [
 
 export const Sidebar = () => {
   const pathname = usePathname();
+  const [isHovered, setIsHovered] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   return (
-    <aside className={styles.sidebar}>
-      {/* Título / Logo */}
-      <div className={styles.header}>
-        <h1 className={styles.logo}>SkaL4ble</h1>
+    <aside
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className={`${styles.sidebar} ${isHovered ? styles.sidebarExpanded : ""} ${
+        isMobileOpen ? styles.sidebarOpen : ""
+      }`}
+    >
+      {/* Título / Logo + Botão Mobile */}
+      <div className={styles.topBar}>
+        <div className={styles.header}>
+          <h1 className={styles.logo}>
+            <span className={styles.logoShort}>L4</span>
+            <span className={styles.logoFull}>SkaL4ble</span>
+          </h1>
+        </div>
+
+        <button
+          type="button"
+          className={styles.mobileToggle}
+          onClick={() => setIsMobileOpen((prev) => !prev)}
+          aria-expanded={isMobileOpen}
+          aria-label="Abrir ou fechar menu"
+        >
+          <span />
+          <span />
+          <span />
+        </button>
       </div>
 
       {/* Navegação */}
-      <nav className={styles.nav}>
+      <nav className={`${styles.nav} ${isMobileOpen ? styles.navOpen : ""}`}>
         {navItems.map((item) => {
           const isActive = pathname === item.href;
 
@@ -37,14 +63,17 @@ export const Sidebar = () => {
             <Link
               key={item.href}
               href={item.href}
-              className={`${styles.navItem} ${isActive ? styles.active : ''}`}
+              title={item.label}
+              aria-label={item.label}
+              onClick={() => setIsMobileOpen(false)}
+              className={`${styles.navItem} ${isActive ? styles.active : ""}`}
             >
-              <img 
-                src={item.iconSrc} 
-                alt={item.label} 
-                className={styles.icon} 
+              <img
+                src={item.iconSrc}
+                alt=""
+                className={styles.icon}
               />
-              <span>{item.label}</span>
+              <span className={styles.navLabel}>{item.label}</span>
             </Link>
           );
         })}

@@ -58,7 +58,7 @@
   --amarelo2: #fcf5b3;
 
   /** "Universalização" */
-  --sombra: 0px 4px 10px 0px #110e00;
+  --sombra: 0px 2px 5px 0px #363636;
   --borda: 20px;
   --borda-menor: 10px;
 }
@@ -77,13 +77,13 @@ h4 {
 
 h1 {
   font-weight: bold;
-  font-style: italic;
+  font-style: normal;
   font-size: 3rem;
 }
 
 h2 {
   font-weight: bold;
-  font-style: italic;
+  font-style: normal;
   font-size: 2rem;
 }
 
@@ -274,10 +274,10 @@ main {
 
   /* Estilização da caixa flutuante */
   background: linear-gradient(180deg,
-      rgba(255, 253, 244, 0.60) 50%,
+      rgba(255, 253, 244, 0.80) 50%,
       /* var(--branco) com 80% opacidade */
-      rgba(188, 177, 248, 0.60) 100%
-      /* var(--roxo-claro2) com 80% opacidade */
+      rgba(188, 177, 248, 0.70) 100%
+      /* var(--roxo-claro2) com 70% opacidade */
     );
 
   backdrop-filter: blur(16px);
@@ -305,9 +305,36 @@ header {
   align-items: center;
 }
 
-/* Preserva o espaçamento original entre o header e a listagem */
+/* Cabeçalho com sublinhado em toda a largura e sem o espaçamento antigo */
 .header-projetos {
-  margin-bottom: 4.3rem;
+  width: 100%;
+  padding-bottom: 0.65rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--preto);
+}
+
+/* Barra de pesquisa e filtros abaixo da linha, alinhados à esquerda */
+.projetos-controls {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.filter-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Como os controles agora ficam à esquerda, o menu abre para a direita */
+.filter-wrapper .filters-dropdown {
+  left: 0;
+  right: auto;
 }
 
 .header-actions {
@@ -610,8 +637,8 @@ div {
 
 /* Estilização para Chrome, Edge e Safari */
 *::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
 }
 
 /* Zera o tamanho real dos botões em vez de usar display: none */
@@ -647,12 +674,21 @@ div {
   }
 }
 
+@media (max-width: 768px) {
+  main {
+    flex-direction: column;
+    width: calc(100vw - 2rem);
+    height: calc(100vh - 2rem);
+  }
+}
+
 @media (max-width: 640px) {
   .header-projetos {
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.85rem;
   }
 
-  .header-actions {
+  .header-actions,
+  .projetos-controls {
     width: 100%;
     justify-content: space-between;
   }
@@ -662,7 +698,12 @@ div {
     width: 100%;
   }
 
-  .filters-dropdown {
+  .filter-wrapper {
+    width: 100%;
+  }
+
+  .filters-dropdown,
+  .filter-wrapper .filters-dropdown {
     left: 0;
     right: 0;
     width: 100%;

@@ -3,29 +3,19 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Sidebar } from '@/src/components/ui/sidebar/sidebar';
 import { ListaP, Project } from '@/src/components/ui/(listas)/lista-projetos/lista';
-import { CustomPieChart, PieDataItem } from '@/src/components/ui/(graficos)/pie/CustomPieChart';
 
-type ProjectItem = Project & {
-  type?: string;
-};
-
-const mockProjects: ProjectItem[] = [
-  { id: '1', name: 'Portal Administrativo', createdAt: '19/07/2026', collaboratorsCount: 7, status: 'Em Andamento', type: 'Eficiência' },
-  { id: '2', name: 'Onboarding Técnico', createdAt: '22/07/2026', collaboratorsCount: 3, status: 'Em Andamento', type: 'Nivelamento de Conhecimento' },
-  { id: '3', name: 'Migração Cloud API', createdAt: '02/08/2026', collaboratorsCount: 6, status: 'Concluído', type: 'Eficiência' },
-  { id: '4', name: 'Design System Interno', createdAt: '10/08/2026', collaboratorsCount: 2, status: 'Concluído', type: 'Nivelamento de Conhecimento' },
-  { id: '5', name: 'Pesquisa de Arquitetura', createdAt: '15/08/2026', collaboratorsCount: 0, status: 'Em Andamento', type: 'Nivelamento de Conhecimento' },
-  { id: '6', name: 'Automação de Deploy', createdAt: '21/08/2026', collaboratorsCount: 5, status: 'Em Andamento', type: 'Eficiência' },
-  { id: '7', name: 'Dashboard Analytics', createdAt: '01/09/2026', collaboratorsCount: 4, status: 'Concluído', type: 'Eficiência' },
-  { id: '8', name: 'Workshop React & Next', createdAt: '12/09/2026', collaboratorsCount: 8, status: 'Em Andamento', type: 'Nivelamento de Conhecimento' },
+const mockProjects: Project[] = [
+  { id: '1', name: 'Portal Administrativo', createdAt: '10/11/2026', deadline: '20/11/2026', collaboratorsCount: 7, status: 'Em Andamento', type: 'Eficiência' },
+  { id: '2', name: 'Onboarding Técnico', createdAt: '25/10/2026', deadline: '05/12/2026', collaboratorsCount: 3, status: 'Em Andamento', type: 'Nivelamento' },
+  { id: '3', name: 'Migração Cloud API', createdAt: '02/08/2026', deadline: '28/08/2026', collaboratorsCount: 6, status: 'Concluído', type: 'Eficiência' },
+  { id: '4', name: 'Design System Interno', createdAt: '10/08/2026', deadline: '05/09/2026', collaboratorsCount: 2, status: 'Concluído', type: 'Nivelamento' },
+  { id: '5', name: 'Pesquisa de Arquitetura', createdAt: '01/11/2026', deadline: '10/01/2027', collaboratorsCount: 0, status: 'Em Andamento', type: 'Nivelamento' },
+  { id: '6', name: 'Automação de Deploy', createdAt: '21/08/2026', deadline: '10/10/2026', collaboratorsCount: 5, status: 'Atrasado', type: 'Eficiência' },
+  { id: '7', name: 'Dashboard Analytics', createdAt: '01/09/2026', deadline: '25/09/2026', collaboratorsCount: 4, status: 'Concluído', type: 'Eficiência' },
+  { id: '8', name: 'Workshop React & Next', createdAt: '12/09/2026', deadline: '30/10/2026', collaboratorsCount: 8, status: 'Atrasado', type: 'Nivelamento' },
 ];
 
-const getProjectChartData = (project: Project): PieDataItem[] => [
-  { id: 0, value: 4, label: '.NET (C#)' },
-  { id: 1, value: 1, label: 'Dockerfile' },
-  { id: 3, value: 2, label: 'CSS' },
-  { id: 4, value: 2, label: 'TypeScript' },
-];
+const MS_PER_DAY = 1000 * 60 * 60 * 24;
 
 // Normaliza texto para comparação sem diferenciar acentos ou maiúsculas/minúsculas
 const normalizeText = (text: string) =>
@@ -35,66 +25,118 @@ const normalizeText = (text: string) =>
     .toLowerCase()
     .trim();
 
+// Converte "DD/MM/AAAA" para timestamp à meia-noite local
+const parseDateBR = (dateStr: string) => {
+  const [day, month, year] = dateStr.split('/').map(Number);
+  return new Date(year, month - 1, day).getTime();
+};
+
+const INITIAL_FILTERS = {
+  createdAt: '',
+  deadline: '',
+  collaborators: '',
+  type: '',
+  status: '',
+};
+
+type FilterKey = keyof typeof INITIAL_FILTERS;
+
 export default function ListagemProjetos() {
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filters, setFilters] = useState({
-    collaborators: '',
-    status: '',
-    type: '',
-  });
+  const [filters, setFilters] = useState(INITIAL_FILTERS);
 
   const filtersRef = useRef<HTMLDivElement>(null);
 
   const activeFiltersCount = Object.values(filters).filter(Boolean).length;
 
+  const handleFilterChange = (key: FilterKey, value: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      [key]: value === 'nenhum' ? '' : value,
+    }));
+  };
+
+  const handleClearFilters = () => {
+    setFilters(INITIAL_FILTERS);
+  };
+
   const filteredProjects = useMemo(() => {
     const normalizedSearch = normalizeText(searchQuery);
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
 
     return mockProjects.filter((project) => {
-      // 1. Filtro por texto (nome ou status)
+      // 1. Filtro por texto (nome)
       if (normalizedSearch) {
         const matchesName = normalizeText(project.name).includes(normalizedSearch);
-        const matchesStatusText = normalizeText(project.status).includes(normalizedSearch);
-        if (!matchesName && !matchesStatusText) return false;
+        if (!matchesName) return false;
       }
 
-      // 2. Filtro por N° de Colaboradores
+      // 2. Filtro por Criação
+      if (filters.createdAt) {
+        const createdTime = parseDateBR(project.createdAt);
+        const daysAgo = Math.floor((today - createdTime) / MS_PER_DAY);
+
+        if (filters.createdAt === '7d' && (daysAgo < 0 || daysAgo > 7)) return false;
+        if (filters.createdAt === '30d' && (daysAgo < 0 || daysAgo > 30)) return false;
+        if (filters.createdAt === '90d' && (daysAgo < 0 || daysAgo > 90)) return false;
+        if (filters.createdAt === 'mais-90d' && daysAgo <= 90) return false;
+      }
+
+      // 3. Filtro por Prazo
+      if (filters.deadline) {
+        const deadlineTime = parseDateBR(project.deadline);
+        const daysUntil = Math.floor((deadlineTime - today) / MS_PER_DAY);
+        const isCompleted = normalizeText(project.status) === 'concluido';
+
+        if (filters.deadline === 'atrasados' && (daysUntil >= 0 || isCompleted)) return false;
+        if (filters.deadline === '7d' && (daysUntil < 0 || daysUntil > 7)) return false;
+        if (filters.deadline === '30d' && (daysUntil < 0 || daysUntil > 30)) return false;
+        if (filters.deadline === 'mais-30d' && daysUntil <= 30) return false;
+      }
+
+      // 4. Filtro por N° de Colaboradores
       if (filters.collaborators) {
         const count = project.collaboratorsCount ?? 0;
         if (filters.collaborators === 'na' && count !== 0) return false;
         if (filters.collaborators === '1-4' && (count < 1 || count > 4)) return false;
         if (filters.collaborators === '5-8' && (count < 5 || count > 8)) return false;
+        if (filters.collaborators === '9+' && count < 9) return false;
       }
 
-      // 3. Filtro por Status
-      if (filters.status && filters.status !== 'todos') {
-        const normalizedStatus = normalizeText(project.status);
-        if (
-          filters.status === 'ativos' &&
-          normalizedStatus !== 'em andamento' &&
-          normalizedStatus !== 'ativo' &&
-          normalizedStatus !== 'ativos'
-        ) {
-          return false;
-        }
-        if (
-          filters.status === 'concluidos' &&
-          normalizedStatus !== 'concluido' &&
-          normalizedStatus !== 'concluidos'
-        ) {
-          return false;
-        }
-      }
-
-      // 4. Filtro por Tipo
-      if (filters.type && filters.type !== 'todos') {
-        const normalizedType = normalizeText(project.type ?? '');
+      // 5. Filtro por Tipo
+      if (filters.type) {
+        const normalizedType = normalizeText(project.type);
         if (filters.type === 'eficiencia' && normalizedType !== 'eficiencia') {
           return false;
         }
-        if (filters.type === 'nivelamento' && !normalizedType.includes('nivelamento')) {
+        if (filters.type === 'nivelamento' && normalizedType !== 'nivelamento') {
+          return false;
+        }
+      }
+
+      // 6. Filtro por Status
+      if (filters.status) {
+        const normalizedStatus = normalizeText(project.status);
+        const deadlineTime = parseDateBR(project.deadline);
+        const isCompleted =
+          normalizedStatus === 'concluido' || normalizedStatus === 'concluidos';
+        const isOverdue =
+          normalizedStatus === 'atrasado' ||
+          normalizedStatus === 'atrasados' ||
+          (!isCompleted && deadlineTime < today);
+
+        if (
+          filters.status === 'em andamento' &&
+          normalizedStatus !== 'em andamento'
+        ) {
+          return false;
+        }
+        if (filters.status === 'atrasados' && !isOverdue) {
+          return false;
+        }
+        if (filters.status === 'concluidos' && !isCompleted) {
           return false;
         }
       }
@@ -103,20 +145,8 @@ export default function ListagemProjetos() {
     });
   }, [searchQuery, filters]);
 
-  // Evita manter aberto no painel lateral um projeto que saiu dos resultados filtrados
-  const visibleSelectedProject = useMemo(() => {
-    if (!selectedProject) return null;
-    return filteredProjects.some((p) => p.id === selectedProject.id)
-      ? selectedProject
-      : null;
-  }, [selectedProject, filteredProjects]);
-
   const handleSelectProject = (project: Project) => {
-    setSelectedProject((prev) => (prev?.id === project.id ? null : project));
-  };
-
-  const handleClearFilters = () => {
-    setFilters({ collaborators: '', status: '', type: '' });
+    console.log('Projeto clicado:', project);
   };
 
   useEffect(() => {
@@ -145,36 +175,36 @@ export default function ListagemProjetos() {
       <Sidebar />
       <section className='column flex-1 padding-sidebar hidden'>
         <header className='header-projetos'>
-          <div>
-            <h1>Projetos</h1>
+          <h1>Lista de Projetos</h1>
+        </header>
+
+        {/* Pesquisa e filtros abaixo da linha, alinhados à esquerda com o título */}
+        <div className='projetos-controls'>
+          <div className='campo-form header-search'>
+            <img src="/icon/IPesquisa.svg" alt="" className="input-icon" />
+            <input
+              type="text"
+              id="pesquisa"
+              className="input"
+              placeholder=" "
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <label htmlFor="pesquisa" className='label'>Pesquise...</label>
+
+            {searchQuery && (
+              <button
+                type="button"
+                className='search-clear-btn'
+                onClick={() => setSearchQuery('')}
+                aria-label="Limpar pesquisa"
+              >
+                ×
+              </button>
+            )}
           </div>
 
-          <div ref={filtersRef} className='header-actions'>
-            {/* Barra de pesquisa integrada ao header */}
-            <div className='campo-form header-search'>
-              <img src="/icon/IPesquisa.svg" alt="" className="input-icon" />
-              <input
-                type="text"
-                id="pesquisa"
-                className="input"
-                placeholder=" "
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              <label htmlFor="pesquisa" className='label'>Pesquise o Projeto</label>
-
-              {searchQuery && (
-                <button
-                  type="button"
-                  className='search-clear-btn'
-                  onClick={() => setSearchQuery('')}
-                  aria-label="Limpar pesquisa"
-                >
-                  ×
-                </button>
-              )}
-            </div>
-
+          <div ref={filtersRef} className='filter-wrapper'>
             <button
               type="button"
               className='filter-toggle-btn'
@@ -211,11 +241,6 @@ export default function ListagemProjetos() {
               />
             </button>
 
-            <button type="button" className='big-button'>
-              <img src="/icon/I+Projeto.svg" alt="" className="button-icon-big" />
-              <span>Novo Projeto</span>
-            </button>
-
             {/* Menu Expansível */}
             {isFiltersOpen && (
               <div
@@ -237,133 +262,102 @@ export default function ListagemProjetos() {
                   )}
                 </div>
 
+                {/* Criação */}
+                <div className='campo-select'>
+                  <select
+                    className="select"
+                    value={filters.createdAt}
+                    onChange={(e) => handleFilterChange('createdAt', e.target.value)}
+                  >
+                    <option value="" disabled hidden>Criação</option>
+                    <option value="nenhum">Nenhum</option>
+                    <option value="7d">Últimos 7 dias</option>
+                    <option value="30d">Últimos 30 dias</option>
+                    <option value="90d">Últimos 3 meses</option>
+                    <option value="mais-90d">Mais de 3 meses</option>
+                  </select>
+                  <img src="/icon/IDown.svg" alt="" className='button-icon' />
+                </div>
+
+                {/* Prazo */}
+                <div className='campo-select'>
+                  <select
+                    className="select"
+                    value={filters.deadline}
+                    onChange={(e) => handleFilterChange('deadline', e.target.value)}
+                  >
+                    <option value="" disabled hidden>Prazo</option>
+                    <option value="nenhum">Nenhum</option>
+                    <option value="atrasados">Atrasados</option>
+                    <option value="7d">Próximos 7 dias</option>
+                    <option value="30d">Próximos 30 dias</option>
+                    <option value="mais-30d">Mais de 30 dias</option>
+                  </select>
+                  <img src="/icon/IDown.svg" alt="" className='button-icon' />
+                </div>
+
+                {/* N° de Colaboradores */}
                 <div className='campo-select'>
                   <select
                     className="select"
                     value={filters.collaborators}
-                    onChange={(e) =>
-                      setFilters((prev) => ({ ...prev, collaborators: e.target.value }))
-                    }
+                    onChange={(e) => handleFilterChange('collaborators', e.target.value)}
                   >
-                    <option value="">N° de Colaboradores</option>
-                    <option value="na">N/A</option>
+                    <option value="" disabled hidden>N° de Colaboradores</option>
+                    <option value="nenhum">Nenhum</option>
+                    <option value="na">0</option>
                     <option value="1-4">1-4</option>
                     <option value="5-8">5-8</option>
+                    <option value="9+">9+</option>
                   </select>
                   <img src="/icon/IDown.svg" alt="" className='button-icon' />
                 </div>
 
-                <div className='campo-select'>
-                  <select
-                    className="select"
-                    value={filters.status}
-                    onChange={(e) =>
-                      setFilters((prev) => ({ ...prev, status: e.target.value }))
-                    }
-                  >
-                    <option value="">Status</option>
-                    <option value="todos">Todos</option>
-                    <option value="ativos">Ativos</option>
-                    <option value="concluidos">Concluídos</option>
-                  </select>
-                  <img src="/icon/IDown.svg" alt="" className='button-icon' />
-                </div>
-
+                {/* Tipo */}
                 <div className='campo-select'>
                   <select
                     className="select"
                     value={filters.type}
-                    onChange={(e) =>
-                      setFilters((prev) => ({ ...prev, type: e.target.value }))
-                    }
+                    onChange={(e) => handleFilterChange('type', e.target.value)}
                   >
-                    <option value="">Tipo</option>
-                    <option value="todos">Todos</option>
+                    <option value="" disabled hidden>Tipo</option>
+                    <option value="nenhum">Nenhum</option>
                     <option value="eficiencia">Eficiência</option>
-                    <option value="nivelamento">Nivelamento de Conhecimento</option>
+                    <option value="nivelamento">Nivelamento</option>
+                  </select>
+                  <img src="/icon/IDown.svg" alt="" className='button-icon' />
+                </div>
+
+                {/* Status */}
+                <div className='campo-select'>
+                  <select
+                    className="select"
+                    value={filters.status}
+                    onChange={(e) => handleFilterChange('status', e.target.value)}
+                  >
+                    <option value="" disabled hidden>Status</option>
+                    <option value="nenhum">Nenhum</option>
+                    <option value="em andamento">Em Andamento</option>
+                    <option value="atrasados">Atrasados</option>
+                    <option value="concluidos">Concluídos</option>
                   </select>
                   <img src="/icon/IDown.svg" alt="" className='button-icon' />
                 </div>
               </div>
             )}
           </div>
-        </header>
+        </div>
 
         <section
           className="row flex-1"
-          style={{ minHeight: 0, alignItems: 'stretch', gap: '2rem' }}
+          style={{ minHeight: 0, alignItems: 'stretch' }}
         >
           <div style={{ flex: 1, minWidth: 0, height: '95%' }}>
             <ListaP
               projects={filteredProjects}
               onSelectProject={handleSelectProject}
-              selectedProjectId={visibleSelectedProject?.id ?? null}
+              selectedProjectId={null}
             />
-          </div>
-
-          <div style={{ height: '95%', minHeight: 0 }}>
-            {visibleSelectedProject ? (
-              <div
-                key={`details-${visibleSelectedProject.id}`}
-                className="container-25op panel-enter"
-                style={{
-                  width: '420px',
-                  height: '100%',
-                  flexShrink: 0,
-                  padding: 'clamp(1rem, 2.2vh, 1.5rem)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.75rem',
-                }}
-              >
-                <h2
-                  style={{
-                    fontFamily: 'var(--font-chakra-petch)',
-                    fontSize: '1.6rem',
-                    fontStyle: 'normal',
-                    margin: 0,
-                    flexShrink: 0,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    textAlign: 'center'
-                  }}
-                >
-                  {visibleSelectedProject.name}
-                </h2>
-
-                <div className='row'>
-                  <button type="button">
-                    <img src="/icon/IDetalhes.svg" alt="" className="button-icon" />
-                    <span>Detalhes</span>
-                  </button>
-
-                  <button type="button" className='button'>
-                    <img src="/icon/ITrocarProjeto.svg" alt="" className="button-icon" />
-                    <span>To-Do List</span>
-                  </button>
-                </div>
-
-                <div
-                  style={{
-                    flex: 1,
-                    minHeight: 0,
-                    minWidth: 0,
-                    width: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <CustomPieChart data={getProjectChartData(visibleSelectedProject)} />
-                </div>
-              </div>
-            ) : (
-              <div
-                key="empty"
-                className="container-25op panel-enter"
-                style={{ width: '420px', height: '100%', flexShrink: 0 }}
-              />
-            )}
           </div>
         </section>
       </section>

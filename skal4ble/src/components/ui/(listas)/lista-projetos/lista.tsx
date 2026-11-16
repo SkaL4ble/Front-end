@@ -1,12 +1,17 @@
 import React from 'react';
 import styles from './lista.module.css';
 
+export type ProjectType = 'Eficiência' | 'Nivelamento';
+export type ProjectStatus = 'Em Andamento' | 'Atrasado' | 'Concluído';
+
 export interface Project {
   id: string;
   name: string;
   createdAt: string;
+  deadline: string;
   collaboratorsCount: number;
-  status: string;
+  type: ProjectType;
+  status: ProjectStatus | (string & {});
 }
 
 interface ListaPProps {
@@ -25,7 +30,9 @@ export function ListaP({
       <div className={styles.headerGrid}>
         <span>Nome</span>
         <span>Criação</span>
-        <span>Colaboradores</span>
+        <span>Prazo</span>
+        <span>N° de Colaboradores</span>
+        <span>Tipo</span>
         <span>Status</span>
       </div>
 
@@ -42,7 +49,9 @@ export function ListaP({
             >
               <strong className={styles.name}>{project.name}</strong>
               <span>{project.createdAt}</span>
+              <span>{project.deadline}</span>
               <span>{project.collaboratorsCount}</span>
+              <span>{project.type}</span>
               <span>{project.status}</span>
             </article>
           );

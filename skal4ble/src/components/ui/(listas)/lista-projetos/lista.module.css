@@ -6,18 +6,16 @@
   overflow: hidden;
 }
 
-/* Dá mais largura para "Nome" e ajusta as colunas curtas */
 .headerGrid,
 .rowCard {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 2fr 1fr 1fr 1.1fr 1.1fr 1.2fr;
   align-items: center;
   justify-items: center;
   text-align: center;
   gap: 1rem;
 }
 
-/* Impede que cabeçalhos e valores quebrem em duas linhas */
 .headerGrid > *,
 .rowCard > * {
   max-width: 100%;
@@ -26,7 +24,6 @@
   text-overflow: ellipsis;
 }
 
-/* Cabeçalho fixo no topo */
 .headerGrid {
   padding: 0 3.375rem 0.75rem 2.25rem;
   color: var(--roxo-escuro1, #390c88);
@@ -35,7 +32,6 @@
   font-size: 1.1rem;
 }
 
-/* Container com rolagem vertical */
 .scrollContainer {
   display: flex;
   flex-direction: column;
@@ -46,7 +42,6 @@
   padding: 0.25rem 1.25rem 1rem 0.75rem;
 }
 
-/* Card individual de cada projeto */
 .rowCard {
   background-color: var(--branco, #fffdf4);
   color: var(--preto, #110e00);
