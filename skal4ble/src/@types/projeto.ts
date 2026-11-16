@@ -1,5 +1,16 @@
-export interface Projeto {
- id: string;
-    name: string;
-
+export interface Projeto 
+{
+  projetoId: string,
+  nome: string,
+  descricao: string,
+  linkRepositorio: string,
+  autorId: string,
+  nomeAutor: string,
+  statusId: 0,
+  status: string,
+  tipoId: number,
+  nomeTipo: string,
+  prazo: string,
+  dataCriacao: string
 }
+

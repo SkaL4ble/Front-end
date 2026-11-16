@@ -1,22 +1,13 @@
 import React from 'react';
 import styles from './lista.module.css';
+import { Projeto } from '@/src/@types/projeto';
 
 export type ProjectType = 'Eficiência' | 'Nivelamento';
 export type ProjectStatus = 'Em Andamento' | 'Atrasado' | 'Concluído';
 
-export interface Project {
-  id: string;
-  name: string;
-  createdAt: string;
-  deadline: string;
-  collaboratorsCount: number;
-  type: ProjectType;
-  status: ProjectStatus | (string & {});
-}
-
 interface ListaPProps {
-  projects: Project[];
-  onSelectProject?: (project: Project) => void;
+  projects: Projeto[];
+  onSelectProject?: (project: Projeto) => void;
   selectedProjectId?: string | null;
 }
 
@@ -38,20 +29,20 @@ export function ListaP({
 
       <div className={styles.scrollContainer}>
         {projects.map((project) => {
-          const isSelected = selectedProjectId === project.id;
+          const isSelected = selectedProjectId === project.projetoId;
 
           return (
             <article
-              key={project.id}
+              key={project.projetoId}
               onClick={() => onSelectProject?.(project)}
               className={`${styles.rowCard} ${isSelected ? styles.selectedCard : ''}`}
               style={{ cursor: onSelectProject ? 'pointer' : 'default' }}
             >
-              <strong className={styles.name}>{project.name}</strong>
-              <span>{project.createdAt}</span>
-              <span>{project.deadline}</span>
-              <span>{project.collaboratorsCount}</span>
-              <span>{project.type}</span>
+              <strong className={styles.name}>{project.nome}</strong>
+              <span>{project.dataCriacao}</span>
+              <span>{project.prazo}</span>
+              <span>{10}</span>
+              <span>{project.nomeTipo}</span>
               <span>{project.status}</span>
             </article>
           );
