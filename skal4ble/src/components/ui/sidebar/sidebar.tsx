@@ -47,7 +47,7 @@ export const Sidebar = () => {
               <span>{item.label}</span>
             </Link>
           );
-        })}
+        })}1
       </nav>
 
       {/* Marca d'água geométrica no fundo */}
