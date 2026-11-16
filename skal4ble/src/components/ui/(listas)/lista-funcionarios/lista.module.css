@@ -6,26 +6,66 @@
   overflow: hidden;
 }
 
-/* Mesma estrutura de colunas para cabeçalho e linhas */
+/* Garante largura suficiente na 1ª coluna para acomodar os 2 botões lado a lado */
 .headerGrid,
 .rowCard {
   display: grid;
-  grid-template-columns: 5rem 1fr 1.2fr 1.2fr 1.2fr;
+  grid-template-columns: 4.75rem 1.4fr 1.2fr 1.1fr 1.1fr;
   align-items: center;
+  justify-items: center;
+  text-align: center;
   gap: 1rem;
 }
 
-/* Cabeçalho fixo no topo */
+/* Container dos 2 botões acima da foto */
+.headerActions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  overflow: visible;
+}
+
+.actionIconBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--roxo-escuro1);
+  box-shadow: var(--sombra);
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.actionIconBtn:hover {
+  transform: translateY(-2px);
+}
+
+.actionIconBtn img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+/* Evita quebra de linha nos cabeçalhos e textos dos cards */
+.headerGrid > *,
+.rowCard > * {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Compensa o padding lateral do scrollContainer + card + barra de rolagem */
 .headerGrid {
-  /* Compensa o padding lateral do scrollContainer + largura da scrollbar */
-  padding: 0 2.25rem 0.75rem 1.75rem;
-  color: var(--roxo-escuro1);
+  padding: 0 3.375rem 0.75rem 2.25rem;
+  color: var(--roxo-escuro1, #390c88);
   font-family: var(--font-chakra-petch), system-ui, sans-serif;
   font-weight: 700;
   font-size: 1.1rem;
 }
 
-/* Container com rolagem vertical */
 .scrollContainer {
   display: flex;
   flex-direction: column;
@@ -33,21 +73,19 @@
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  
-  /* Respiro interno para que box-shadow não seja cortada nas bordas */
   padding: 0.25rem 1.25rem 1rem 0.75rem;
 }
 
-/* Card individual de cada linha */
 .rowCard {
   background-color: var(--branco, #fffdf4);
   color: var(--preto, #110e00);
   border-radius: var(--borda, 20px);
-  padding: 0.8rem 1rem;
+  border: 0.2rem solid transparent;
+  padding: 0.8rem 1.5rem;
   box-shadow: var(--sombra);
   font-family: var(--font-sansation), system-ui, sans-serif;
   font-size: 1rem;
-  transition: transform 0.15s ease;
+  transition: transform 0.15s ease, border-color 0.15s ease;
 }
 
 .rowCard:hover {
@@ -67,11 +105,12 @@
 }
 
 .githubCell {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.2rem;
+  justify-content: center;
+  gap: 0.35rem;
 }
 
 .selectedCard {
-  border: .2rem solid var(--roxo-escuro1, #390c88);
+  border: 0.1rem solid var(--roxo-escuro1, #390c88);
 }
