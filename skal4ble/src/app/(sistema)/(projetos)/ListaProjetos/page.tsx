@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { Sidebar } from '@/src/components/ui/sidebar/sidebar';
 import { ListaP, Project } from '@/src/components/ui/(listas)/lista-projetos/lista';
 
 const mockProjects: Project[] = [
@@ -171,9 +170,7 @@ export default function ListagemProjetos() {
   }, []);
 
   return (
-    <main>
-      <Sidebar />
-      <section className='column flex-1 padding-sidebar hidden'>
+    <>
         <header className='header-projetos'>
           <h1>Lista de Projetos</h1>
         </header>
@@ -360,7 +357,6 @@ export default function ListagemProjetos() {
             />
           </div>
         </section>
-      </section>
-    </main>
+        </>
   );
 }

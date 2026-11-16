@@ -1,6 +1,6 @@
 import React from 'react';
 import { Briefcase, Calendar, ChevronDown, Code2, Layers, Mail, Pencil, Route } from 'lucide-react';
-import Sidebar from '../../components/ui/sidebar/sidebar';
+import Sidebar from '@/src/components/ui/sidebar/sidebar'
 import estilos from './detalhes-funcionarios.module.css';
 
 export default function DetalhesFuncionariosPage() {
@@ -14,8 +14,7 @@ export default function DetalhesFuncionariosPage() {
   ];
 
   return (
-    <main>
-      <Sidebar />
+    <>
       <section className={estilos.conteudoPagina}>
         <div className={estilos.cabecalhoPagina}>
           <h1 className={estilos.tituloPagina}>Detalhes do Funcionário</h1>
@@ -206,6 +205,6 @@ export default function DetalhesFuncionariosPage() {
 
         </div>
       </section>
-    </main>
+    </>
   );
 }

@@ -79,10 +79,17 @@
   z-index: 2;
 }
 
+.navGroup {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 .navItem {
   display: flex;
   align-items: center;
   width: 100%;
+  box-sizing: border-box;
   padding: 0.4rem 0.95rem;
   text-decoration: none;
   color: var(--preto);
@@ -93,7 +100,13 @@
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.navItem:hover {
+.navTrigger {
+  cursor: pointer;
+  user-select: none;
+}
+
+.navItem:hover,
+.active {
   color: var(--roxo-escuro1);
   background-color: var(--roxo-claro3);
 }
@@ -118,6 +131,57 @@
   margin-left: 0.55rem;
 }
 
+.chevron {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-left: auto;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+/* Mini-menu alinhado ao centro do ícone pai */
+.subMenu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-top: 0.25rem;
+  margin-left: 1.5rem;
+  padding-left: 1.15rem;
+  border-left: 2px solid var(--roxo-claro2);
+}
+
+.subNavItem {
+  display: block;
+  padding: 0.25rem 0.55rem;
+  text-decoration: none;
+  color: var(--preto);
+  font-size: 1.05rem;
+  font-weight: 600;
+  border-radius: 6px;
+  white-space: nowrap;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.subNavItem:hover,
+.subActive {
+  color: var(--roxo-escuro1);
+  background-color: var(--roxo-claro3);
+}
+
+.subActive {
+  font-weight: 700;
+}
+
+/* Oculta o mini-menu e a seta quando a sidebar está recolhida */
+.sidebar:not(.sidebarExpanded):not(.sidebarOpen) .subMenu,
+.sidebar:not(.sidebarExpanded):not(.sidebarOpen) .chevron {
+  display: none;
+}
+
 .watermarkContainer {
   position: absolute;
   bottom: 2%;
@@ -130,7 +194,7 @@
 }
 
 .sidebarExpanded .watermarkContainer {
-  opacity: 0.10;
+  opacity: 0.05;
 }
 
 .watermarkSvg {
@@ -160,6 +224,15 @@
 
   .icon {
     width: 1.4rem;
+  }
+
+  .subMenu {
+    margin-left: 1.6rem;
+    padding-left: 1rem;
+  }
+
+  .subNavItem {
+    font-size: 1rem;
   }
 }
 
@@ -235,6 +308,11 @@
     margin-left: 0.55rem;
   }
 
+  .subMenu {
+    margin-left: 1.05rem;
+    padding-left: 0.9rem;
+  }
+
   .watermarkContainer {
     display: none;
     opacity: 0;
@@ -242,7 +320,7 @@
 
   .sidebarOpen .watermarkContainer {
     display: block;
-    opacity: 0.10;
+    opacity: 0.05;
     width: 13rem;
     right: -1.5rem;
     bottom: -1.5rem;

@@ -11,6 +11,21 @@
 /*?   Animações Globais   */
 /*? ===================== */
 
+@keyframes pageFadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-enter {
+  animation: pageFadeSlide 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
 @keyframes panelSlideIn {
   from {
     opacity: 0;
@@ -116,27 +131,203 @@ button {
   }
 }
 
+/* Ajuste na .big-button existente para garantir texto branco */
 .big-button {
+  display: flex;
   align-items: center;
+  justify-content: center;
   gap: .5rem;
   background-color: var(--roxo-escuro1);
+  color: var(--branco);
   padding: .5rem 1.5rem;
-  font-size: 1.5rem;
-  font-weight: 400;
+  font-size: 1.4rem;
+  font-weight: 700;
   font-family: var(--font-sansation), system-ui, sans-serif;
-  border-radius: var(--borda-menor);
+  border-radius: 14px;
   box-shadow: var(--sombra);
   cursor: pointer;
+  transition: background-color 0.2s ease;
 
   &:hover {
-    transition: ease-in-out .2s;
     background-color: var(--roxo-escuro2);
   }
 
   &:active {
-    transition: ease-in-out .2s;
     background-color: var(--preto);
   }
+}
+
+/* Botão secundário universal (ex: Voltar / Cancelar) */
+.big-button-voltar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  background-color: transparent;
+  color: var(--preto);
+  border: 2px solid var(--roxo-escuro1);
+  padding: .5rem 1.5rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  border-radius: 14px;
+  box-shadow: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+
+  &:hover {
+    background-color: var(--roxo-claro3);
+  }
+
+  &:active {
+    background-color: var(--roxo-claro2);
+    color: var(--preto);
+  }
+}
+
+/*? =============================== */
+/*?   Formulários Universalizados   */
+/*? =============================== */
+
+/* Card principal do formulário (usado junto com .container-25op) */
+.form-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 0;
+  gap: 1.25rem;
+  padding: 2rem 4rem;
+  overflow-y: auto;
+}
+
+/* Grid simétrico de 2 colunas */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 6rem;
+  row-gap: 1.1rem;
+  width: 100%;
+}
+
+/* Bloco individual (Label + Campo) */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+}
+
+.form-group h3,
+.form-group-center h3 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+/* Campo centralizado com a mesma largura de uma coluna (ex: Anexar foto) */
+.form-group-center {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: calc(50% - 3rem);
+  min-width: 17rem;
+  margin: 0 auto;
+}
+
+/* Input branco em formato pílula */
+.input-pill {
+  width: 100%;
+  height: 2.5rem;
+  padding: 0.4rem 1.25rem;
+  background-color: var(--branco);
+  border: none;
+  border-radius: 999px;
+  box-shadow: var(--sombra);
+  color: var(--preto);
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  font-size: 0.95rem;
+  outline: none;
+  transition: outline 0.15s ease, box-shadow 0.2s ease;
+}
+
+.input-pill:focus {
+  outline: 2px solid var(--roxo-escuro1);
+}
+
+/* Modificador para usar .select dentro de .campo-select no estilo pílula */
+.campo-select:has(.select-pill) {
+  width: 100%;
+}
+
+.select.select-pill {
+  width: 100%;
+  height: 2.5rem;
+  field-sizing: fixed;
+  padding: 0.4rem 2.75rem 0.4rem 1.25rem;
+  background-color: var(--branco);
+  color: var(--preto);
+  border-radius: 999px;
+  font-size: 0.95rem;
+}
+
+.select.select-pill:focus {
+  outline: 2px solid var(--roxo-escuro1);
+}
+
+/* Escurece o /icon/IDown.svg quando o select for branco */
+.campo-select:has(.select-pill) .button-icon {
+  width: 1.15rem;
+  right: 1.1rem;
+  filter: brightness(0);
+}
+
+/* Input de arquivo no mesmo formato pílula */
+.file-pill {
+  width: 100%;
+  height: 2.5rem;
+  padding: 0.32rem 1rem;
+  background-color: var(--branco);
+  border: none;
+  border-radius: 999px;
+  box-shadow: var(--sombra);
+  color: var(--preto);
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  font-size: 0.85rem;
+  font-style: italic;
+  cursor: pointer;
+}
+
+.file-pill::file-selector-button {
+  background-color: #f3f1ea;
+  color: var(--preto);
+  border: 1px solid #8c8a84;
+  border-radius: 999px;
+  padding: 0.15rem 0.75rem;
+  margin-right: 0.65rem;
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  font-size: 0.85rem;
+  font-style: normal;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.file-pill::file-selector-button:hover {
+  background-color: var(--roxo-claro3);
+}
+
+/* Rodapé de botões centralizados */
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  padding-top: 0.5rem;
+}
+
+.form-actions .big-button,
+.form-actions .big-button-voltar {
+  min-width: 11.5rem;
 }
 
 .button-todo {
@@ -236,8 +427,8 @@ button {
   transform: translateY(-50%);
   background-color: transparent;
   box-shadow: none;
-  padding: 0rem 0.4rem;
-  font-size: 1.6rem;
+  padding: 0rem 0.2rem;
+  font-size: 1.8rem;
   font-weight: 700;
   line-height: 1;
   color: var(--roxo-escuro1);
@@ -305,6 +496,103 @@ header {
   align-items: center;
 }
 
+/* Cabeçalho universal alinhado com o logo da Sidebar */
+.header-projetos,
+.header-form {
+  width: 100%;
+  padding-bottom: 0.65rem;
+  border-bottom: 2px solid var(--preto);
+}
+
+.header-projetos {
+  margin-bottom: 1rem;
+}
+
+.header-form {
+  margin-bottom: 1.25rem;
+}
+
+/* Barra de pesquisa e filtros abaixo da linha, alinhados à esquerda */
+.projetos-controls {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.filter-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Como os controles agora ficam à esquerda, o menu abre para a direita */
+.filter-wrapper .filters-dropdown {
+  left: 0;
+  right: auto;
+}
+
+.header-actions {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Barra de pesquisa integrada ao header */
+.header-search {
+  width: min(18.5rem, 100%);
+}
+
+.header-search .input {
+  width: 100%;
+  height: 2.65rem;
+  padding-left: 2.35rem; /* Afasta o texto digitado do ícone da lupa */
+  padding-right: 2.2rem;
+  font-size: .9rem;       /* Aumenta o tamanho do texto digitado ("aadsas") */
+}
+
+/* Painel expansível de filtros */
+.filters-dropdown {
+  position: absolute;
+  top: calc(100% + 0.75rem);
+  right: 0;
+  z-index: 50;
+  width: min(320px, calc(100vw - 6rem));
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.85rem;
+  padding: 1.1rem;
+
+  background-color: var(--branco);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 0.15rem solid var(--roxo-escuro1);
+  border-radius: var(--borda);
+  box-shadow: var(--sombra);
+
+  animation: filterDropDown 0.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.filters-dropdown-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-chakra-petch), system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--roxo-escuro1);
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--roxo-claro2);
+}
+
 div {
   display: flex;
 }
@@ -368,9 +656,9 @@ div {
 .input-icon {
   position: absolute;
   top: 50%;
-  left: .5rem;
+  left: .6rem;
   transform: translateY(-50%);
-  width: 1.2rem;
+  width: 1.4rem;
   height: auto;
   object-fit: contain;
   pointer-events: none;
@@ -387,7 +675,7 @@ div {
   color: var(--preto);
   font-family: var(--font-sansation), system-ui, sans-serif;
   box-shadow: var(--sombra);
-  font-size: .8rem;
+  font-size: .9rem;
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -493,12 +781,12 @@ div {
 .label {
   position: absolute;
   top: 50%;
-  left: 1.5rem;
+  left: 2rem;
   padding: 0rem .5rem;
   color: var(--roxo-escuro1);
   font-weight: normal;
   font-family: var(--font-sansation), system-ui, sans-serif;
-  font-size: 0.95rem;
+  font-size: 1rem;
   background: transparent;
   border: 1px solid transparent;
   border-radius: var(--borda-menor);
@@ -520,7 +808,7 @@ div {
 .campo-select:is(.open, .has-value) .label {
   top: 0;
   color: var(--branco);
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   background: var(--roxo-escuro1);
   transform: translateY(-75%);
 }
@@ -534,4 +822,133 @@ div {
 .campo-form:has(.textarea) .textarea:is(:focus, :not(:placeholder-shown))~.label {
   top: 0;
   transform: translateY(-50%);
+}
+
+/*? ============================ */
+/*?   Scrollbar Personalizada    */
+/*? ============================ */
+
+/* Suporte apenas para Firefox (não deixa vazar para Chrome/Edge) */
+@supports (-moz-appearance: none) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--roxo-escuro1, #390c88) var(--roxo-claro2, #BCB1F8);
+  }
+}
+
+/* Estilização para Chrome, Edge e Safari */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+/* Zera o tamanho real dos botões em vez de usar display: none */
+*::-webkit-scrollbar-button:single-button {
+  width: 0;
+  height: 0;
+  background-color: transparent;
+}
+
+*::-webkit-scrollbar-track {
+  background-color: var(--roxo-claro3);
+  border-radius: 999px;
+  box-shadow: inset 0 2px 5px rgba(57, 12, 136, 0.35),
+              inset 0 0 2px rgba(17, 14, 0, 0.25);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--roxo-escuro1, #390c88);
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--roxo-escuro2, #5810b1);
+}
+
+/*? ============================ */
+/*?   Responsividade Header      */
+/*? ============================ */
+
+@media (max-width: 1024px) {
+  .form-card {
+    padding: 1.5rem 2rem;
+  }
+
+  .form-grid {
+    column-gap: 2.5rem;
+  }
+
+  .form-group-center {
+    width: calc(50% - 1.25rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group-center {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .form-actions {
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .form-actions .big-button,
+  .form-actions .big-button-voltar {
+    flex: 1;
+    min-width: 0;
+    font-size: 1.15rem;
+  }
+}
+
+@media (max-width: 960px) {
+  .header-projetos {
+    margin-bottom: 2.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  main {
+    flex-direction: column;
+    width: calc(100vw - 2rem);
+    height: calc(100vh - 2rem);
+  }
+}
+
+@media (max-width: 640px) {
+  .header-projetos {
+    margin-bottom: 0.85rem;
+  }
+
+  .header-actions,
+  .projetos-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .header-search {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+
+  .filter-wrapper {
+    width: 100%;
+  }
+
+  .filters-dropdown,
+  .filter-wrapper .filters-dropdown {
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
+
+  .big-button {
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+  }
 }

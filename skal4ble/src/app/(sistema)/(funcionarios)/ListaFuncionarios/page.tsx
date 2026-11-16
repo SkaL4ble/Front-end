@@ -28,19 +28,34 @@ const normalizeText = (text: string) =>
     .toLowerCase()
     .trim();
 
+const INITIAL_FILTERS = {
+  affinity: '',
+  role: '',
+  canTeach: '',
+};
+
+type FilterKey = keyof typeof INITIAL_FILTERS;
+
 export default function ListagemFuncionarios() {
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filters, setFilters] = useState({
-    affinity: '',
-    role: '',
-    canTeach: '',
-  });
+  const [filters, setFilters] = useState(INITIAL_FILTERS);
 
   const filtersRef = useRef<HTMLDivElement>(null);
 
   const activeFiltersCount = Object.values(filters).filter(Boolean).length;
+
+  const handleFilterChange = (key: FilterKey, value: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      [key]: value === 'nenhum' ? '' : value,
+    }));
+  };
+
+  const handleClearFilters = () => {
+    setFilters(INITIAL_FILTERS);
+  };
 
   const filteredMembers = useMemo(() => {
     const normalizedSearch = normalizeText(searchQuery);
@@ -56,19 +71,19 @@ export default function ListagemFuncionarios() {
       }
 
       // 2. Filtro por Atuação
-      if (filters.affinity && filters.affinity !== 'todos') {
+      if (filters.affinity) {
         const normalizedAffinity = normalizeText(member.affinity ?? '');
         if (normalizedAffinity !== filters.affinity) return false;
       }
 
       // 3. Filtro por Cargo
-      if (filters.role && filters.role !== 'todos') {
+      if (filters.role) {
         const normalizedRole = normalizeText(member.role ?? '');
         if (normalizedRole !== filters.role) return false;
       }
 
       // 4. Filtro por Apto a Ensinar
-      if (filters.canTeach && filters.canTeach !== 'todos') {
+      if (filters.canTeach) {
         const isMentor = Boolean(member.canTeach);
         if (filters.canTeach === 'sim' && !isMentor) return false;
         if (filters.canTeach === 'nao' && isMentor) return false;
@@ -90,11 +105,6 @@ export default function ListagemFuncionarios() {
     setSelectedMember((prev) => (prev?.id === member.id ? null : member));
   };
 
-  const handleClearFilters = () => {
-    setFilters({ affinity: '', role: '', canTeach: '' });
-  };
-
-  // Fecha o menu de filtros ao clicar fora ou pressionar Escape
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (filtersRef.current && !filtersRef.current.contains(event.target as Node)) {
@@ -117,40 +127,38 @@ export default function ListagemFuncionarios() {
   }, []);
 
   return (
-    <main>
-      <Sidebar />
-      <section className='column flex-1 padding-sidebar hidden'>
+    <>
         <header className='header-projetos'>
-          <div>
-            <h1>Funcionários</h1>
+          <h1>Lista de Funcionários</h1>
+        </header>
+
+        {/* Pesquisa e filtros abaixo da linha, alinhados à esquerda com o título */}
+        <div className='projetos-controls'>
+          <div className='campo-form header-search'>
+            <img src="/icon/IPesquisa.svg" alt="" className="input-icon" />
+            <input
+              type="text"
+              id="pesquisa"
+              className="input"
+              placeholder=" "
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <label htmlFor="pesquisa" className='label'>Pesquise...</label>
+
+            {searchQuery && (
+              <button
+                type="button"
+                className='search-clear-btn'
+                onClick={() => setSearchQuery('')}
+                aria-label="Limpar pesquisa"
+              >
+                ×
+              </button>
+            )}
           </div>
 
-          <div ref={filtersRef} className='header-actions'>
-            {/* Barra de pesquisa integrada ao header */}
-            <div className='campo-form header-search'>
-              <img src="/icon/IPesquisa.svg" alt="" className="input-icon" />
-              <input
-                type="text"
-                id="pesquisa"
-                className="input"
-                placeholder=" "
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              <label htmlFor="pesquisa" className='label'>Pesquise o Funcionário</label>
-
-              {searchQuery && (
-                <button
-                  type="button"
-                  className='search-clear-btn'
-                  onClick={() => setSearchQuery('')}
-                  aria-label="Limpar pesquisa"
-                >
-                  ×
-                </button>
-              )}
-            </div>
-
+          <div ref={filtersRef} className='filter-wrapper'>
             <button
               type="button"
               className='filter-toggle-btn'
@@ -187,11 +195,6 @@ export default function ListagemFuncionarios() {
               />
             </button>
 
-            <button type="button" className='big-button'>
-              <img src="/icon/I+Funcionario.svg" alt="" className="button-icon-big" />
-              <span>Novo Funcionário</span>
-            </button>
-
             {/* Menu Expansível */}
             {isFiltersOpen && (
               <div
@@ -213,16 +216,15 @@ export default function ListagemFuncionarios() {
                   )}
                 </div>
 
+                {/* Atuação */}
                 <div className='campo-select'>
                   <select
                     className="select"
                     value={filters.affinity}
-                    onChange={(e) =>
-                      setFilters((prev) => ({ ...prev, affinity: e.target.value }))
-                    }
+                    onChange={(e) => handleFilterChange('affinity', e.target.value)}
                   >
-                    <option value="">Atuação</option>
-                    <option value="todos">Todos</option>
+                    <option value="" disabled hidden>Atuação</option>
+                    <option value="nenhum">Nenhum</option>
                     <option value="back-end">Back-End</option>
                     <option value="full-stack">Full-Stack</option>
                     <option value="front-end">Front-End</option>
@@ -230,16 +232,15 @@ export default function ListagemFuncionarios() {
                   <img src="/icon/IDown.svg" alt="" className='button-icon' />
                 </div>
 
+                {/* Cargo */}
                 <div className='campo-select'>
                   <select
                     className="select"
                     value={filters.role}
-                    onChange={(e) =>
-                      setFilters((prev) => ({ ...prev, role: e.target.value }))
-                    }
+                    onChange={(e) => handleFilterChange('role', e.target.value)}
                   >
-                    <option value="">Cargo</option>
-                    <option value="todos">Todos</option>
+                    <option value="" disabled hidden>Cargo</option>
+                    <option value="nenhum">Nenhum</option>
                     <option value="dev junior">DEV Júnior</option>
                     <option value="dev pleno">DEV Pleno</option>
                     <option value="dev senior">DEV Sênior</option>
@@ -248,16 +249,15 @@ export default function ListagemFuncionarios() {
                   <img src="/icon/IDown.svg" alt="" className='button-icon' />
                 </div>
 
+                {/* Apto a Ensinar */}
                 <div className='campo-select'>
                   <select
                     className="select"
                     value={filters.canTeach}
-                    onChange={(e) =>
-                      setFilters((prev) => ({ ...prev, canTeach: e.target.value }))
-                    }
+                    onChange={(e) => handleFilterChange('canTeach', e.target.value)}
                   >
-                    <option value="">Apto a Ensinar</option>
-                    <option value="todos">Todos</option>
+                    <option value="" disabled hidden>Apto a Ensinar</option>
+                    <option value="nenhum">Nenhum</option>
                     <option value="sim">Sim</option>
                     <option value="nao">Não</option>
                   </select>
@@ -266,7 +266,7 @@ export default function ListagemFuncionarios() {
               </div>
             )}
           </div>
-        </header>
+        </div>
 
         <section
           className="row flex-1"
@@ -303,7 +303,6 @@ export default function ListagemFuncionarios() {
             )}
           </div>
         </section>
-      </section>
-    </main>
+    </>
   );
 }
