@@ -7,9 +7,9 @@ import styles from './lista.module.css';
 export interface Member {
   id: string;
   name: string;
-  github?: string;
   role?: string;
   affinity?: string;
+  train?: string;
   avatarUrl?: string;
 }
 
@@ -55,9 +55,9 @@ export const ListaF: React.FC<ListaFProps> = ({
         )}
 
         <span>Nome</span>
-        <span>N. GitHub</span>
         <span>Cargo</span>
         <span>Afinidade</span>
+        <span>Aptidão p/Ensinar</span>
       </div>
 
       {/* Lista de cards */}
@@ -80,17 +80,9 @@ export const ListaF: React.FC<ListaFProps> = ({
 
               <span className={styles.name}>{member.name}</span>
 
-              <span className={styles.githubCell}>
-                {member.github && (
-                  <>
-                    <img src="/icon/IGithub.svg" alt="" width={18} height={18} />
-                    <span>{member.github}</span>
-                  </>
-                )}
-              </span>
-
               <span>{member.role}</span>
               <span>{member.affinity}</span>
+              <span>{member.train}</span>
             </div>
           );
         })}

@@ -8,14 +8,14 @@ type MemberItem = Member & {
 };
 
 const mockMembers: MemberItem[] = [
-  { id: '1', name: 'Kayo', github: 'Kayolol', role: 'DEV Pleno', affinity: 'Full-Stack', avatarUrl: '/avatars/kayo.png', canTeach: true },
-  { id: '2', name: 'Mariana Silva', github: 'marisilva', role: 'DEV Sênior', affinity: 'Back-End', avatarUrl: '/avatars/kayo.png', canTeach: true },
-  { id: '3', name: 'Lucas Andrade', github: 'lucasdev', role: 'DEV Júnior', affinity: 'Front-End', avatarUrl: '/avatars/kayo.png', canTeach: false },
-  { id: '4', name: 'Beatriz Costa', github: 'biacosta', role: 'Tech Lead', affinity: 'Full-Stack', avatarUrl: '/avatars/kayo.png', canTeach: true },
-  { id: '5', name: 'Rafael Souza', github: 'rafasouza', role: 'DEV Pleno', affinity: 'Back-End', avatarUrl: '/avatars/kayo.png', canTeach: false },
-  { id: '6', name: 'Camila Rocha', github: 'camirocha', role: 'DEV Sênior', affinity: 'Front-End', avatarUrl: '/avatars/kayo.png', canTeach: true },
-  { id: '7', name: 'Pedro Henrique', github: 'pedroh', role: 'DEV Júnior', affinity: 'Back-End', avatarUrl: '/avatars/kayo.png', canTeach: false },
-  { id: '8', name: 'Juliana Lima', github: 'julialima', role: 'DEV Pleno', affinity: 'Front-End', avatarUrl: '/avatars/kayo.png', canTeach: true },
+  { id: '1', name: 'Kayo', role: 'DEV Pleno', affinity: 'Full-Stack', avatarUrl: '/avatars/kayo.png', canTeach: true },
+  { id: '2', name: 'Mariana Silva', role: 'DEV Sênior', affinity: 'Back-End', avatarUrl: '/avatars/kayo.png', canTeach: true },
+  { id: '3', name: 'Lucas Andrade', role: 'DEV Júnior', affinity: 'Front-End', avatarUrl: '/avatars/kayo.png', canTeach: false },
+  { id: '4', name: 'Beatriz Costa', role: 'Tech Lead', affinity: 'Full-Stack', avatarUrl: '/avatars/kayo.png', canTeach: true },
+  { id: '5', name: 'Rafael Souza', role: 'DEV Pleno', affinity: 'Back-End', avatarUrl: '/avatars/kayo.png', canTeach: false },
+  { id: '6', name: 'Camila Rocha', role: 'DEV Sênior', affinity: 'Front-End', avatarUrl: '/avatars/kayo.png', canTeach: true },
+  { id: '7', name: 'Pedro Henrique', role: 'DEV Júnior', affinity: 'Back-End', avatarUrl: '/avatars/kayo.png', canTeach: false },
+  { id: '8', name: 'Juliana Lima', role: 'DEV Pleno', affinity: 'Front-End', avatarUrl: '/avatars/kayo.png', canTeach: true },
 ];
 
 // Normaliza texto para comparação sem diferenciar acentos ou maiúsculas/minúsculas
@@ -62,10 +62,9 @@ export default function ListagemFuncionarios() {
       // 1. Filtro por texto (nome, GitHub ou cargo)
       if (normalizedSearch) {
         const matchesName = normalizeText(member.name).includes(normalizedSearch);
-        const matchesGithub = normalizeText(member.github ?? '').includes(normalizedSearch);
         const matchesRoleText = normalizeText(member.role ?? '').includes(normalizedSearch);
 
-        if (!matchesName && !matchesGithub && !matchesRoleText) return false;
+        if (!matchesName && !matchesRoleText) return false;
       }
 
       // 2. Filtro por Atuação

@@ -105,10 +105,22 @@
 }
 
 .githubCell {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.35rem;
+  justify-content: flex-start;
+  gap: 0.45rem;
+  width: 100%;
+  max-width: 10.5rem; /* Ajuste conforme o maior username esperado */
+}
+
+.githubCell img {
+  flex-shrink: 0; /* Impede que o ícone achate se o nome for muito longo */
+}
+
+.githubCell span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .selectedCard {
