@@ -1,8 +1,10 @@
+"use client";
+
 import React from 'react';
+import Link from 'next/link';
 import styles from './lista.module.css';
 
 export type ProjectType = 'Eficiência' | 'Nivelamento';
-export type ProjectStatus = 'Em Andamento' | 'Atrasado' | 'Concluído';
 
 export interface Project {
   id: string;
@@ -11,7 +13,7 @@ export interface Project {
   deadline: string;
   collaboratorsCount: number;
   type: ProjectType;
-  status: ProjectStatus | (string & {});
+  status: string;
 }
 
 interface ListaPProps {
@@ -20,13 +22,14 @@ interface ListaPProps {
   selectedProjectId?: string | null;
 }
 
-export function ListaP({
+export const ListaP: React.FC<ListaPProps> = ({
   projects,
   onSelectProject,
   selectedProjectId,
-}: ListaPProps) {
+}) => {
   return (
     <div className={styles.wrapper}>
+      {/* Cabeçalho da lista */}
       <div className={styles.headerGrid}>
         <span>Nome</span>
         <span>Criação</span>
@@ -34,29 +37,55 @@ export function ListaP({
         <span>N° de Colaboradores</span>
         <span>Tipo</span>
         <span>Status</span>
+        <span />
       </div>
 
+      {/* Lista de cards */}
       <div className={styles.scrollContainer}>
         {projects.map((project) => {
           const isSelected = selectedProjectId === project.id;
 
           return (
-            <article
+            <div
               key={project.id}
-              onClick={() => onSelectProject?.(project)}
+              onClick={onSelectProject ? () => onSelectProject(project) : undefined}
               className={`${styles.rowCard} ${isSelected ? styles.selectedCard : ''}`}
-              style={{ cursor: onSelectProject ? 'pointer' : 'default' }}
+              style={onSelectProject ? { cursor: 'pointer' } : undefined}
             >
-              <strong className={styles.name}>{project.name}</strong>
+              <span className={styles.name}>{project.name}</span>
               <span>{project.createdAt}</span>
               <span>{project.deadline}</span>
               <span>{project.collaboratorsCount}</span>
               <span>{project.type}</span>
               <span>{project.status}</span>
-            </article>
+
+              <div className={styles.cardActions}>
+                {/* Link 1: Detalhes do projeto */}
+                <Link
+                  href={`/projetos/${project.id}`}
+                  className={styles.actionIconBtn}
+                  title="Detalhes do projeto"
+                  aria-label="Detalhes do projeto"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <img src="/icon/IDetalhes.svg" alt="Detalhes" />
+                </Link>
+
+                {/* Link 2: Documentação do projeto (ajuste o href e o src do ícone) */}
+                <Link
+                  href={`/projetos/documentacao/${project.id}`}
+                  className={styles.actionIconBtn}
+                  title="Documentação do projeto"
+                  aria-label="Documentação do projeto"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <img src="/icon/IDocumentacao.svg" alt="Documentação" />
+                </Link>
+              </div>
+            </div>
           );
         })}
       </div>
     </div>
   );
-}
+};

@@ -35,7 +35,6 @@ const INITIAL_FILTERS = {
 type FilterKey = keyof typeof INITIAL_FILTERS;
 
 export default function ListagemFuncionarios() {
-  const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState(INITIAL_FILTERS);
@@ -59,7 +58,7 @@ export default function ListagemFuncionarios() {
     const normalizedSearch = normalizeText(searchQuery);
 
     return mockMembers.filter((member) => {
-      // 1. Filtro por texto (nome, GitHub ou cargo)
+      // 1. Filtro por texto (nome ou cargo)
       if (normalizedSearch) {
         const matchesName = normalizeText(member.name).includes(normalizedSearch);
         const matchesRoleText = normalizeText(member.role ?? '').includes(normalizedSearch);
@@ -90,16 +89,14 @@ export default function ListagemFuncionarios() {
     });
   }, [searchQuery, filters]);
 
-  const visibleSelectedMember = useMemo(() => {
-    if (!selectedMember) return null;
-    return filteredMembers.some((m) => m.id === selectedMember.id)
-      ? selectedMember
-      : null;
-  }, [selectedMember, filteredMembers]);
-
-  const handleSelectMember = (member: Member) => {
-    setSelectedMember((prev) => (prev?.id === member.id ? null : member));
-  };
+  const membersForList = useMemo(
+    () =>
+      filteredMembers.map((member) => ({
+        ...member,
+        train: member.train ?? (member.canTeach ? 'Sim' : 'Não'),
+      })),
+    [filteredMembers]
+  );
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -269,11 +266,7 @@ export default function ListagemFuncionarios() {
         style={{ minHeight: 0, alignItems: 'stretch' }}
       >
         <div style={{ flex: 1, minWidth: 0, width: '100%', height: '95%' }}>
-          <ListaF
-            members={filteredMembers}
-            onSelectMember={handleSelectMember}
-            selectedMemberId={visibleSelectedMember?.id ?? null}
-          />
+          <ListaF members={membersForList} />
         </div>
       </section>
     </>

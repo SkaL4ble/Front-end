@@ -6,30 +6,42 @@
   overflow: hidden;
 }
 
+/* 1ª coluna rente à esquerda, botões rentes à direita e colunas centrais distribuídas por igual */
 .headerGrid,
 .rowCard {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1.1fr 1.1fr 1.2fr;
+  grid-template-columns: 1.35fr 0.95fr 0.95fr minmax(10.5rem, 1.15fr) 0.95fr 1.05fr minmax(5.5rem, 0.75fr);
   align-items: center;
   justify-items: center;
   text-align: center;
   gap: 1rem;
 }
 
+/* Evita quebra de linha nos cabeçalhos e textos dos cards */
 .headerGrid > *,
 .rowCard > * {
   max-width: 100%;
+  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+/* Compensa o padding lateral do scrollContainer + borda/padding do card + barra de rolagem */
 .headerGrid {
-  padding: 0 3.375rem 0.75rem 2.25rem;
+  padding: 0 3.575rem 0.75rem 2.45rem;
   color: var(--roxo-escuro1, #390c88);
   font-family: var(--font-chakra-petch), system-ui, sans-serif;
   font-weight: 700;
   font-size: 1.1rem;
+}
+
+/* Alinha "Nome" e o título do projeto rentes ao início (esquerda) da linha */
+.headerGrid > :first-child,
+.rowCard > :first-child {
+  justify-self: start;
+  text-align: left;
+  width: 100%;
 }
 
 .scrollContainer {
@@ -47,7 +59,7 @@
   color: var(--preto, #110e00);
   border-radius: var(--borda, 20px);
   border: 0.2rem solid transparent;
-  padding: 1.25rem 1.5rem;
+  padding: 0.9rem 1.5rem;
   box-shadow: var(--sombra);
   font-family: var(--font-sansation), system-ui, sans-serif;
   font-size: 1rem;
@@ -64,4 +76,40 @@
 
 .selectedCard {
   border-color: var(--roxo-escuro1, #390c88);
+}
+
+/* Botões fixados no fim (direita) do card */
+.cardActions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  justify-self: end;
+  gap: 0.5rem;
+  overflow: visible;
+}
+
+.actionIconBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--roxo-escuro1);
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.actionIconBtn:hover {
+  transform: translateY(-2px) scale(1.06);
+  background-color: var(--roxo-escuro2);
+}
+
+.actionIconBtn:active {
+  background-color: var(--preto);
+}
+
+.actionIconBtn img {
+  width: 24px;
+  height: auto;
+  object-fit: contain;
 }
