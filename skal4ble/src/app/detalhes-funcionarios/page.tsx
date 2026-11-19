@@ -199,6 +199,7 @@ export default function DetalhesFuncionariosPage() {
                 <div className={estilos.itemLegenda}>
                   <span className={estilos.bolinhaCor} style={{ backgroundColor: 'var(--verde)' }} />
                   <p>JavaScript (25%)</p>
+                  111
                 </div>
               </div>
             </div>
