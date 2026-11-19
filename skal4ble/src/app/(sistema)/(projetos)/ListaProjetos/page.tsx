@@ -1,18 +1,9 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { ListaP, Project } from '@/src/components/ui/(listas)/lista-projetos/lista';
-
-const mockProjects: Project[] = [
-  { id: '1', name: 'Portal Administrativo', createdAt: '10/11/2026', deadline: '20/11/2026', collaboratorsCount: 7, status: 'Em Andamento', type: 'Eficiência' },
-  { id: '2', name: 'Onboarding Técnico', createdAt: '25/10/2026', deadline: '05/12/2026', collaboratorsCount: 3, status: 'Em Andamento', type: 'Nivelamento' },
-  { id: '3', name: 'Migração Cloud API', createdAt: '02/08/2026', deadline: '28/08/2026', collaboratorsCount: 6, status: 'Concluído', type: 'Eficiência' },
-  { id: '4', name: 'Design System Interno', createdAt: '10/08/2026', deadline: '05/09/2026', collaboratorsCount: 2, status: 'Concluído', type: 'Nivelamento' },
-  { id: '5', name: 'Pesquisa de Arquitetura', createdAt: '01/11/2026', deadline: '10/01/2027', collaboratorsCount: 0, status: 'Em Andamento', type: 'Nivelamento' },
-  { id: '6', name: 'Automação de Deploy', createdAt: '21/08/2026', deadline: '10/10/2026', collaboratorsCount: 5, status: 'Atrasado', type: 'Eficiência' },
-  { id: '7', name: 'Dashboard Analytics', createdAt: '01/09/2026', deadline: '25/09/2026', collaboratorsCount: 4, status: 'Concluído', type: 'Eficiência' },
-  { id: '8', name: 'Workshop React & Next', createdAt: '12/09/2026', deadline: '30/10/2026', collaboratorsCount: 8, status: 'Atrasado', type: 'Nivelamento' },
-];
+import { ListaP} from '@/src/components/ui/(listas)/lista-projetos/lista';
+import { projetoService } from '@/src/services/api/projetoService';
+import { Projeto } from '@/src/@types/projeto';
 
 const MS_PER_DAY = 1000 * 60 * 60 * 24;
 
@@ -44,6 +35,7 @@ export default function ListagemProjetos() {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState(INITIAL_FILTERS);
+  const [projetos, setProjetos] = useState<Projeto[]>([]);
 
   const filtersRef = useRef<HTMLDivElement>(null);
 
@@ -60,21 +52,24 @@ export default function ListagemProjetos() {
     setFilters(INITIAL_FILTERS);
   };
 
+  const projects = useMemo(() => projetos, [projetos]);
+
   const filteredProjects = useMemo(() => {
     const normalizedSearch = normalizeText(searchQuery);
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
 
-    return mockProjects.filter((project) => {
+
+    return projects.filter((project) => {
       // 1. Filtro por texto (nome)
       if (normalizedSearch) {
-        const matchesName = normalizeText(project.name).includes(normalizedSearch);
+        const matchesName = normalizeText(project.nome).includes(normalizedSearch);
         if (!matchesName) return false;
       }
 
       // 2. Filtro por Criação
       if (filters.createdAt) {
-        const createdTime = parseDateBR(project.createdAt);
+        const createdTime = parseDateBR(project.dataCriacao);
         const daysAgo = Math.floor((today - createdTime) / MS_PER_DAY);
 
         if (filters.createdAt === '7d' && (daysAgo < 0 || daysAgo > 7)) return false;
@@ -85,7 +80,7 @@ export default function ListagemProjetos() {
 
       // 3. Filtro por Prazo
       if (filters.deadline) {
-        const deadlineTime = parseDateBR(project.deadline);
+        const deadlineTime = parseDateBR(project.prazo);
         const daysUntil = Math.floor((deadlineTime - today) / MS_PER_DAY);
         const isCompleted = normalizeText(project.status) === 'concluido';
 
@@ -97,8 +92,8 @@ export default function ListagemProjetos() {
 
       // 4. Filtro por N° de Colaboradores
       if (filters.collaborators) {
-        const count = project.collaboratorsCount ?? 0;
-        if (filters.collaborators === 'na' && count !== 0) return false;
+        const count = 10; 
+        //if (filters.collaborators === 'na' && count !== 0) return false;
         if (filters.collaborators === '1-4' && (count < 1 || count > 4)) return false;
         if (filters.collaborators === '5-8' && (count < 5 || count > 8)) return false;
         if (filters.collaborators === '9+' && count < 9) return false;
@@ -106,7 +101,7 @@ export default function ListagemProjetos() {
 
       // 5. Filtro por Tipo
       if (filters.type) {
-        const normalizedType = normalizeText(project.type);
+        const normalizedType = normalizeText(project.nomeTipo);
         if (filters.type === 'eficiencia' && normalizedType !== 'eficiencia') {
           return false;
         }
@@ -118,7 +113,7 @@ export default function ListagemProjetos() {
       // 6. Filtro por Status
       if (filters.status) {
         const normalizedStatus = normalizeText(project.status);
-        const deadlineTime = parseDateBR(project.deadline);
+        const deadlineTime = parseDateBR(project.prazo);
         const isCompleted =
           normalizedStatus === 'concluido' || normalizedStatus === 'concluidos';
         const isOverdue =
@@ -142,9 +137,9 @@ export default function ListagemProjetos() {
 
       return true;
     });
-  }, [searchQuery, filters]);
+  }, [searchQuery, filters, projects]);
 
-  const handleSelectProject = (project: Project) => {
+  const handleSelectProject = (project: Projeto) => {
     console.log('Projeto clicado:', project);
   };
 
@@ -168,6 +163,15 @@ export default function ListagemProjetos() {
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
+
+  useEffect(() => {
+      async function ListarProjetos() {
+      const projetos = await projetoService.ListarProjetos(); 
+      setProjetos(projetos);
+    }
+
+    ListarProjetos();
+  },[]);
 
   return (
     <>
