@@ -31,6 +31,11 @@ export function ListaP({
         {projects.map((project) => {
           const isSelected = selectedProjectId === project.projetoId;
 
+          if(project.prazo == null)
+            project.prazo = "N/A"
+          if(project.dataCriacao == null)
+            project.dataCriacao = "N/A"
+
           return (
             <article
               key={project.projetoId}
@@ -41,7 +46,7 @@ export function ListaP({
               <strong className={styles.name}>{project.nome}</strong>
               <span>{project.dataCriacao}</span>
               <span>{project.prazo}</span>
-              <span>{10}</span>
+              <span>{project.quantidadeColaboradores}</span>
               <span>{project.nomeTipo}</span>
               <span>{project.status}</span>
             </article>

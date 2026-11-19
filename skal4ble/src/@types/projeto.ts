@@ -11,6 +11,7 @@ export interface Projeto
   tipoId: number,
   nomeTipo: string,
   prazo: string,
+  quantidadeColaboradores: number,
   dataCriacao: string
 }
 
