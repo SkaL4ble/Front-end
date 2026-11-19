@@ -1,33 +1,34 @@
 import { api } from "./api/api";
 
 export interface Usuario {
-  id: string;
-  nome: string;
-  emailPessoal: string;
-  senha: string;
-  nomeGithub: string;
-  emailGithub: string;
-  cargo: string;
-  atuacao: string;
-  Ativo: boolean;
+    usuarioId: string,
+    nomeUsuario: string,
+    emailPessoal: string,
+    tipoUsuario: string,
+    cargo: string,
+    atuacao: string,
+    imagem: string,
+
+
 }
 interface ListarFuncionarios{
-    nome:string,
-    nomeGithub:string,
+    nomeUsuario:string,
+    emailPessoal:string,
     cargo:string,
     atuacao:string
 }
 
 export async function ListarFuncionarios(funcionario: ListarFuncionarios) {
     try {
-        const response = await api.get('/funcionarios', {
+        const response = await api.get('/Usuario', {
             params: {
-                nome: funcionario.nome,
-                nomeGithub: funcionario.nomeGithub,
+                nome: funcionario.nomeUsuario,
+                nomeGithub: funcionario.emailPessoal,
                 cargo: funcionario.cargo,
                 atuacao: funcionario.atuacao
             }
         });
+        console.log(response.data)
         return response.data;
     } catch (error) {
         console.error("Erro ao listar funcionários:", error);
