@@ -1,7 +1,7 @@
 import axios from "axios";
 import secureLocalStorage from "react-secure-storage"
 
-const apiLocal = "https://localhost:7255/api/";
+const apiLocal = "https://localhost:7225/api/";
 
 const apiRemota = "";
 
@@ -16,5 +16,6 @@ api.interceptors.request.use((config) => {
         config.headers.Authorization = "Bearer " + token;
     }
 
+    console.log(config)
     return config;
 });

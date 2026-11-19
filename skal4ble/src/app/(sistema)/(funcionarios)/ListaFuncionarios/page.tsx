@@ -1,26 +1,15 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { Sidebar } from '@/src/components/ui/sidebar/sidebar';
 import { ListaF, Member } from '@/src/components/ui/(listas)/lista-funcionarios/lista';
 import { OverviewPanel } from '@/src/components/ui/overview/overview';
+import { ListarFuncionarios } from '@/src/services/UsuarioService';
 
 type MemberItem = Member & {
   canTeach?: boolean;
 };
 
-const mockMembers: MemberItem[] = [
-  { id: '1', name: 'Kayo', github: 'Kayolol', role: 'DEV Pleno', affinity: 'Full-Stack', avatarUrl: '/avatars/kayo.png', canTeach: true },
-  { id: '2', name: 'Mariana Silva', github: 'marisilva', role: 'DEV Sênior', affinity: 'Back-End', avatarUrl: '/avatars/kayo.png', canTeach: true },
-  { id: '3', name: 'Lucas Andrade', github: 'lucasdev', role: 'DEV Júnior', affinity: 'Front-End', avatarUrl: '/avatars/kayo.png', canTeach: false },
-  { id: '4', name: 'Beatriz Costa', github: 'biacosta', role: 'Tech Lead', affinity: 'Full-Stack', avatarUrl: '/avatars/kayo.png', canTeach: true },
-  { id: '5', name: 'Rafael Souza', github: 'rafasouza', role: 'DEV Pleno', affinity: 'Back-End', avatarUrl: '/avatars/kayo.png', canTeach: false },
-  { id: '6', name: 'Camila Rocha', github: 'camirocha', role: 'DEV Sênior', affinity: 'Front-End', avatarUrl: '/avatars/kayo.png', canTeach: true },
-  { id: '7', name: 'Pedro Henrique', github: 'pedroh', role: 'DEV Júnior', affinity: 'Back-End', avatarUrl: '/avatars/kayo.png', canTeach: false },
-  { id: '8', name: 'Juliana Lima', github: 'julialima', role: 'DEV Pleno', affinity: 'Front-End', avatarUrl: '/avatars/kayo.png', canTeach: true },
-];
-
-// Normaliza texto para comparação sem diferenciar acentos ou maiúsculas/minúsculas
 const normalizeText = (text: string) =>
   text
     .normalize('NFD')
@@ -37,14 +26,47 @@ const INITIAL_FILTERS = {
 type FilterKey = keyof typeof INITIAL_FILTERS;
 
 export default function ListagemFuncionarios() {
+
+  const [members, setMembers] = useState<MemberItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState(INITIAL_FILTERS);
 
   const filtersRef = useRef<HTMLDivElement>(null);
-
   const activeFiltersCount = Object.values(filters).filter(Boolean).length;
+
+  
+  useEffect(() => {
+    async function fetchMembers() {
+      try {
+        setIsLoading(true);
+      
+        const response = await ListarFuncionarios({ nome: '', nomeGithub: '', cargo: '' } as any);
+        
+        
+        const formattedMembers: MemberItem[] = response.map((item: any) => ({
+          id: String(item.id),
+          name: item.nome || 'Sem nome',
+          github: item.nomeGithub || '',
+          role: item.cargo || 'Não definido',
+          affinity: item.atuacao || 'Não definido',
+          avatarUrl: item.fotoPerfil || '/avatars/kayo.png', 
+          canTeach: item.aptoEnsinar || false, 
+        }));
+
+        setMembers(formattedMembers);
+      } catch (error) {
+        console.error("Erro ao carregar funcionários:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchMembers();
+  }, []);
 
   const handleFilterChange = (key: FilterKey, value: string) => {
     setFilters((prev) => ({
@@ -60,8 +82,7 @@ export default function ListagemFuncionarios() {
   const filteredMembers = useMemo(() => {
     const normalizedSearch = normalizeText(searchQuery);
 
-    return mockMembers.filter((member) => {
-      // 1. Filtro por texto (nome, GitHub ou cargo)
+    return members.filter((member) => {
       if (normalizedSearch) {
         const matchesName = normalizeText(member.name).includes(normalizedSearch);
         const matchesGithub = normalizeText(member.github ?? '').includes(normalizedSearch);
@@ -70,19 +91,16 @@ export default function ListagemFuncionarios() {
         if (!matchesName && !matchesGithub && !matchesRoleText) return false;
       }
 
-      // 2. Filtro por Atuação
       if (filters.affinity) {
         const normalizedAffinity = normalizeText(member.affinity ?? '');
         if (normalizedAffinity !== filters.affinity) return false;
       }
 
-      // 3. Filtro por Cargo
       if (filters.role) {
         const normalizedRole = normalizeText(member.role ?? '');
         if (normalizedRole !== filters.role) return false;
       }
 
-      // 4. Filtro por Apto a Ensinar
       if (filters.canTeach) {
         const isMentor = Boolean(member.canTeach);
         if (filters.canTeach === 'sim' && !isMentor) return false;
@@ -91,9 +109,8 @@ export default function ListagemFuncionarios() {
 
       return true;
     });
-  }, [searchQuery, filters]);
+  }, [searchQuery, filters, members]);
 
-  // Se o funcionário selecionado sair dos resultados filtrados, volta para o OverviewPanel
   const visibleSelectedMember = useMemo(() => {
     if (!selectedMember) return null;
     return filteredMembers.some((m) => m.id === selectedMember.id)
@@ -132,7 +149,6 @@ export default function ListagemFuncionarios() {
           <h1>Lista de Funcionários</h1>
         </header>
 
-        {/* Pesquisa e filtros abaixo da linha, alinhados à esquerda com o título */}
         <div className='projetos-controls'>
           <div className='campo-form header-search'>
             <img src="/icon/IPesquisa.svg" alt="" className="input-icon" />
@@ -195,7 +211,6 @@ export default function ListagemFuncionarios() {
               />
             </button>
 
-            {/* Menu Expansível */}
             {isFiltersOpen && (
               <div
                 id="menu-filtros-funcionarios"
@@ -216,7 +231,6 @@ export default function ListagemFuncionarios() {
                   )}
                 </div>
 
-                {/* Atuação */}
                 <div className='campo-select'>
                   <select
                     className="select"
@@ -232,7 +246,6 @@ export default function ListagemFuncionarios() {
                   <img src="/icon/IDown.svg" alt="" className='button-icon' />
                 </div>
 
-                {/* Cargo */}
                 <div className='campo-select'>
                   <select
                     className="select"
@@ -249,7 +262,6 @@ export default function ListagemFuncionarios() {
                   <img src="/icon/IDown.svg" alt="" className='button-icon' />
                 </div>
 
-                {/* Apto a Ensinar */}
                 <div className='campo-select'>
                   <select
                     className="select"
@@ -273,11 +285,18 @@ export default function ListagemFuncionarios() {
           style={{ minHeight: 0, alignItems: 'stretch', gap: '2rem' }}
         >
           <div style={{ flex: 1, minWidth: 0, height: '95%' }}>
-            <ListaF
-              members={filteredMembers}
-              onSelectMember={handleSelectMember}
-              selectedMemberId={visibleSelectedMember?.id ?? null}
-            />
+            {/* Indicador de carregamento simples */}
+            {isLoading ? (
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                <p>Carregando funcionários...</p>
+              </div>
+            ) : (
+              <ListaF
+                members={filteredMembers}
+                onSelectMember={handleSelectMember}
+                selectedMemberId={visibleSelectedMember?.id ?? null}
+              />
+            )}
           </div>
 
           <div style={{ height: '95%' }}>
@@ -294,7 +313,7 @@ export default function ListagemFuncionarios() {
                 style={{ height: '100%' }}
               >
                 <OverviewPanel
-                  totalEmployees={mockMembers.length}
+                  totalEmployees={members.length} 
                   assignedTickets={248}
                   toolsCount={8}
                   productivityAvg={82}
