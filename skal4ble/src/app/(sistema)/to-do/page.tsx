@@ -2,8 +2,7 @@
 
 import React, { useState } from 'react';
 import styles from './to-do.module.css';
-import { Sidebar } from '../../components/ui/sidebar/sidebar';
-import Ticket, { PrioridadeTicket, StatusTicket } from '../../components/ui/ticket/ticket';
+import Ticket, { PrioridadeTicket, StatusTicket } from '@/src/components/ui/ticket/ticket';
 
 interface ItemTicket {
   id: string;
@@ -182,96 +181,100 @@ export default function ToDoPage() {
   ];
 
   return (
-    <main>
-      <Sidebar />
-      <section className='column flex-1 padding-sidebar hidden'>
-        <header>
-          <div className='column'>
-            <h1>To-Do List</h1>
-            <h2>*Nome do Projeto*</h2>
+    <>
+      <header className='header-projetos'>
+        <h1>To-Do List</h1>
+      </header>
+
+      <div
+        className='row'
+        style={{
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '0.5rem',
+        }}
+      >
+        <h2>*Nome do Projeto*</h2>
+
+        <div className='row' style={{ alignItems: 'center', gap: '1rem' }}>
+          <div className='campo-select'>
+            <select
+              className='select'
+              value={filtro}
+              onChange={(e) => setFiltro(e.target.value as 'tickets' | 'todos')}
+            >
+              <option value='todos'>Todos</option>
+              <option value='tickets'>Tickets (Ativos)</option>
+            </select>
+            <img src='/icon/IDown.svg' alt='' className='button-icon' />
           </div>
 
-          <div className='row' style={{ marginRight: '1rem', transform: 'translateY(-50%)' }}>
-            <div className='campo-select'>
-              <select
-                className='select'
-                value={filtro}
-                onChange={(e) => setFiltro(e.target.value as 'tickets' | 'todos')}
+          <button type='button' className='big-button'>
+            <img src='/icon/ITrocarProjeto.svg' alt='' className='button-icon-big' />
+            <span>Trocar Projeto</span>
+          </button>
+        </div>
+      </div>
+
+      <section
+        className='row flex-1'
+        style={{ padding: '1rem', overflowX: 'auto', marginLeft: '-1rem', minHeight: 0 }}
+      >
+        {colunas.map((coluna) => {
+          const estaDestacada = colunaEmFoco === coluna.titulo;
+
+          return (
+            <div
+              key={coluna.titulo}
+              className='column container-25op flex-1'
+              onDragOver={(e) => permitirSoltar(e, coluna.titulo)}
+              onDragLeave={() => setColunaEmFoco(null)}
+              onDrop={() => soltarNaColuna(coluna.titulo)}
+              style={{
+                outline: estaDestacada ? '2px dashed var(--roxo-escuro1)' : 'none',
+                backgroundColor: estaDestacada ? 'rgba(188, 177, 248, 0.35)' : undefined,
+                transition: 'background-color 0.2s ease',
+              }}
+            >
+              <h3>{coluna.titulo}</h3>
+              <div className='column flex-1' style={estiloListaCards}>
+                {listarPorStatus(coluna.titulo).map((ticket) => (
+                  <Ticket
+                    key={ticket.id}
+                    {...ticket}
+                    aoIniciarArrasto={() => iniciarArrasto(ticket.id)}
+                    aoVoltar={
+                      coluna.titulo !== 'Pendentes'
+                        ? () => voltarTicket(ticket.id)
+                        : undefined
+                    }
+                    aoAvancar={
+                      coluna.titulo !== 'Concluídos'
+                        ? () => avancarTicket(ticket.id)
+                        : undefined
+                    }
+                    aoTransferir={
+                      coluna.titulo !== 'Concluídos' && coluna.titulo !== 'Transferência'
+                        ? () => transferirTicket(ticket.id)
+                        : undefined
+                    }
+                    aoMudarPrioridade={() => alternarPrioridade(ticket.id)}
+                  />
+                ))}
+              </div>
+
+              <button
+                type='button'
+                className='button-todo'
+                onClick={() => adicionarTicket(coluna.titulo)}
               >
-                <option value='todos'>Todos</option>
-                <option value='tickets'>Tickets (Ativos)</option>
-              </select>
-              <img src='/icon/IDown.svg' alt='' className='button-icon' />
-            </div>
-            <div>
-              <button type='button' className='big-button'>
-                <img src='/icon/ITrocarProjeto.svg' alt='' className='button-icon-big' />
-                <span>Trocar Projeto</span>
+                <img src={coluna.iconeBotao} alt='' className='button-icon' />
+                <span>{coluna.textoBotao}</span>
               </button>
             </div>
-          </div>
-        </header>
-
-        <section
-          className='row flex-1'
-          style={{ padding: '1rem', overflowX: 'auto', marginLeft: '-1rem', minHeight: 0 }}
-        >
-          {colunas.map((coluna) => {
-            const estaDestacada = colunaEmFoco === coluna.titulo;
-
-            return (
-              <div
-                key={coluna.titulo}
-                className='column container-25op flex-1'
-                onDragOver={(e) => permitirSoltar(e, coluna.titulo)}
-                onDragLeave={() => setColunaEmFoco(null)}
-                onDrop={() => soltarNaColuna(coluna.titulo)}
-                style={{
-                  outline: estaDestacada ? '2px dashed var(--roxo-escuro1)' : 'none',
-                  backgroundColor: estaDestacada ? 'rgba(188, 177, 248, 0.35)' : undefined,
-                  transition: 'background-color 0.2s ease',
-                }}
-              >
-                <h3>{coluna.titulo}</h3>
-                <div className='column flex-1' style={estiloListaCards}>
-                  {listarPorStatus(coluna.titulo).map((ticket) => (
-                    <Ticket
-                      key={ticket.id}
-                      {...ticket}
-                      aoIniciarArrasto={() => iniciarArrasto(ticket.id)}
-                      aoVoltar={
-                        coluna.titulo !== 'Pendentes'
-                          ? () => voltarTicket(ticket.id)
-                          : undefined
-                      }
-                      aoAvancar={
-                        coluna.titulo !== 'Concluídos'
-                          ? () => avancarTicket(ticket.id)
-                          : undefined
-                      }
-                      aoTransferir={
-                        coluna.titulo !== 'Concluídos' && coluna.titulo !== 'Transferência'
-                          ? () => transferirTicket(ticket.id)
-                          : undefined
-                      }
-                      aoMudarPrioridade={() => alternarPrioridade(ticket.id)}
-                    />
-                  ))}
-                </div>
-
-                <button
-                  type='button'
-                  className='button-todo'
-                  onClick={() => adicionarTicket(coluna.titulo)}
-                >
-                  <img src={coluna.iconeBotao} alt='' className='button-icon' />
-                  <span>{coluna.textoBotao}</span>
-                </button>
-              </div>
-            );
-          })}
-        </section>
+          );
+        })}
       </section>
-    </main>
+    </>
   );
 }
