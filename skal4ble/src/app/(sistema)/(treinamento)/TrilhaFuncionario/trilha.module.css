@@ -1,0 +1,330 @@
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  color: var(--preto);
+}
+
+/* Centraliza confortavelmente o card da trilha no espaço útil abaixo do header */
+.centerStage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 0;
+  padding: 0.5rem 0 1.5rem;
+}
+
+.eloHeroCard {
+  width: 100%;
+  max-width: 1080px;
+  background: rgba(255, 253, 244, 0.86);
+  backdrop-filter: blur(8px);
+  border: 2px solid var(--roxo-escuro1);
+  border-radius: var(--borda);
+  box-shadow: var(--sombra);
+  padding: 2rem 2.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+/* ==========================================
+   Topo do Card: Destaque do Elo Atual
+   ========================================== */
+.eloSummary {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.eloGreeting {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: rgba(17, 14, 0, 0.75);
+}
+
+.currentEloShowcase {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  margin: 0.15rem 0;
+}
+
+.currentEloIconFrame {
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+  background-color: var(--branco);
+  border: 2px solid var(--roxo-escuro1);
+  box-shadow: 0 3px 10px rgba(57, 12, 136, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem;
+}
+
+.currentEloImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.eloBigName {
+  font-family: var(--font-chakra-petch), system-ui, sans-serif;
+  font-size: 3rem;
+  font-weight: 800;
+  font-style: italic;
+  line-height: 1;
+  color: var(--roxo-escuro1);
+}
+
+.eloNextHint {
+  margin: 0.25rem 0 0;
+  font-size: 0.98rem;
+  color: var(--roxo-escuro2);
+}
+
+/* ==========================================
+   Trilha Horizontal (4 Divisões)
+   ========================================== */
+.trackArea {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.progressTrack {
+  position: relative;
+  width: 100%;
+  height: 20px;
+  background-color: var(--roxo-claro3);
+  border: 1.5px solid rgba(57, 12, 136, 0.25);
+  border-radius: 999px;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    var(--roxo-escuro1) 0%,
+    var(--roxo-escuro3) 72%,
+    var(--verde) 100%
+  );
+  transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Grid de 4 colunas sobre a barra para alinhar cada ponto ao centro do seu elo */
+.milestonesOverlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+}
+
+.dotCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.milestoneDot {
+  width: 26px;
+  height: 26px;
+  min-width: 26px;
+  padding: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--roxo-escuro1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.milestoneDot:hover {
+  transform: scale(1.18);
+  background-color: var(--branco);
+}
+
+.dotUnlocked {
+  background-color: var(--branco);
+  color: var(--roxo-escuro1);
+}
+
+.innerCheck {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background-color: var(--verde);
+}
+
+.dotLocked {
+  background-color: var(--roxo-claro3);
+  border-color: var(--roxo-claro1);
+  color: var(--roxo-escuro2);
+}
+
+.dotSelected {
+  box-shadow: 0 0 0 4px var(--amarelo1);
+  transform: scale(1.15);
+}
+
+.lockIcon {
+  width: 13px;
+  height: 13px;
+}
+
+/* Grid de Ícones e Rótulos dos Elos abaixo da barra */
+.milestonesLabelsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+.milestoneItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.45rem;
+  padding: 0.75rem 0.5rem;
+  border-radius: var(--borda-menor);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.milestoneItem:hover {
+  background-color: rgba(229, 220, 249, 0.55);
+  transform: translateY(-2px);
+}
+
+.itemSelected {
+  background-color: var(--roxo-claro3);
+  outline: 1.5px solid var(--roxo-escuro1);
+}
+
+.eloTierTitle {
+  font-family: var(--font-chakra-petch), system-ui, sans-serif;
+  font-weight: 800;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--roxo-escuro1);
+}
+
+.eloIconBox {
+  width: 68px;
+  height: 68px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem;
+  background-color: var(--branco);
+  border: 2px solid var(--roxo-escuro1);
+  box-shadow: 0 3px 8px rgba(17, 14, 0, 0.14);
+}
+
+.eloEmblemImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.itemLocked .eloIconBox {
+  opacity: 0.52;
+  filter: grayscale(0.45);
+  border-color: var(--roxo-claro1);
+  background-color: rgba(255, 253, 244, 0.6);
+}
+
+.itemLocked .eloTierTitle,
+.itemLocked .rewardTitle {
+  opacity: 0.65;
+}
+
+.rewardTitle {
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--preto);
+}
+
+.currentTag {
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.18rem 0.6rem;
+  border-radius: 999px;
+  background-color: var(--roxo-escuro1);
+  color: var(--branco);
+}
+
+.claimBadge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.18rem 0.6rem;
+  border-radius: 999px;
+  background-color: var(--amarelo1);
+  color: var(--preto);
+  border: 1px solid var(--preto);
+}
+
+.claimedBadge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.18rem 0.6rem;
+  border-radius: 999px;
+  background-color: var(--verde);
+  color: var(--preto);
+}
+
+/* ==========================================
+   Rodapé de Detalhe / Resgate do Elo
+   ========================================== */
+.selectedRewardBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1.15rem;
+  background-color: var(--roxo-claro3);
+  border-radius: var(--borda-menor);
+  font-size: 0.95rem;
+}
+
+.selectedRewardInfo {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.selectedTag {
+  background-color: var(--roxo-escuro1);
+  color: var(--branco);
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding: 0.22rem 0.65rem;
+  border-radius: 999px;
+}
+
+.statusDoneText {
+  font-weight: 700;
+  color: var(--roxo-escuro1);
+  white-space: nowrap;
+}
+
+.statusLockedText {
+  font-weight: 700;
+  color: var(--roxo-escuro2);
+  white-space: nowrap;
+}
