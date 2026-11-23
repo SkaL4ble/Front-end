@@ -29,7 +29,7 @@ export default function CadastroProjetos() {
               <input
                 type="text"
                 name="nome"
-                className="input-pill"
+                className="input-card"
                 required
               />
             </div>
@@ -39,7 +39,7 @@ export default function CadastroProjetos() {
               <input
                 type="date"
                 name="prazo"
-                className="input-pill"
+                className="input-card"
                 required
               />
             </div>
@@ -49,7 +49,7 @@ export default function CadastroProjetos() {
               <input
                 type="url"
                 name="linkRepositorio"
-                className="input-pill"
+                className="input-card"
               />
             </div>
           </div>
@@ -61,7 +61,7 @@ export default function CadastroProjetos() {
               <input
                 type="text"
                 name="autor"
-                className="input-pill"
+                className="input-card"
                 required
               />
             </div>
@@ -72,7 +72,7 @@ export default function CadastroProjetos() {
                 <select
                   name="status"
                   id="status"
-                  className="select select-pill"
+                  className="select select-card"
                   defaultValue=""
                   required
                 >
@@ -90,7 +90,7 @@ export default function CadastroProjetos() {
               <input
                 type="text"
                 name="descricao"
-                className="input-pill"
+                className="input-card"
                 required
               />
             </div>
