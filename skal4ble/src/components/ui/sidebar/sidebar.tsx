@@ -162,7 +162,7 @@ export const Sidebar = () => {
               <span className={styles.navLabel}>{item.label}</span>
             </Link>
           );
-        })}1
+        })}
       </nav>
 
       {/* Marca d'água geométrica no fundo */}

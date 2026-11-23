@@ -5,92 +5,170 @@
   height: 100%;
   min-height: 0;
   font-family: var(--font-sansation), system-ui, sans-serif;
+  font-style: normal;
   color: var(--preto);
 }
 
-/* Centraliza confortavelmente o card da trilha no espaço útil abaixo do header */
-.centerStage {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 0;
-  padding: 0.5rem 0 1.5rem;
+.pageWrapper h1,
+.pageWrapper h2 {
+  font-style: normal;
 }
 
-.eloHeroCard {
+.eloContainer.eloContainer {
   width: 100%;
-  max-width: 1080px;
-  background: rgba(255, 253, 244, 0.86);
-  backdrop-filter: blur(8px);
-  border: 2px solid var(--roxo-escuro1);
-  border-radius: var(--borda);
-  box-shadow: var(--sombra);
-  padding: 2rem 2.5rem 1.5rem;
+  flex: 1;
+  min-height: 0;
+  padding: clamp(1.5rem, 3.4vh, 2.85rem) clamp(1.75rem, 3vw, 2.75rem);
   display: flex;
   flex-direction: column;
-  gap: 1.75rem;
+  align-items: stretch;
+  justify-content: center;
+  gap: clamp(2.25rem, 5.5vh, 4.25rem);
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
 /* ==========================================
-   Topo do Card: Destaque do Elo Atual
+   Linha Superior: Elo Atual + Card de Detalhe
    ========================================== */
+.topRow {
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: clamp(1.5rem, 2.5vw, 2.5rem);
+}
+
 .eloSummary {
-  text-align: center;
+  flex: 0 0 auto;
+  text-align: left;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.45rem;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.4rem;
 }
 
 .eloGreeting {
   margin: 0;
-  font-size: 1.05rem;
+  font-size: 1.12rem;
   font-weight: 700;
-  color: rgba(17, 14, 0, 0.75);
+  color: rgba(17, 14, 0, 0.8);
 }
 
 .currentEloShowcase {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.85rem;
-  margin: 0.15rem 0;
-}
-
-.currentEloIconFrame {
-  width: 58px;
-  height: 58px;
-  border-radius: 16px;
-  background-color: var(--branco);
-  border: 2px solid var(--roxo-escuro1);
-  box-shadow: 0 3px 10px rgba(57, 12, 136, 0.18);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.35rem;
+  justify-content: flex-start;
+  gap: 0.9rem;
+  margin: 0.1rem 0;
 }
 
 .currentEloImg {
-  width: 100%;
-  height: 100%;
+  width: 92px;
+  height: 108px;
   object-fit: contain;
+  filter: drop-shadow(0 4px 10px rgba(57, 12, 136, 0.22));
 }
 
 .eloBigName {
   font-family: var(--font-chakra-petch), system-ui, sans-serif;
-  font-size: 3rem;
+  font-size: 3.75rem;
   font-weight: 800;
-  font-style: italic;
+  font-style: normal;
   line-height: 1;
   color: var(--roxo-escuro1);
 }
 
 .eloNextHint {
-  margin: 0.25rem 0 0;
-  font-size: 0.98rem;
+  margin: 0.15rem 0 0;
+  font-size: 1.04rem;
   color: var(--roxo-escuro2);
+}
+
+/* Card de Detalhes da Divisão Selecionada (à direita do título) */
+.selectedRewardCard {
+  flex: 1;
+  min-width: 0;
+  min-height: clamp(166px, 18vh, 195px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.65rem;
+  padding: clamp(1.1rem, 2vh, 1.45rem) clamp(1.35rem, 2vw, 1.75rem);
+  background-color: rgba(255, 253, 244, 0.68);
+  border: 1.5px solid rgba(57, 12, 136, 0.24);
+  border-radius: var(--borda-menor);
+  box-sizing: border-box;
+}
+
+.selectedCardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.selectedTag {
+  background-color: var(--roxo-escuro1);
+  color: var(--branco);
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 0.24rem 0.75rem;
+  border-radius: 999px;
+}
+
+.statusDoneText {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--roxo-escuro1);
+}
+
+.statusLockedBadge {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--roxo-escuro2);
+  background-color: rgba(229, 220, 249, 0.85);
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+
+.selectedCardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.selectedRewardTitle {
+  margin: 0;
+  font-family: var(--font-chakra-petch), system-ui, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--preto);
+  line-height: 1.2;
+}
+
+.selectedRewardDesc {
+  margin: 0;
+  font-size: 0.96rem;
+  line-height: 1.38;
+  color: rgba(17, 14, 0, 0.85);
+}
+
+.selectedCardFooter {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(57, 12, 136, 0.14);
+  font-size: 0.9rem;
+  color: var(--roxo-escuro2);
+}
+
+.selectedCardFooter strong {
+  color: var(--roxo-escuro1);
 }
 
 /* ==========================================
@@ -99,14 +177,15 @@
 .trackArea {
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
+  gap: clamp(2.15rem, 3.6vh, 3rem);
+  width: 100%;
 }
 
 .progressTrack {
   position: relative;
   width: 100%;
-  height: 20px;
-  background-color: var(--roxo-claro3);
+  height: 22px;
+  background-color: rgba(229, 220, 249, 0.75);
   border: 1.5px solid rgba(57, 12, 136, 0.25);
   border-radius: 999px;
 }
@@ -123,7 +202,6 @@
   transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Grid de 4 colunas sobre a barra para alinhar cada ponto ao centro do seu elo */
 .milestonesOverlay {
   position: absolute;
   inset: 0;
@@ -139,20 +217,21 @@
 }
 
 .milestoneDot {
-  width: 26px;
-  height: 26px;
-  min-width: 26px;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
   padding: 0;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: var(--branco);
   border: 2px solid var(--roxo-escuro1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .milestoneDot:hover {
-  transform: scale(1.18);
+  transform: scale(1.16);
   background-color: var(--branco);
 }
 
@@ -161,11 +240,25 @@
   color: var(--roxo-escuro1);
 }
 
-.innerCheck {
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background-color: var(--verde);
+.checkIcon {
+  width: 15px;
+  height: 15px;
+}
+
+/* Marcador da posição atual na barra */
+.dotCurrent {
+  background-color: var(--branco);
+  border: 2px solid var(--roxo-escuro1);
+  color: var(--roxo-escuro1);
+}
+
+.dotCurrent:hover {
+  background-color: var(--branco);
+}
+
+.currentPinIcon {
+  width: 16px;
+  height: 16px;
 }
 
 .dotLocked {
@@ -174,157 +267,85 @@
   color: var(--roxo-escuro2);
 }
 
+.dotLocked:hover {
+  background-color: var(--branco);
+}
+
 .dotSelected {
   box-shadow: 0 0 0 4px var(--amarelo1);
-  transform: scale(1.15);
+  transform: scale(1.12);
 }
 
 .lockIcon {
-  width: 13px;
-  height: 13px;
+  width: 14px;
+  height: 14px;
 }
 
-/* Grid de Ícones e Rótulos dos Elos abaixo da barra */
+/* Grid de Escudos e Rótulos dos Elos abaixo da barra */
 .milestonesLabelsGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 0.75rem;
+  align-items: start;
+  gap: 1rem;
+  width: 100%;
 }
 
 .milestoneItem {
+  width: fit-content;
+  min-width: 185px;
+  justify-self: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 0.45rem;
-  padding: 0.75rem 0.5rem;
+  gap: clamp(0.65rem, 1.2vh, 0.95rem);
+  padding: clamp(0.85rem, 1.6vh, 1.2rem) 1.5rem;
   border-radius: var(--borda-menor);
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .milestoneItem:hover {
-  background-color: rgba(229, 220, 249, 0.55);
+  background-color: rgba(255, 253, 244, 0.5);
   transform: translateY(-2px);
 }
 
+.milestoneItem:hover .eloEmblemImg {
+  transform: scale(1.06);
+}
+
 .itemSelected {
-  background-color: var(--roxo-claro3);
+  background-color: rgba(255, 253, 244, 0.72);
   outline: 1.5px solid var(--roxo-escuro1);
 }
 
 .eloTierTitle {
   font-family: var(--font-chakra-petch), system-ui, sans-serif;
   font-weight: 800;
-  font-style: italic;
-  font-size: 1.15rem;
+  font-style: normal;
+  font-size: 1.45rem;
   color: var(--roxo-escuro1);
-}
-
-.eloIconBox {
-  width: 68px;
-  height: 68px;
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.45rem;
-  background-color: var(--branco);
-  border: 2px solid var(--roxo-escuro1);
-  box-shadow: 0 3px 8px rgba(17, 14, 0, 0.14);
 }
 
 .eloEmblemImg {
-  width: 100%;
-  height: 100%;
+  width: 120px;
+  height: 140px;
   object-fit: contain;
+  filter: drop-shadow(0 4px 10px rgba(17, 14, 0, 0.2));
+  transition: transform 0.2s ease, filter 0.2s ease;
 }
 
-.itemLocked .eloIconBox {
-  opacity: 0.52;
-  filter: grayscale(0.45);
-  border-color: var(--roxo-claro1);
-  background-color: rgba(255, 253, 244, 0.6);
+.itemLocked .eloEmblemImg {
+  opacity: 0.5;
+  filter: grayscale(0.5) drop-shadow(0 2px 4px rgba(17, 14, 0, 0.1));
 }
 
-.itemLocked .eloTierTitle,
-.itemLocked .rewardTitle {
-  opacity: 0.65;
+.itemLocked .eloTierTitle {
+  opacity: 0.7;
 }
 
-.rewardTitle {
-  font-size: 0.9rem;
-  font-weight: 700;
-  line-height: 1.2;
-  color: var(--preto);
-}
-
-.currentTag {
-  font-size: 0.72rem;
-  font-weight: 800;
-  padding: 0.18rem 0.6rem;
-  border-radius: 999px;
-  background-color: var(--roxo-escuro1);
-  color: var(--branco);
-}
-
-.claimBadge {
-  font-size: 0.72rem;
-  font-weight: 800;
-  padding: 0.18rem 0.6rem;
-  border-radius: 999px;
-  background-color: var(--amarelo1);
-  color: var(--preto);
-  border: 1px solid var(--preto);
-}
-
-.claimedBadge {
-  font-size: 0.72rem;
-  font-weight: 800;
-  padding: 0.18rem 0.6rem;
-  border-radius: 999px;
-  background-color: var(--verde);
-  color: var(--preto);
-}
-
-/* ==========================================
-   Rodapé de Detalhe / Resgate do Elo
-   ========================================== */
-.selectedRewardBar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.85rem 1.15rem;
-  background-color: var(--roxo-claro3);
-  border-radius: var(--borda-menor);
-  font-size: 0.95rem;
-}
-
-.selectedRewardInfo {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.selectedTag {
-  background-color: var(--roxo-escuro1);
-  color: var(--branco);
-  font-weight: 700;
-  font-size: 0.8rem;
-  padding: 0.22rem 0.65rem;
-  border-radius: 999px;
-}
-
-.statusDoneText {
-  font-weight: 700;
-  color: var(--roxo-escuro1);
-  white-space: nowrap;
-}
-
-.statusLockedText {
-  font-weight: 700;
-  color: var(--roxo-escuro2);
-  white-space: nowrap;
+@media (max-width: 960px) {
+  .topRow {
+    flex-direction: column;
+  }
 }
