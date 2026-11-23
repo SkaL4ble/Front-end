@@ -261,9 +261,8 @@ export default function DetalhesFuncionariosPage() {
               <img
                 src="/icon/IDown.svg"
                 alt=""
-                className={`${estilos.buttonIcon} ${estilos.filterChevron} button-icon filter-chevron ${
-                  isEditarOpen ? `${estilos.open} open` : ''
-                }`}
+                className={`${estilos.buttonIcon} ${estilos.filterChevron} button-icon filter-chevron ${isEditarOpen ? `${estilos.open} open` : ''
+                  }`}
               />
             </button>
 
@@ -420,9 +419,8 @@ export default function DetalhesFuncionariosPage() {
                   <img
                     src="/icon/IDown.svg"
                     alt=""
-                    className={`${estilos.buttonIcon} ${estilos.filterChevron} button-icon filter-chevron ${
-                      isPeriodoOpen ? `${estilos.open} open` : ''
-                    }`}
+                    className={`${estilos.buttonIcon} ${estilos.filterChevron} button-icon filter-chevron ${isPeriodoOpen ? `${estilos.open} open` : ''
+                      }`}
                   />
                 </button>
 
@@ -434,9 +432,8 @@ export default function DetalhesFuncionariosPage() {
                         <button
                           key={opcao.value}
                           type="button"
-                          className={`${estilos.dropdownItem} ${
-                            selecionado ? estilos.dropdownItemAtivo : ''
-                          }`}
+                          className={`${estilos.dropdownItem} ${selecionado ? estilos.dropdownItemAtivo : ''
+                            }`}
                           onClick={() => {
                             setPeriodoSelecionado(opcao.value);
                             setIsPeriodoOpen(false);
