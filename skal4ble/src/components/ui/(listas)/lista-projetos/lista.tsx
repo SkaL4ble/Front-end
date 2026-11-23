@@ -79,7 +79,7 @@ export const ListaP: React.FC<ListaPProps> = ({
                   aria-label="Documentação do projeto"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <img src="/icon/IDocumentacao.svg" alt="Documentação" />
+                  <img src="/icon/IDocs.svg" alt="Documentação" />
                 </Link>
               </div>
             </div>
