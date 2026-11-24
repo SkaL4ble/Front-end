@@ -1,12 +1,67 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import {
+  User,
+  Mail,
+  Briefcase,
+  GraduationCap,
+  Camera,
+  Upload,
+  Check,
+  ChevronDown,
+  Eye,
+  X,
+} from "lucide-react";
+
+function GithubIcon({
+  size = 18,
+  className,
+}: {
+  size?: number;
+  className?: string;
+}) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      fill="currentColor"
+      aria-hidden="true"
+      className={className}
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+      />
+    </svg>
+  );
+}
 
 export default function CadastroFuncionarios() {
   const router = useRouter();
-  const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+
+  useEffect(() => {
+    if (!selectedFile) {
+      setPreviewUrl(null);
+      setIsPreviewOpen(false);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(selectedFile);
+    setPreviewUrl(objectUrl);
+
+    return () => {
+      URL.revokeObjectURL(objectUrl);
+    };
+  }, [selectedFile]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -14,8 +69,20 @@ export default function CadastroFuncionarios() {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    setSelectedFileName(file ? file.name : null);
+    const file = e.target.files?.[0] ?? null;
+    setSelectedFile(file);
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files?.[0] ?? null;
+    if (file) {
+      setSelectedFile(file);
+      if (fileInputRef.current && e.dataTransfer.files) {
+        fileInputRef.current.files = e.dataTransfer.files;
+      }
+    }
   };
 
   return (
@@ -26,17 +93,13 @@ export default function CadastroFuncionarios() {
 
       <form
         onSubmit={handleSubmit}
-        className="container-25op form-card flex-1"
+        className="container-25op form-card flex-1 panel-enter"
       >
-        {/* Seção 1: Dados Pessoais */}
+        {/* Seção 1: Dados (Pessoais + GitHub) */}
         <section className="form-section-card">
           <div className="form-section-header">
-            <img
-              src="/icon/PLACEHOLDER_DADOS_PESSOAIS.svg"
-              alt=""
-              className="form-section-icon"
-            />
-            <h3>Dados Pessoais</h3>
+            <User size={18} strokeWidth={2.3} className="form-section-icon" />
+            <h3>Dados</h3>
           </div>
 
           <div className="form-section-grid-2">
@@ -45,11 +108,7 @@ export default function CadastroFuncionarios() {
                 Nome <span className="required-mark">*</span>
               </label>
               <div className="input-with-icon">
-                <img
-                  src="/icon/PLACEHOLDER_NOME.svg"
-                  alt=""
-                  className="input-leading-icon"
-                />
+                <User size={16} strokeWidth={2} className="input-leading-icon" />
                 <input
                   id="nome"
                   type="text"
@@ -66,11 +125,7 @@ export default function CadastroFuncionarios() {
                 E-mail Pessoal <span className="required-mark">*</span>
               </label>
               <div className="input-with-icon">
-                <img
-                  src="/icon/PLACEHOLDER_EMAIL.svg"
-                  alt=""
-                  className="input-leading-icon"
-                />
+                <Mail size={16} strokeWidth={2} className="input-leading-icon" />
                 <input
                   id="emailPessoal"
                   type="email"
@@ -81,31 +136,13 @@ export default function CadastroFuncionarios() {
                 />
               </div>
             </div>
-          </div>
-        </section>
 
-        {/* Seção 2: Dados do GitHub */}
-        <section className="form-section-card">
-          <div className="form-section-header">
-            <img
-              src="/icon/PLACEHOLDER_DADOS_GITHUB.svg"
-              alt=""
-              className="form-section-icon"
-            />
-            <h3>Dados do GitHub</h3>
-          </div>
-
-          <div className="form-section-grid-2">
             <div className="form-group">
               <label htmlFor="githubUser" className="form-field-label">
                 Nome do GitHub <span className="required-mark">*</span>
               </label>
               <div className="input-with-icon">
-                <img
-                  src="/icon/PLACEHOLDER_GITHUB.svg"
-                  alt=""
-                  className="input-leading-icon"
-                />
+                <GithubIcon size={16} className="input-leading-icon" />
                 <input
                   id="githubUser"
                   type="text"
@@ -122,11 +159,7 @@ export default function CadastroFuncionarios() {
                 E-mail do GitHub <span className="required-mark">*</span>
               </label>
               <div className="input-with-icon">
-                <img
-                  src="/icon/PLACEHOLDER_EMAIL.svg"
-                  alt=""
-                  className="input-leading-icon"
-                />
+                <Mail size={16} strokeWidth={2} className="input-leading-icon" />
                 <input
                   id="githubEmail"
                   type="email"
@@ -140,14 +173,13 @@ export default function CadastroFuncionarios() {
           </div>
         </section>
 
-        {/* Seção 3: Informações Profissionais + Ensino e Registro (lado a lado) */}
+        {/* Seção 2: Informações Profissionais + Ensino e Registro */}
         <div className="form-sections-row">
-          {/* Sub-card Esquerdo */}
           <section className="form-section-card">
             <div className="form-section-header">
-              <img
-                src="/icon/PLACEHOLDER_INFO_PROFISSIONAIS.svg"
-                alt=""
+              <Briefcase
+                size={18}
+                strokeWidth={2.3}
                 className="form-section-icon"
               />
               <h3>Informações Profissionais</h3>
@@ -173,7 +205,11 @@ export default function CadastroFuncionarios() {
                     <option value="back-end">Back-End</option>
                     <option value="full-stack">Full-Stack</option>
                   </select>
-                  <img src="/icon/IDown.svg" alt="" className="button-icon" />
+                  <ChevronDown
+                    size={17}
+                    strokeWidth={2.4}
+                    className="select-chevron-icon"
+                  />
                 </div>
               </div>
 
@@ -196,18 +232,21 @@ export default function CadastroFuncionarios() {
                     <option value="designer">Designer</option>
                     <option value="gerente">Gerente</option>
                   </select>
-                  <img src="/icon/IDown.svg" alt="" className="button-icon" />
+                  <ChevronDown
+                    size={17}
+                    strokeWidth={2.4}
+                    className="select-chevron-icon"
+                  />
                 </div>
               </div>
             </div>
           </section>
 
-          {/* Sub-card Direito */}
           <section className="form-section-card">
             <div className="form-section-header">
-              <img
-                src="/icon/PLACEHOLDER_ENSINO_REGISTRO.svg"
-                alt=""
+              <GraduationCap
+                size={18}
+                strokeWidth={2.3}
                 className="form-section-icon"
               />
               <h3>Ensino e Registro</h3>
@@ -245,58 +284,80 @@ export default function CadastroFuncionarios() {
                     <option value="sim">Sim</option>
                     <option value="nao">Não</option>
                   </select>
-                  <img src="/icon/IDown.svg" alt="" className="button-icon" />
+                  <ChevronDown
+                    size={17}
+                    strokeWidth={2.4}
+                    className="select-chevron-icon"
+                  />
                 </div>
               </div>
             </div>
           </section>
         </div>
 
-        {/* Seção 4: Foto do Funcionário */}
+        {/* Seção 3: Foto do Funcionário */}
         <section className="form-section-card">
           <div className="form-section-header">
-            <img
-              src="/icon/PLACEHOLDER_FOTO_HEADER.svg"
-              alt=""
-              className="form-section-icon"
-            />
+            <Camera size={18} strokeWidth={2.3} className="form-section-icon" />
             <h3>Foto do Funcionário</h3>
           </div>
 
           <div
-            className={`file-dropzone ${isDragging ? "dragging" : ""}`}
+            className={`file-dropzone ${isDragging ? "dragging" : ""} ${
+              selectedFile ? "has-file" : ""
+            }`}
             onDragOver={(e) => {
               e.preventDefault();
               setIsDragging(true);
             }}
             onDragLeave={() => setIsDragging(false)}
-            onDrop={() => setIsDragging(false)}
+            onDrop={handleDrop}
           >
             <input
+              ref={fileInputRef}
               type="file"
               name="foto"
               accept="image/*"
               onChange={handleFileChange}
               className="file-dropzone-input"
             />
-            <img
-              src="/icon/PLACEHOLDER_UPLOAD.svg"
-              alt=""
-              className="file-dropzone-icon"
-            />
-            <div className="file-dropzone-text">
-              <span className="file-dropzone-title">
-                {selectedFileName ?? "Clique ou arraste um arquivo aqui"}
-              </span>
-              <span className="file-dropzone-subtitle">
-                Formatos: JPG, PNG ou GIF (máx. 2 MB)
-              </span>
+
+            <div className="file-dropzone-content">
+              <div className="file-dropzone-badge">
+                <Upload size={21} strokeWidth={2.2} />
+              </div>
+              <div className="file-dropzone-text">
+                <span className="file-dropzone-title">
+                  {selectedFile
+                    ? selectedFile.name
+                    : "Clique ou arraste uma foto aqui"}
+                </span>
+                <span className="file-dropzone-subtitle">
+                  {selectedFile
+                    ? `${(selectedFile.size / 1024).toFixed(0)} KB — clique para substituir`
+                    : "Formatos aceitos: JPG, PNG ou WEBP (máx. 2 MB)"}
+                </span>
+              </div>
             </div>
+
+            {selectedFile && previewUrl && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsPreviewOpen(true);
+                }}
+                className="file-preview-btn"
+              >
+                <Eye size={16} strokeWidth={2.2} />
+                Visualizar
+              </button>
+            )}
           </div>
         </section>
 
-        {/* Botões alinhados à direita */}
-        <div className="form-actions-end">
+        {/* Rodapé de Ações */}
+        <div className="form-actions-start">
           <button
             type="button"
             onClick={() => router.back()}
@@ -305,15 +366,48 @@ export default function CadastroFuncionarios() {
             Voltar
           </button>
           <button type="submit" className="big-button">
-            <img
-              src="/icon/PLACEHOLDER_SALVAR.svg"
-              alt=""
-              className="button-icon"
-            />
             Cadastrar
           </button>
         </div>
       </form>
+
+      {/* Modal de Preview da Foto */}
+      {isPreviewOpen && selectedFile && previewUrl && (
+        <div
+          className="image-preview-overlay"
+          onClick={() => setIsPreviewOpen(false)}
+        >
+          <div
+            className="image-preview-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="image-preview-header">
+              <h3>Preview da Foto</h3>
+              <button
+                type="button"
+                aria-label="Fechar preview"
+                onClick={() => setIsPreviewOpen(false)}
+                className="image-preview-close"
+              >
+                <X size={18} strokeWidth={2.4} />
+              </button>
+            </div>
+
+            <div className="image-preview-frame">
+              <img
+                src={previewUrl}
+                alt={`Preview de ${selectedFile.name}`}
+                className="image-preview-img"
+              />
+            </div>
+
+            <div className="image-preview-meta">
+              <span className="image-preview-filename">{selectedFile.name}</span>
+              <span>{(selectedFile.size / 1024).toFixed(0)} KB</span>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
