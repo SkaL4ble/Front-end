@@ -73,7 +73,7 @@
   --amarelo2: #fcf5b3;
 
   /** "Universalização" */
-  --sombra: 0px 2px 5px 0px #363636;
+  --sombra: 0px 2px 8px 0px hsla(49, 100%, 3%, 0.4);
   --borda: 20px;
   --borda-menor: 10px;
 }
@@ -131,7 +131,7 @@ button {
   }
 }
 
-/* Ajuste na .big-button existente para garantir texto branco */
+/* Ajuste na .big-button existente para garantir texto branco e cantos uniformes */
 .big-button {
   display: flex;
   align-items: center;
@@ -143,7 +143,7 @@ button {
   font-size: 1.4rem;
   font-weight: 700;
   font-family: var(--font-sansation), system-ui, sans-serif;
-  border-radius: 14px;
+  border-radius: var(--borda-menor);
   box-shadow: var(--sombra);
   cursor: pointer;
   transition: background-color 0.2s ease;
@@ -170,7 +170,7 @@ button {
   font-size: 1.4rem;
   font-weight: 700;
   font-family: var(--font-sansation), system-ui, sans-serif;
-  border-radius: 14px;
+  border-radius: var(--borda-menor);
   box-shadow: none;
   cursor: pointer;
   transition: background-color 0.2s ease, color 0.2s ease;
@@ -197,12 +197,60 @@ button {
   justify-content: space-between;
   width: 100%;
   min-height: 0;
-  gap: 1.25rem;
-  padding: 2rem 4rem;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
   overflow-y: auto;
 }
 
-/* Grid simétrico de 2 colunas */
+/* Sub-cards agrupadores de seções dentro do formulário */
+.form-section-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 1rem 1.35rem;
+  background-color: rgba(255, 253, 244, 0.35);
+  border: 0.12rem solid var(--roxo-claro2);
+  border-radius: var(--borda);
+}
+
+/* Cabeçalho interno de cada sub-card (ícone + título da seção) */
+.form-section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.form-section-header h3 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.form-section-icon {
+  width: 1.35rem;
+  height: 1.35rem;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* Linha com 2 sub-cards lado a lado (ex: Informações Profissionais + Ensino e Registro) */
+.form-sections-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  width: 100%;
+}
+
+/* Grid de 2 colunas dentro dos sub-cards */
+.form-section-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  width: 100%;
+}
+
+/* Grid simétrico de 2 colunas (mantido para telas simples como Novo Projeto) */
 .form-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -225,7 +273,22 @@ button {
   margin: 0;
 }
 
-/* Campo centralizado com a mesma largura de uma coluna (ex: Anexar foto) */
+.form-field-label {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: var(--font-chakra-petch), system-ui, sans-serif;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--preto);
+  margin: 0;
+}
+
+.required-mark {
+  color: var(--vermelho);
+}
+
+/* Campo centralizado com a mesma largura de uma coluna */
 .form-group-center {
   display: flex;
   flex-direction: column;
@@ -235,85 +298,187 @@ button {
   margin: 0 auto;
 }
 
-/* Input branco em formato pílula */
-.input-pill {
+/* Wrapper para inputs com ícone à esquerda */
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
   width: 100%;
-  height: 2.5rem;
-  padding: 0.4rem 1.25rem;
+}
+
+.input-leading-icon {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.15rem;
+  height: 1.15rem;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* Input branco no padrão quadrado dos cards das listas */
+.input-card {
+  width: 100%;
+  height: 2.65rem;
+  padding: 0.45rem 1rem;
   background-color: var(--branco);
-  border: none;
-  border-radius: 999px;
+  border: 0.15rem solid transparent;
+  border-radius: var(--borda-menor);
   box-shadow: var(--sombra);
   color: var(--preto);
   font-family: var(--font-sansation), system-ui, sans-serif;
   font-size: 0.95rem;
   outline: none;
-  transition: outline 0.15s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.input-pill:focus {
-  outline: 2px solid var(--roxo-escuro1);
+.input-card.has-icon {
+  padding-left: 2.55rem;
 }
 
-/* Modificador para usar .select dentro de .campo-select no estilo pílula */
-.campo-select:has(.select-pill) {
+.input-card:hover {
+  border-color: var(--roxo-claro2);
+}
+
+.input-card:focus {
+  border-color: var(--roxo-escuro1);
+}
+
+/* Modificador para usar .select dentro de .campo-select no estilo card */
+.campo-select:has(.select-card) {
   width: 100%;
 }
 
-.select.select-pill {
+.select.select-card {
   width: 100%;
-  height: 2.5rem;
+  height: 2.65rem;
   field-sizing: fixed;
-  padding: 0.4rem 2.75rem 0.4rem 1.25rem;
+  padding: 0.45rem 2.75rem 0.45rem 1rem;
   background-color: var(--branco);
   color: var(--preto);
-  border-radius: 999px;
+  border: 0.15rem solid transparent;
+  border-radius: var(--borda-menor);
   font-size: 0.95rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.select.select-pill:focus {
-  outline: 2px solid var(--roxo-escuro1);
+.select.select-card:hover {
+  border-color: var(--roxo-claro2);
+}
+
+.select.select-card:focus {
+  border-color: var(--roxo-escuro1);
 }
 
 /* Escurece o /icon/IDown.svg quando o select for branco */
-.campo-select:has(.select-pill) .button-icon {
+.campo-select:has(.select-card) .button-icon {
   width: 1.15rem;
-  right: 1.1rem;
+  right: 1rem;
   filter: brightness(0);
 }
 
-/* Input de arquivo no mesmo formato pílula */
-.file-pill {
+/* Input de arquivo no mesmo formato quadrado dos cards */
+.file-card {
   width: 100%;
-  height: 2.5rem;
-  padding: 0.32rem 1rem;
+  height: 2.65rem;
+  padding: 0.32rem 0.75rem;
   background-color: var(--branco);
-  border: none;
-  border-radius: 999px;
+  border: 0.15rem solid transparent;
+  border-radius: var(--borda-menor);
   box-shadow: var(--sombra);
   color: var(--preto);
   font-family: var(--font-sansation), system-ui, sans-serif;
   font-size: 0.85rem;
   font-style: italic;
   cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.file-pill::file-selector-button {
-  background-color: #f3f1ea;
+.file-card:hover {
+  border-color: var(--roxo-claro2);
+}
+
+.file-card:focus {
+  border-color: var(--roxo-escuro1);
+}
+
+.file-card::file-selector-button {
+  background-color: var(--roxo-claro3);
   color: var(--preto);
-  border: 1px solid #8c8a84;
-  border-radius: 999px;
-  padding: 0.15rem 0.75rem;
-  margin-right: 0.65rem;
+  border: none;
+  border-radius: 6px;
+  padding: 0.2rem 0.85rem;
+  margin-right: 0.75rem;
   font-family: var(--font-sansation), system-ui, sans-serif;
   font-size: 0.85rem;
+  font-weight: 700;
   font-style: normal;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
 
-.file-pill::file-selector-button:hover {
-  background-color: var(--roxo-claro3);
+.file-card::file-selector-button:hover {
+  background-color: var(--roxo-claro2);
+}
+
+/* Área tracejada de upload de arquivo (estilo referência) */
+.file-dropzone {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  min-height: 5.25rem;
+  padding: 0.9rem 1.5rem;
+  background-color: rgba(255, 253, 244, 0.45);
+  border: 0.15rem dashed var(--roxo-claro1);
+  border-radius: var(--borda-menor);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.file-dropzone:hover,
+.file-dropzone.dragging {
+  border-color: var(--roxo-escuro1);
+  background-color: rgba(255, 253, 244, 0.75);
+}
+
+.file-dropzone-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.file-dropzone-icon {
+  width: 2.1rem;
+  height: 2.1rem;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.file-dropzone-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  color: var(--preto);
+}
+
+.file-dropzone-title {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--roxo-escuro1);
+}
+
+.file-dropzone-subtitle {
+  font-size: 0.85rem;
+  color: var(--preto);
+  opacity: 0.8;
 }
 
 /* Rodapé de botões centralizados */
@@ -325,8 +490,19 @@ button {
   padding-top: 0.5rem;
 }
 
+/* Rodapé de botões alinhados à direita (padrão da referência) */
+.form-actions-end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1.25rem;
+  padding-top: 0.25rem;
+}
+
 .form-actions .big-button,
-.form-actions .big-button-voltar {
+.form-actions .big-button-voltar,
+.form-actions-end .big-button,
+.form-actions-end .big-button-voltar {
   min-width: 11.5rem;
 }
 
@@ -552,9 +728,9 @@ header {
 .header-search .input {
   width: 100%;
   height: 2.65rem;
-  padding-left: 2.35rem; /* Afasta o texto digitado do ícone da lupa */
+  padding-left: 2.35rem;
   padding-right: 2.2rem;
-  font-size: .9rem;       /* Aumenta o tamanho do texto digitado ("aadsas") */
+  font-size: .9rem;
 }
 
 /* Painel expansível de filtros */
@@ -871,11 +1047,15 @@ div {
 
 @media (max-width: 1024px) {
   .form-card {
-    padding: 1.5rem 2rem;
+    padding: 1.25rem 1.5rem;
   }
 
   .form-grid {
     column-gap: 2.5rem;
+  }
+
+  .form-sections-row {
+    grid-template-columns: 1fr;
   }
 
   .form-group-center {
@@ -884,7 +1064,8 @@ div {
 }
 
 @media (max-width: 768px) {
-  .form-grid {
+  .form-grid,
+  .form-section-grid-2 {
     grid-template-columns: 1fr;
   }
 
@@ -893,13 +1074,16 @@ div {
     min-width: 0;
   }
 
-  .form-actions {
+  .form-actions,
+  .form-actions-end {
     gap: 1rem;
     width: 100%;
   }
 
   .form-actions .big-button,
-  .form-actions .big-button-voltar {
+  .form-actions .big-button-voltar,
+  .form-actions-end .big-button,
+  .form-actions-end .big-button-voltar {
     flex: 1;
     min-width: 0;
     font-size: 1.15rem;

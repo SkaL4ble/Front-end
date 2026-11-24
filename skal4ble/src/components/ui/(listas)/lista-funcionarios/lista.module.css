@@ -1,7 +1,9 @@
+/* Expande 0.75rem à esquerda para a sombra não ser cortada pelo overflow */
 .wrapper {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: calc(100% + 0.75rem);
+  margin-left: -0.75rem;
   height: 100%;
   overflow: hidden;
 }
@@ -129,6 +131,6 @@
 
 .actionIconBtn img {
   width: 24px;
-  height: auto;
+  height: 24px;
   object-fit: contain;
 }
