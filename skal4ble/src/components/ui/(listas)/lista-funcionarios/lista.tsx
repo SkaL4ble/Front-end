@@ -22,7 +22,7 @@ export const ListaF: React.FC<ListaFProps> = ({
         <span>Nome</span>
         <span>Cargo</span>
         <span>Afinidade</span>
-        <span>Aptidão p/Ensinar</span>
+        <span>Email Github</span>
         <span />
       </div>
 
