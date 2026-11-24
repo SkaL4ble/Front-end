@@ -9,7 +9,7 @@ export interface Usuario {
 
 
 }
-export interface ListarFuncionarios{
+export interface ListarUsuarios{
     usuarioId: string,
     nomeUsuario:string,
     emailPessoal:string,
