@@ -16,7 +16,7 @@
   align-items: center;
   justify-items: center;
   text-align: center;
-  gap: 1rem;
+  gap: 1.2rem;
 }
 
 /* Evita quebra de linha nos cabeçalhos e textos dos cards */
