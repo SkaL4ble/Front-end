@@ -21,7 +21,7 @@ export const ListaF: React.FC<ListaFProps> = ({
         <span>Nome</span>
         <span>Cargo</span>
         <span>Afinidade</span>
-        <span>Aptidão p/Ensinar</span>
+        <span>Email Github</span>
         <span />
       </div>
 
@@ -50,7 +50,7 @@ export const ListaF: React.FC<ListaFProps> = ({
 
               <span>{member.atuacao}</span>
 
-              <span>{member.nomeUsuario}</span>
+              <span>{member.emailPessoal}</span>
 
             </article>
           );
