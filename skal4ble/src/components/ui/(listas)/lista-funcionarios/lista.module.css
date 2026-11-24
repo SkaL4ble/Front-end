@@ -35,7 +35,8 @@
   color: var(--roxo-escuro1, #390c88);
   font-family: var(--font-chakra-petch), system-ui, sans-serif;
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
+  margin-left: 2%;
 }
 
 /* Alinha o título "Nome" exatamente acima do texto do nome, encostado no início da linha */
@@ -133,4 +134,9 @@
   width: 24px;
   height: 24px;
   object-fit: contain;
+}
+
+.selectedCard {
+  outline: 2px solid var(--roxo-escuro1, #390c88);
+  background-color: var(--roxo-claro3, #f3eefc);
 }
