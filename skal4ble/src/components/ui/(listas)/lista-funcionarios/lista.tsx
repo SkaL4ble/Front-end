@@ -1,26 +1,46 @@
+"use client";
+
 import React from 'react';
+import Link from 'next/link';
 import styles from './lista.module.css';
 import { Usuario } from '@/src/@types/usuario';
 
+<<<<<<< HEAD
 
 interface ListaFProps {
   members: Usuario[];
   onSelectMember?: (member: Usuario) => void;
   selectedMemberId?: string | null;
+=======
+export interface Member {
+  id: string;
+  name: string;
+  role?: string;
+  affinity?: string;
+  train?: string;
+  avatarUrl?: string;
 }
 
-export function ListaF({ members, onSelectMember, selectedMemberId }: ListaFProps) {
+interface ListaFProps {
+  members: Member[];
+>>>>>>> 3a9e6601a63166109dec0d66a2662639574f8d2f
+}
+
+export const ListaF: React.FC<ListaFProps> = ({ members }) => {
   return (
     <div className={styles.wrapper}>
+      {/* Cabeçalho da lista */}
       <div className={styles.headerGrid}>
-        <span className={styles.avatarSpacer} />
         <span>Nome</span>
-        <span>N. GitHub</span>
         <span>Cargo</span>
         <span>Afinidade</span>
+        <span>Aptidão p/Ensinar</span>
+        <span />
       </div>
 
+      {/* Lista de cards */}
       <div className={styles.scrollContainer}>
+<<<<<<< HEAD
         {members.map((member) => {
           const isSelected = selectedMemberId === member.usuarioId;
 
@@ -34,9 +54,21 @@ export function ListaF({ members, onSelectMember, selectedMemberId }: ListaFProp
               <img
                 src={member.imagem}
                 alt={`Foto de ${member.nomeUsuario}`}
+=======
+        {members.map((member) => (
+          <div key={member.id} className={styles.rowCard}>
+            {/* Foto à esquerda integrada ao nome */}
+            <div className={styles.nameCell}>
+              <img
+                src={member.avatarUrl || '/avatars/default.png'}
+                alt={member.name}
+>>>>>>> 3a9e6601a63166109dec0d66a2662639574f8d2f
                 className={styles.avatar}
               />
+              <span className={styles.name}>{member.name}</span>
+            </div>
 
+<<<<<<< HEAD
               <strong className={styles.name}>{member.nomeUsuario}</strong>
 
               <div className={styles.githubCell}>
@@ -61,7 +93,36 @@ export function ListaF({ members, onSelectMember, selectedMemberId }: ListaFProp
             </article>
           );
         })}
+=======
+            <span>{member.role}</span>
+            <span>{member.affinity}</span>
+            <span>{member.train}</span>
+
+            <div className={styles.cardActions}>
+              {/* Link 1: Detalhes do funcionário */}
+              <Link
+                href={`/funcionarios/${member.id}`}
+                className={styles.actionIconBtn}
+                title="Detalhes do funcionário"
+                aria-label="Detalhes do funcionário"
+              >
+                <img src="/icon/IDetalhes.svg" alt="Detalhes" />
+              </Link>
+
+              {/* Link 2: Editar funcionário */}
+              <Link
+                href={`/funcionarios/editar/${member.id}`}
+                className={styles.actionIconBtn}
+                title="Editar funcionário"
+                aria-label="Editar funcionário"
+              >
+                <img src="/icon/ITreinoW.svg" alt="Editar" />
+              </Link>
+            </div>
+          </div>
+        ))}
+>>>>>>> 3a9e6601a63166109dec0d66a2662639574f8d2f
       </div>
     </div>
   );
-}
+};

@@ -90,7 +90,7 @@ export default function ListagemFuncionarios() {
         const matchesGithub = normalizeText(usuario.cargo ?? '').includes(normalizedSearch);
         const matchesRoleText = normalizeText(usuario.atuacao ?? '').includes(normalizedSearch);
 
-        if (!matchesName && !matchesGithub && !matchesRoleText) return false;
+        if (!matchesName && !matchesRoleText) return false;
       }
 
       if (filters.affinity) {

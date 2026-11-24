@@ -1,53 +1,6 @@
-.conteinerPrincipal {
-  display: flex;
-
-  /* Define o tamanho da caixa principal */
-  width: calc(100vw - 4rem);
-  /* Ocupa a largura total menos 2rem de folga em cada lado */
-  height: calc(100vh - 4rem);
-  /* Ocupa a altura total menos 2rem de folga em cima e embaixo */
-
-  /* Centralização perfeita na viewport */
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  /* Estilização da caixa flutuante */
-  background: linear-gradient(180deg,
-      rgba(255, 253, 244, 0.80) 50%,
-      rgba(188, 177, 248, 0.80) 100%);
-
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-
-  border-radius: var(--borda);
-  overflow: hidden;
-
-  /* Borda sutil e sombra para dar efeito de profundidade (3D/glassmorphism) */
-  border: var(--borda);
-  box-shadow: var(--sombra);
-}
-
-.Logo {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--roxo-escuro1);
-  /* Ou o tom que preferir do seu root */
-  padding: 2rem;
-}
-
-.Logo img {
-  width: 300px;
-  /*Eu aumento aqui e aumenta tudo*/
-  height: auto;
-}
-
-.Titulo {
-  color: black
-}
+/* ======================== */
+/*   Painel Esquerdo (Logo) */
+/* ======================== */
 
 .painelLogo {
   display: flex;
@@ -55,12 +8,12 @@
   justify-content: center;
   position: relative;
   flex: 1;
-  padding: 2rem;
+  padding: 2.5rem;
   z-index: 0;
   background:
     linear-gradient(135deg, rgba(57, 12, 136, 0.86), rgba(113, 14, 200, 0.72)),
-    url('/svg/LogoBranca.svg') right center/ 113% no-repeat;
-  background-color: var(--roxo-escuro2  );
+    url('/svg/LogoBranca.svg') right center / 113% no-repeat;
+  background-color: var(--roxo-escuro2);
 }
 
 .overlayConteudo {
@@ -70,50 +23,160 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  /* Mantém as 3 linhas alinhadas pela esquerda entre si */
   text-align: left;
-  gap: 0.25rem;
+  gap: 0.35rem;
   width: fit-content;
-  /* Faz a caixa ter o tamanho exato do texto para centralizar no pai */
   max-width: 100%;
   color: var(--branco);
 }
 
 .rotuloBoasVindas,
 .tituloDestaque {
+  font-family: var(--font-chakra-petch), system-ui, sans-serif;
   font-weight: 700;
   letter-spacing: -0.02em;
-  line-height: 1.05;
+  line-height: 1.08;
   color: var(--branco);
   margin: 0;
   padding: 0;
-  /* Zera qualquer recuo interno escondido */
   white-space: nowrap;
+  text-shadow: 2px 3px 0px rgba(17, 14, 0, 0.55);
 }
 
 .rotuloBoasVindas {
-  font-size: 5rem;
+  font-size: clamp(2.5rem, 4.2vw, 4.5rem);
 }
 
 .tituloDestaque {
-  font-size: 7.25rem;
-  font-style: normal; 
-  margin-top: 1.25rem;
-  text-shadow:
-    0 0 8px rgba(255, 255, 255, 0.2),
-    0 0 22px rgba(188, 177, 248, 0.45);
+  font-size: clamp(3.2rem, 5.5vw, 6rem);
+  margin-top: 0.75rem;
   animation: brilhoRoxoLeve 3.5s ease-in-out infinite alternate;
 }
-/*Testando colocar animação aqui mexer dps!*/
+
 @keyframes brilhoRoxoLeve {
   from {
-    text-shadow: 
-      0 0 6px rgba(255, 255, 255, 0.15),
-      0 0 16px rgba(188, 177, 248, 0.3);
+    text-shadow:
+      2px 3px 0px rgba(17, 14, 0, 0.55),
+      0 0 14px rgba(188, 177, 248, 0.3);
   }
   to {
-    text-shadow: 
-      0 0 12px rgba(255, 255, 255, 0.3),
-      0 0 28px rgba(188, 177, 248, 0.55);
+    text-shadow:
+      2px 3px 0px rgba(17, 14, 0, 0.55),
+      0 0 26px rgba(188, 177, 248, 0.6);
+  }
+}
+
+/* =========================== */
+/*   Painel Direito (Formulário) */
+/* =========================== */
+
+.painelFormulario {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.caixaLogin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 24rem;
+}
+
+.tituloLogin {
+  font-size: 3.75rem;
+  text-align: center;
+  margin: 0 0 2.25rem 0;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+  width: 100%;
+}
+
+/* Wrapper para posicionar os ícones dentro do .input-pill global */
+.campoComIcone {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.iconeEsquerda {
+  position: absolute;
+  left: 1.1rem;
+  color: var(--preto);
+  pointer-events: none;
+}
+
+.inputComIcone {
+  height: 2.85rem;
+  padding-left: 2.85rem;
+}
+
+.inputSenha {
+  padding-right: 2.85rem;
+}
+
+/* Reseta o estilo global da tag <button> para o ícone de olho */
+.botaoOlho {
+  position: absolute;
+  right: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  box-shadow: none;
+  padding: 0;
+  color: var(--preto);
+}
+
+.botaoOlho:hover,
+.botaoOlho:active {
+  background-color: transparent;
+  color: var(--roxo-escuro1);
+}
+
+.acoesLogin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+  margin-top: 1.25rem;
+}
+
+.botaoEntrar {
+  width: 68%;
+  min-width: 13rem;
+  padding: 0.6rem 1.5rem;
+}
+
+.linkRecuperarSenha {
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  font-size: 0.9rem;
+  color: var(--roxo-escuro1);
+  text-decoration: underline;
+  transition: color 0.15s ease;
+}
+
+.linkRecuperarSenha:hover {
+  color: var(--roxo-escuro3);
+}
+
+/* Responsividade (acompanha o flex-direction: column do main no globals.css) */
+@media (max-width: 768px) {
+  .painelLogo {
+    flex: 0.7;
+    padding: 1.5rem;
+  }
+
+  .tituloLogin {
+    font-size: 2.75rem;
+    margin-bottom: 1.5rem;
   }
 }

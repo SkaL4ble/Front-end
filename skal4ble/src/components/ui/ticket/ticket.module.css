@@ -1,0 +1,223 @@
+.ticket {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  width: 100%;
+  padding: 0.9rem 1rem;
+  background-color: rgba(255, 253, 244, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: var(--borda-menor);
+  border: 1px solid rgba(57, 12, 136, 0.15);
+  border-left: 6px solid var(--roxo-escuro1);
+  box-shadow: 0 3px 8px rgba(17, 14, 0, 0.12);
+  transition: transform 0.15s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.ticket:hover {
+  transform: translateY(-2px);
+  background-color: var(--branco);
+}
+
+/* Cores na borda esquerda conforme a coluna */
+.bordaPendente {
+  border-left-color: var(--amarelo2);
+}
+
+.bordaAndamento {
+  border-left-color: var(--roxo-escuro2);
+}
+
+.bordaConcluido {
+  border-left-color: var(--verde);
+  opacity: 0.88;
+}
+
+.bordaTransferencia {
+  border-left-color: var(--vermelho);
+}
+
+/* Cabeçalho */
+.cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  width: 100%;
+}
+
+.grupoEsquerda {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.codigo {
+  font-family: var(--font-chakra-petch), system-ui, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--roxo-escuro1);
+}
+
+.categoria {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.1rem 0.45rem;
+  background-color: var(--roxo-claro3);
+  color: var(--roxo-escuro1);
+  border-radius: 6px;
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+/* Badges de Prioridade */
+.badgePrioridade {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.12rem 0.5rem;
+  border-radius: 999px;
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.prioridadeAlta {
+  background-color: rgba(242, 56, 31, 0.16);
+  color: var(--vermelho);
+}
+
+.prioridadeMedia {
+  background-color: var(--amarelo2);
+  color: var(--preto);
+}
+
+.prioridadeBaixa {
+  background-color: rgba(28, 218, 136, 0.18);
+  color: #0b7a4b;
+}
+
+/* Título e Descrição */
+.titulo {
+  margin: 0;
+  font-family: var(--font-chakra-petch), system-ui, sans-serif;
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--preto);
+  line-height: 1.25;
+}
+
+.descricao {
+  margin: 0;
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  font-size: 0.82rem;
+  color: var(--preto);
+  opacity: 0.8;
+  line-height: 1.35;
+}
+
+/* Data de entrega */
+.linhaPrazo {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--roxo-escuro2);
+}
+
+/* Rodapé: Foto do Funcionário + Botões */
+.rodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(57, 12, 136, 0.12);
+}
+
+.infoFuncionario {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0; /* Evita que nomes longos empurrem os botões */
+}
+
+.avatarContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid var(--roxo-escuro1);
+  background-color: var(--roxo-claro3);
+  color: var(--roxo-escuro1);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.fotoAvatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.nomeFuncionario {
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--preto);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Botões */
+.acoes {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.ticket .botaoMover {
+  padding: 0.25rem 0.7rem;
+  background-color: var(--roxo-escuro1);
+  color: var(--branco);
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border-radius: var(--borda-menor);
+  cursor: pointer;
+}
+
+.ticket .botaoMover:hover {
+  background-color: var(--roxo-escuro2);
+}
+
+.ticket .botaoSecundario {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.45rem;
+  background-color: var(--roxo-claro3);
+  color: var(--roxo-escuro1);
+  border-radius: var(--borda-menor);
+  cursor: pointer;
+}
+
+.ticket .botaoSecundario:hover {
+  background-color: var(--roxo-claro2);
+}
+
+
+.iconeMini {
+  width: 0.95rem;
+  height: auto;
+  object-fit: contain;
+}
