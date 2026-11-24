@@ -15,3 +15,11 @@ export interface Projeto
   dataCriacao: string
 }
 
+export interface CriarProjeto {
+  nomeProjeto: string;
+  prazo: string | null;
+  descricao: string | null;
+  linkRepositorio: string;
+  statusProjetoId: number;
+  tipoProjetoId: number;
+}
