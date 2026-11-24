@@ -115,8 +115,27 @@
 }
 
 .inputComIcone {
+  width: 100%;
   height: 2.85rem;
   padding-left: 2.85rem;
+  padding-right: 1rem;
+  background-color: var(--branco);
+  color: var(--preto);
+  border: none;
+  border-radius: var(--borda-menor);
+  box-shadow: var(--sombra);
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  font-size: 0.95rem;
+  outline: none;
+  transition: box-shadow 0.2s ease;
+}
+
+.inputComIcone:focus {
+  box-shadow: var(--sombra), 0 0 0 2px var(--roxo-escuro1);
+}
+
+.inputComIcone::placeholder {
+  color: rgba(17, 14, 0, 0.45);
 }
 
 .inputSenha {
