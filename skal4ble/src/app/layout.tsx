@@ -3,6 +3,7 @@ import { Chakra_Petch, Sansation } from "next/font/google";
 import MicroSlatsBackground from "../components/ui/background/MicroSlatsBackground";
 import "./globals.css";
 import { Sidebar } from "@/src/components/ui/sidebar/sidebar";
+import { Providers } from "./providers";
 
 //? Configurando a Chakra Petch
 const chakraPetch = Chakra_Petch({
@@ -23,13 +24,15 @@ export const metadata: Metadata = {
   description: "Aplicação Next.js", //* Mudar a descrição depois...
 };
 
-export default function RootLayout({children,}: Readonly<{children: React.ReactNode;}>) {
+export default function RootLayout({ children, }: Readonly<{ children: React.ReactNode; }>) {
   return (
     <html lang="pt-BR" className={`${chakraPetch.variable} ${sansation.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col font-sansation">
-        <MicroSlatsBackground>
-          {children}
-        </MicroSlatsBackground>
+        <Providers>
+          <MicroSlatsBackground>
+            {children}
+          </MicroSlatsBackground>
+        </Providers>
       </body>
     </html>
   );

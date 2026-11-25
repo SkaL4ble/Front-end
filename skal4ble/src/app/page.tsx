@@ -3,5 +3,5 @@
 import { redirect, RedirectType } from 'next/navigation';
 
 export default function Login() {
-  redirect('/login', RedirectType.replace);
+  redirect('/Login', RedirectType.replace);
 }
