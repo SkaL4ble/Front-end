@@ -1,4 +1,4 @@
-"use client";
+  "use client";
 
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -124,11 +124,11 @@ export default function CadastroProjetos() {
     // Lógica de cadastro aqui (prazo e selectedTechs já estão disponíveis no estado)
   };
 
-  return (
-    <>
-      <header className="header-form">
-        <h1>Novo Projeto</h1>
-      </header>
+    return (
+      <>
+        <header className="header-form">
+          <h1>Novo Projeto</h1>
+        </header>
 
       <form
         onSubmit={handleSubmit}
