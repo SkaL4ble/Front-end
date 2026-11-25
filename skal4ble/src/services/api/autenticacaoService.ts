@@ -9,7 +9,7 @@ export const autenticacaoService = {
         try {
             const response = await api.post<LoginResponse>("Autenticacao/login", dados);
             const token = response.data.token;
-
+            
             secureLocalStorage.setItem(NEXT_PUBLIC_TOKEN_KEY, token);
             return token;
         } catch {

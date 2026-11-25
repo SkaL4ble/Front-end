@@ -1,3 +1,5 @@
+"use client";
+
 import { jwtDecode } from "jwt-decode";
 import { AuthContextData, Login, UsuarioAuth, UsuarioPayload } from "../@types/autenticacao";
 import { autenticacaoService, NEXT_PUBLIC_TOKEN_KEY} from "../services/api/autenticacaoService";

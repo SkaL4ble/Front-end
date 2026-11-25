@@ -19,12 +19,7 @@ export function AuthGuard({ children }: AuthGuardProps) {
     }
   }, [loading, token, router]);
 
-  // Enquanto o token salvo ainda está sendo carregado
-  if (loading) {
-    return null;
-  }
-
-  if (!token) {
+  if (loading || !token) {
     return null;
   }
 

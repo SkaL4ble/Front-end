@@ -1,4 +1,5 @@
 import { Sidebar } from "@/src/components/ui/sidebar/sidebar";
+import { AuthGuard } from "@/src/app/(auth)/authGuard";
 
 export default function SistemaLayout({
   children,
@@ -6,9 +7,11 @@ export default function SistemaLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main>
-      <Sidebar />
-      {children}
-    </main>
+    <AuthGuard>
+      <main>
+        <Sidebar />
+        {children}
+      </main>
+    </AuthGuard>
   );
 }
