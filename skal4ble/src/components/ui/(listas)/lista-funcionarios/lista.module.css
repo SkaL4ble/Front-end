@@ -140,3 +140,12 @@
   outline: 2px solid var(--roxo-escuro1, #390c88);
   background-color: var(--roxo-claro3, #f3eefc);
 }
+
+.emptyState {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 150px;
+    color: var(--text-secondary, #888);
+    text-align: center;
+}
