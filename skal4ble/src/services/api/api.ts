@@ -1,13 +1,12 @@
 import axios from "axios";
 import secureLocalStorage from "react-secure-storage"
 
-const apiLocal = "https://localhost:7225/api/";
 
 const apiRemota = "";
 
 export const api = axios.create({
-    baseURL: apiLocal
-})
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+});
 
 api.interceptors.request.use((config) => {
     const token = secureLocalStorage.getItem("Token");

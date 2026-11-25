@@ -4,9 +4,38 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { Eye, EyeOff, Lock, Mail } from 'lucide-react';
 import estilos from './login.module.css';
+import { useAuth } from '@/src/context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
   const [mostrarSenha, setMostrarSenha] = useState(false);
+
+  const { login, loading } = useAuth();
+
+  const [email, setEmail] = useState<string>("");
+  const [senha, setSenha] = useState<string>("");
+  const [erro, setErro] = useState("");
+
+  const router = useRouter();
+
+  async function autenticar(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    try {
+      await login({ email, senha });
+      router.replace("/ListaProjetos");
+    } catch (error) {
+      setErro(
+        error instanceof Error
+          ? error.message
+          : "Não foi possível realizar o login."
+      );
+    }
+
+    setTimeout(() => {
+      router.push("/Login");
+    }, 2000);
+  }
 
   return (
     <main>
@@ -24,7 +53,7 @@ export default function LoginPage() {
         <div className={estilos.caixaLogin}>
           <h1 className={estilos.tituloLogin}>Login</h1>
 
-          <form className={estilos.formulario}>
+          <form className={estilos.formulario} onSubmit={autenticar}>
             {/* Campo Email */}
             <div className="form-group">
               <h3>Email:</h3>
@@ -34,6 +63,8 @@ export default function LoginPage() {
                   type="email"
                   placeholder="email@email.com"
                   className={`input-pill ${estilos.inputComIcone}`}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
@@ -48,6 +79,8 @@ export default function LoginPage() {
                   type={mostrarSenha ? 'text' : 'password'}
                   placeholder="••••••••••••"
                   className={`input-pill ${estilos.inputComIcone} ${estilos.inputSenha}`}
+                  value={senha}
+                  onChange={(e) => setSenha(e.target.value)}
                   required
                 />
                 <button
@@ -61,9 +94,10 @@ export default function LoginPage() {
               </div>
             </div>
 
+            {erro && <p>{erro}</p>}
             {/* Ações */}
             <div className={estilos.acoesLogin}>
-              <button type="submit" className={`big-button ${estilos.botaoEntrar}`}>
+              <button type="submit" className={`big-button ${estilos.botaoEntrar}`} disabled={loading}>
                 Entrar
               </button>
 
