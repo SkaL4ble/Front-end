@@ -9,11 +9,27 @@ import {
   GraduationCap,
   Camera,
   Upload,
-  Check,
-  ChevronDown,
   Eye,
   X,
 } from "lucide-react";
+import CustomSelect from "@/src/components/ui/select/CustomSelect";
+
+const ATUACAO_OPTIONS = [
+  { value: "front-end", label: "Front-End" },
+  { value: "back-end", label: "Back-End" },
+  { value: "full-stack", label: "Full-Stack" },
+];
+
+const CARGO_OPTIONS = [
+  { value: "desenvolvedor", label: "Desenvolvedor" },
+  { value: "designer", label: "Designer" },
+  { value: "gerente", label: "Gerente" },
+];
+
+const APTO_ENSINAR_OPTIONS = [
+  { value: "sim", label: "Sim" },
+  { value: "nao", label: "Não" },
+];
 
 function GithubIcon({
   size = 18,
@@ -190,54 +206,26 @@ export default function CadastroFuncionarios() {
                 <label htmlFor="atuacao" className="form-field-label">
                   Atuação <span className="required-mark">*</span>
                 </label>
-                <div className="campo-select">
-                  <select
-                    name="atuacao"
-                    id="atuacao"
-                    className="select select-card"
-                    defaultValue=""
-                    required
-                  >
-                    <option value="" disabled>
-                      Selecione
-                    </option>
-                    <option value="front-end">Front-End</option>
-                    <option value="back-end">Back-End</option>
-                    <option value="full-stack">Full-Stack</option>
-                  </select>
-                  <ChevronDown
-                    size={17}
-                    strokeWidth={2.4}
-                    className="select-chevron-icon"
-                  />
-                </div>
+                <CustomSelect
+                  id="atuacao"
+                  name="atuacao"
+                  dropdownTitle="Atuação"
+                  options={ATUACAO_OPTIONS}
+                  required
+                />
               </div>
 
               <div className="form-group">
                 <label htmlFor="cargo" className="form-field-label">
                   Cargo <span className="required-mark">*</span>
                 </label>
-                <div className="campo-select">
-                  <select
-                    name="cargo"
-                    id="cargo"
-                    className="select select-card"
-                    defaultValue=""
-                    required
-                  >
-                    <option value="" disabled>
-                      Selecione
-                    </option>
-                    <option value="desenvolvedor">Desenvolvedor</option>
-                    <option value="designer">Designer</option>
-                    <option value="gerente">Gerente</option>
-                  </select>
-                  <ChevronDown
-                    size={17}
-                    strokeWidth={2.4}
-                    className="select-chevron-icon"
-                  />
-                </div>
+                <CustomSelect
+                  id="cargo"
+                  name="cargo"
+                  dropdownTitle="Cargo"
+                  options={CARGO_OPTIONS}
+                  required
+                />
               </div>
             </div>
           </section>
@@ -270,26 +258,13 @@ export default function CadastroFuncionarios() {
                 <label htmlFor="aptoEnsinar" className="form-field-label">
                   Apto a Ensinar <span className="required-mark">*</span>
                 </label>
-                <div className="campo-select">
-                  <select
-                    name="aptoEnsinar"
-                    id="aptoEnsinar"
-                    className="select select-card"
-                    defaultValue=""
-                    required
-                  >
-                    <option value="" disabled>
-                      Selecione
-                    </option>
-                    <option value="sim">Sim</option>
-                    <option value="nao">Não</option>
-                  </select>
-                  <ChevronDown
-                    size={17}
-                    strokeWidth={2.4}
-                    className="select-chevron-icon"
-                  />
-                </div>
+                <CustomSelect
+                  id="aptoEnsinar"
+                  name="aptoEnsinar"
+                  dropdownTitle="Apto a Ensinar"
+                  options={APTO_ENSINAR_OPTIONS}
+                  required
+                />
               </div>
             </div>
           </section>

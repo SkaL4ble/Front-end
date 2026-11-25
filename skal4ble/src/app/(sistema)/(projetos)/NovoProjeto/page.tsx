@@ -13,6 +13,8 @@ import {
   X,
   Search,
 } from "lucide-react";
+import CustomSelect from "@/src/components/ui/select/CustomSelect";
+import { CustomDatePicker } from "@/src/components/ui/date/CustomDatePicker";
 
 const TECNOLOGIAS_DISPONIVEIS = [
   "JavaScript",
@@ -32,6 +34,17 @@ const TECNOLOGIAS_DISPONIVEIS = [
   "Tailwind CSS",
   "HTML / CSS",
   "Git",
+];
+
+const TIPOS_PROJETO = [
+  { value: "nivelamento", label: "Nivelamento" },
+  { value: "eficiencia", label: "Eficiência" },
+];
+
+const STATUS_PROJETO = [
+  { value: "pendente", label: "Pendente" },
+  { value: "em-andamento", label: "Em Andamento" },
+  { value: "concluido", label: "Concluído" },
 ];
 
 function GithubIcon({
@@ -61,6 +74,7 @@ function GithubIcon({
 
 export default function CadastroProjetos() {
   const router = useRouter();
+  const [prazo, setPrazo] = useState("");
   const [selectedTechs, setSelectedTechs] = useState<string[]>([]);
   const [isTechOpen, setIsTechOpen] = useState(false);
   const [techSearch, setTechSearch] = useState("");
@@ -107,7 +121,7 @@ export default function CadastroProjetos() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Lógica de cadastro aqui (selectedTechs contém o array de tecnologias escolhidas)
+    // Lógica de cadastro aqui (prazo e selectedTechs já estão disponíveis no estado)
   };
 
   return (
@@ -157,29 +171,16 @@ export default function CadastroProjetos() {
               <label htmlFor="tipo" className="form-field-label">
                 Tipo de Projeto <span className="required-mark">*</span>
               </label>
-              <div className="campo-select">
-                <select
-                  name="tipo"
-                  id="tipo"
-                  className="select select-card"
-                  defaultValue=""
-                  required
-                >
-                  <option value="" disabled>
-                    Selecione
-                  </option>
-                  <option value="nivelamento">Nivelamento</option>
-                  <option value="eficiencia">Eficiência</option>
-                </select>
-                <ChevronDown
-                  size={17}
-                  strokeWidth={2.4}
-                  className="select-chevron-icon"
-                />
-              </div>
+              <CustomSelect
+                id="tipo"
+                name="tipo"
+                dropdownTitle="Tipo de Projeto"
+                options={TIPOS_PROJETO}
+                required
+              />
             </div>
 
-            {/* Multiselect de Tecnologias ocupando a largura total da seção */}
+            {/* Multiselect de Tecnologias */}
             <div className="form-group" style={{ gridColumn: "1 / -1" }}>
               <label
                 id="tecnologias-label"
@@ -190,7 +191,6 @@ export default function CadastroProjetos() {
               </label>
 
               <div className="multiselect-wrapper" ref={multiselectRef}>
-                {/* Input invisível para validação nativa do formulário */}
                 <input
                   type="text"
                   name="tecnologias"
@@ -240,7 +240,7 @@ export default function CadastroProjetos() {
                               onClick={(e) => removeTech(tech, e)}
                               className="multiselect-tag-remove"
                             >
-                              <X size={13} strokeWidth={2.4} />
+                              <X size={13} strokeWidth={2.6} />
                             </button>
                           </span>
                         ))}
@@ -248,17 +248,37 @@ export default function CadastroProjetos() {
                     )}
                   </div>
 
-                  <ChevronDown
-                    size={17}
-                    strokeWidth={2.4}
-                    className={`multiselect-chevron ${isTechOpen ? "rotate" : ""}`}
-                  />
+                  <div className="multiselect-right-indicators">
+                    {selectedTechs.length > 0 && (
+                      <span className="filter-badge">
+                        {selectedTechs.length}
+                      </span>
+                    )}
+                    <ChevronDown
+                      size={17}
+                      strokeWidth={2.4}
+                      className={`multiselect-chevron ${isTechOpen ? "rotate" : ""}`}
+                    />
+                  </div>
                 </div>
 
                 {isTechOpen && (
                   <div className="multiselect-dropdown">
+                    <div className="filters-dropdown-header">
+                      <span>Selecionar Tecnologias</span>
+                      {selectedTechs.length > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => setSelectedTechs([])}
+                          className="filters-clear-btn"
+                        >
+                          Limpar tudo
+                        </button>
+                      )}
+                    </div>
+
                     <div className="multiselect-search-box">
-                      <Search size={15} strokeWidth={2} />
+                      <Search size={15} strokeWidth={2.3} />
                       <input
                         type="text"
                         value={techSearch}
@@ -267,13 +287,23 @@ export default function CadastroProjetos() {
                         className="multiselect-search-input"
                         autoFocus
                       />
+                      {techSearch && (
+                        <button
+                          type="button"
+                          aria-label="Limpar busca"
+                          onClick={() => setTechSearch("")}
+                          className="multiselect-search-clear"
+                        >
+                          <X size={14} strokeWidth={2.4} />
+                        </button>
+                      )}
                     </div>
 
                     <div className="multiselect-options" role="listbox">
                       {filteredTechs.length === 0 ? (
-                        <div className="multiselect-empty">
+                        <p className="multiselect-empty">
                           Nenhuma tecnologia encontrada
-                        </div>
+                        </p>
                       ) : (
                         filteredTechs.map((tech) => {
                           const isSelected = selectedTechs.includes(tech);
@@ -290,7 +320,7 @@ export default function CadastroProjetos() {
                             >
                               <span className="multiselect-checkbox">
                                 {isSelected && (
-                                  <Check size={13} strokeWidth={3} />
+                                  <Check size={12} strokeWidth={3} />
                                 )}
                               </span>
                               <span>{tech}</span>
@@ -299,24 +329,6 @@ export default function CadastroProjetos() {
                         })
                       )}
                     </div>
-
-                    {selectedTechs.length > 0 && (
-                      <div className="multiselect-footer">
-                        <span>
-                          {selectedTechs.length}{" "}
-                          {selectedTechs.length === 1
-                            ? "selecionada"
-                            : "selecionadas"}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => setSelectedTechs([])}
-                          className="multiselect-clear-btn"
-                        >
-                          Limpar tudo
-                        </button>
-                      </div>
-                    )}
                   </div>
                 )}
               </div>
@@ -341,11 +353,11 @@ export default function CadastroProjetos() {
                 <label htmlFor="prazo" className="form-field-label">
                   Prazo <span className="required-mark">*</span>
                 </label>
-                <input
+                <CustomDatePicker
                   id="prazo"
-                  type="date"
                   name="prazo"
-                  className="input-card"
+                  value={prazo}
+                  onChange={setPrazo}
                   required
                 />
               </div>
@@ -354,27 +366,13 @@ export default function CadastroProjetos() {
                 <label htmlFor="status" className="form-field-label">
                   Status <span className="required-mark">*</span>
                 </label>
-                <div className="campo-select">
-                  <select
-                    name="status"
-                    id="status"
-                    className="select select-card"
-                    defaultValue=""
-                    required
-                  >
-                    <option value="" disabled>
-                      Selecione
-                    </option>
-                    <option value="pendente">Pendente</option>
-                    <option value="em-andamento">Em Andamento</option>
-                    <option value="concluido">Concluído</option>
-                  </select>
-                  <ChevronDown
-                    size={17}
-                    strokeWidth={2.4}
-                    className="select-chevron-icon"
-                  />
-                </div>
+                <CustomSelect
+                  id="status"
+                  name="status"
+                  dropdownTitle="Status do Projeto"
+                  options={STATUS_PROJETO}
+                  required
+                />
               </div>
             </div>
           </section>
