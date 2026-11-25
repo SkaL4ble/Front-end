@@ -4,15 +4,23 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { ListaF, Member } from '@/src/components/ui/(listas)/lista-funcionarios/lista';
+import { OverviewPanel } from '@/src/components/ui/overview/overview';
 
 type MemberItem = Member & {
   canTeach?: boolean;
+  projectType?: string;
 };
 
 const mockMembers: MemberItem[] = [
-  { id: '2', name: 'Mariana Silva', role: 'DEV Sênior', affinity: 'Back-End', avatarUrl: '/avatars/kayo.png', canTeach: true },
-  { id: '3', name: 'Lucas Andrade', role: 'DEV Júnior', affinity: 'Front-End', avatarUrl: '/avatars/kayo.png', canTeach: false },
-  { id: '4', name: 'Beatriz Costa', role: 'Tech Lead', affinity: 'Full-Stack', avatarUrl: '/avatars/kayo.png', canTeach: true },
+  { id: '2', name: 'Mariana Silva', role: 'DEV Sênior', affinity: 'Back-End', avatarUrl: '/avatars/kayo.png', canTeach: true, projectType: 'Nivelamento' },
+  { id: '3', name: 'Lucas Andrade', role: 'DEV Júnior', affinity: 'Front-End', avatarUrl: '/avatars/kayo.png', canTeach: false, projectType: 'Eficiência' },
+  { id: '4', name: 'Beatriz Costa', role: 'Tech Lead', affinity: 'Full-Stack', avatarUrl: '/avatars/kayo.png', canTeach: true, projectType: 'Nivelamento' },
+  { id: '5', name: 'Rafael Mendes', role: 'DEV Pleno', affinity: 'Back-End', avatarUrl: '/avatars/kayo.png', canTeach: true, projectType: 'Eficiência' },
+  { id: '6', name: 'Camila Rocha', role: 'DEV Júnior', affinity: 'Front-End', avatarUrl: '/avatars/kayo.png', canTeach: false, projectType: 'Nivelamento' },
+  { id: '7', name: 'Gabriel Oliveira', role: 'DEV Sênior', affinity: 'Full-Stack', avatarUrl: '/avatars/kayo.png', canTeach: true, projectType: 'Eficiência' },
+  { id: '8', name: 'Larissa Ferreira', role: 'DEV Pleno', affinity: 'Front-End', avatarUrl: '/avatars/kayo.png', canTeach: false, projectType: 'Nivelamento' },
+  { id: '9', name: 'Thiago Almeida', role: 'DEV Júnior', affinity: 'Back-End', avatarUrl: '/avatars/kayo.png', canTeach: false, projectType: 'Eficiência' },
+  { id: '10', name: 'Fernanda Souza', role: 'Tech Lead', affinity: 'Back-End', avatarUrl: '/avatars/kayo.png', canTeach: true, projectType: 'Nivelamento' },
 ];
 
 // Normaliza texto para comparação sem diferenciar acentos ou maiúsculas/minúsculas
@@ -27,6 +35,7 @@ const INITIAL_FILTERS = {
   affinity: '',
   role: '',
   canTeach: '',
+  projectType: '',
 };
 
 type FilterKey = keyof typeof INITIAL_FILTERS;
@@ -65,6 +74,7 @@ export default function SegundaEtapa() {
 
       if (filters.affinity && normalizeText(member.affinity ?? '') !== filters.affinity) return false;
       if (filters.role && normalizeText(member.role ?? '') !== filters.role) return false;
+      if (filters.projectType && normalizeText(member.projectType ?? '') !== filters.projectType) return false;
 
       if (filters.canTeach) {
         const isMentor = Boolean(member.canTeach);
@@ -93,7 +103,9 @@ export default function SegundaEtapa() {
     }
 
     function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') setIsFiltersOpen(false);
+      if (event.key === 'Escape') {
+        setIsFiltersOpen(false);
+      }
     }
 
     document.addEventListener('mousedown', handleClickOutside);
@@ -246,13 +258,87 @@ export default function SegundaEtapa() {
       </div>
 
       <section
-        className="row flex-1"
-        style={{ minHeight: 0, alignItems: 'stretch' }}
+  className="row flex-1"
+  style={{ minHeight: 0, alignItems: 'stretch', gap: '1rem', overflow: 'hidden' }}
+>
+  {/* ESQUERDA: lista ocupa todo o espaço que sobra e é quem rola */}
+  <div
+    style={{
+      flex: 1,
+      minWidth: 0,
+      height: '100%',
+      overflowY: 'auto',
+      scrollbarGutter: 'stable',
+      padding: '0.25rem 0.5rem 0.25rem 0.25rem',
+    }}
+  >
+    <ListaF members={membersForList} />
+  </div>
+
+  {/* DIREITA: Tipo de Projeto + Overview, largura fixa, encostada na borda */}
+  <div
+    style={{
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '1rem',
+      flex: '0 0 500px',
+      width: '500px',
+      maxWidth: '100%',
+      height: '100%',
+      minHeight: 0,
+    }}
+  >
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flexShrink: 0 }}>
+      <label
+        htmlFor="select-tipo-projeto"
+        style={{
+          fontFamily: 'var(--font-chakra-petch), system-ui, sans-serif',
+          fontWeight: 700,
+          fontSize: '1.1rem',
+          color: 'var(--preto, #110e00)',
+        }}
       >
-        <div style={{ flex: 1, minWidth: 0, width: '100%', height: '100%' }}>
-          <ListaF members={membersForList} />
-        </div>
-      </section>
+        Tipo de Projeto
+      </label>
+
+      <div className="campo-select" style={{ position: 'relative', width: '60%', margin: 0 }}>
+        <select
+          id="select-tipo-projeto"
+          className="select"
+          style={{ width: '100%', paddingRight: '2.5rem' }}
+          value={filters.projectType}
+          onChange={(e) => handleFilterChange('projectType', e.target.value)}
+        >
+          <option value="" disabled hidden>Selecione o tipo...</option>
+          <option value="nenhum">Nenhum</option>
+          <option value="nivelamento">Nivelamento</option>
+          <option value="eficiencia">Eficiência</option>
+        </select>
+        <img
+          src="/icon/IDown.svg"
+          alt=""
+          className="button-icon"
+          style={{
+            position: 'absolute',
+            right: '1rem',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            pointerEvents: 'none',
+          }}
+        />
+      </div>
+    </div>
+
+    <div style={{ flex: 1, minHeight: 0, display: 'flex' }}>
+      <OverviewPanel
+        totalEmployees={mockMembers.length}
+        assignedTickets={12}
+        toolsCount={6}
+        productivityAvg={87}
+      />
+    </div>
+  </div>
+</section>
 
       <div className="form-actions">
         <button
