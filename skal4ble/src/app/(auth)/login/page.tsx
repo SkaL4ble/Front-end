@@ -31,10 +31,6 @@ export default function LoginPage() {
           : "Não foi possível realizar o login."
       );
     }
-
-    setTimeout(() => {
-      router.push("/Login");
-    }, 2000);
   }
 
   return (
