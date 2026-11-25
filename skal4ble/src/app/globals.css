@@ -1777,10 +1777,6 @@ header {
   min-width: 0;
 }
 
-.datepicker-wrapper.is-open {
-  z-index: 120;
-}
-
 .datepicker-hidden-validator {
   position: absolute;
   inset: 0;
@@ -1858,46 +1854,32 @@ header {
 }
 
 .datepicker-popover {
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 0;
-  right: 0;
-  min-width: 280px;
+  position: fixed;
   z-index: 9999;
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
+  gap: 0.3rem;
   background-color: var(--branco, #fffdf4);
   border: 2px solid var(--roxo-escuro1, #390c88);
   border-radius: 12px;
   box-shadow: 0 12px 32px rgba(17, 14, 0, 0.22);
-  padding: 0.75rem;
-}
-
-.datepicker-popover.open-upward {
-  top: auto;
-  bottom: calc(100% + 6px);
-}
-
-.datepicker-header,
-.datepicker-weekdays,
-.datepicker-footer {
-  flex-shrink: 0;
+  padding: 0.55rem 0.65rem;
 }
 
 .datepicker-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
-  padding-bottom: 0.45rem;
+  gap: 0.4rem;
+  padding-bottom: 0.3rem;
   border-bottom: 1px solid var(--roxo-claro2);
+  flex-shrink: 0;
 }
 
 .datepicker-month-label {
   font-family: var(--font-chakra-petch), system-ui, sans-serif;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   color: var(--roxo-escuro1);
   text-transform: capitalize;
 }
@@ -1905,20 +1887,20 @@ header {
 .datepicker-nav-group {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.25rem;
 }
 
 .datepicker-nav-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.85rem;
-  height: 1.85rem;
+  width: 1.55rem;
+  height: 1.55rem;
   padding: 0;
   background-color: var(--roxo-claro3);
   color: var(--roxo-escuro1);
   border: 1px solid var(--roxo-claro2);
-  border-radius: 8px;
+  border-radius: 7px;
   box-shadow: none;
   cursor: pointer;
   transition: background-color 0.15s ease, color 0.15s ease, transform 0.12s ease;
@@ -1938,23 +1920,24 @@ header {
 .datepicker-weekdays {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 0.2rem;
+  gap: 0.15rem;
   width: 100%;
   text-align: center;
+  flex-shrink: 0;
 }
 
 .datepicker-weekday {
   font-family: var(--font-chakra-petch), system-ui, sans-serif;
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 700;
   color: rgba(17, 14, 0, 0.65);
-  padding: 0.2rem 0;
+  padding: 0.1rem 0;
 }
 
 .datepicker-grid {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 0.25rem;
+  gap: 0.15rem;
   width: 100%;
 }
 
@@ -1963,15 +1946,15 @@ header {
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 2.1rem;
+  height: 1.65rem;
   padding: 0;
   background-color: transparent;
   color: var(--preto);
   border: 1.5px solid transparent;
-  border-radius: 8px;
+  border-radius: 7px;
   box-shadow: none;
   font-family: var(--font-sansation), system-ui, sans-serif;
-  font-size: 0.86rem;
+  font-size: 0.8rem;
   font-weight: 400;
   cursor: pointer;
   transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
@@ -2018,20 +2001,21 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
+  gap: 0.4rem;
   width: 100%;
-  padding-top: 0.45rem;
+  padding-top: 0.3rem;
   border-top: 1px solid var(--roxo-claro2);
+  flex-shrink: 0;
 }
 
 .datepicker-footer-btn {
-  padding: 0.28rem 0.65rem;
+  padding: 0.2rem 0.55rem;
   background-color: transparent;
   color: var(--roxo-escuro1);
-  border-radius: 8px;
+  border-radius: 7px;
   box-shadow: none;
   font-family: var(--font-sansation), system-ui, sans-serif;
-  font-size: 0.84rem;
+  font-size: 0.78rem;
   font-weight: 700;
   cursor: pointer;
 }

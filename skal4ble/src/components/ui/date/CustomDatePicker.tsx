@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Calendar, ChevronDown, ChevronUp } from "lucide-react";
 
 interface CustomDatePickerProps {
@@ -14,7 +15,17 @@ interface CustomDatePickerProps {
   maxDate?: string; // Formato "YYYY-MM-DD"
 }
 
+interface PopoverCoords {
+  top: number;
+  left: number;
+  width: number;
+}
+
 const WEEKDAYS_PT = ["D", "S", "T", "Q", "Q", "S", "S"];
+const POPOVER_WIDTH = 276;
+const POPOVER_ESTIMATED_HEIGHT = 292;
+const VIEWPORT_MARGIN = 12;
+const GAP = 6;
 
 function parseIsoDate(iso: string): Date | null {
   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
@@ -61,6 +72,7 @@ export function CustomDatePicker({
 }: CustomDatePickerProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const popoverRef = useRef<HTMLDivElement>(null);
 
   const selectedDate = useMemo(() => parseIsoDate(value), [value]);
   const minParsed = useMemo(() => (minDate ? parseIsoDate(minDate) : null), [minDate]);
@@ -68,9 +80,18 @@ export function CustomDatePicker({
 
   const initialViewDate = selectedDate ?? new Date();
   const [isOpen, setIsOpen] = useState(false);
-  const [openUpward, setOpenUpward] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [viewYear, setViewYear] = useState(initialViewDate.getFullYear());
   const [viewMonth, setViewMonth] = useState(initialViewDate.getMonth());
+  const [coords, setCoords] = useState<PopoverCoords>({
+    top: 0,
+    left: 0,
+    width: POPOVER_WIDTH,
+  });
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (selectedDate) {
@@ -79,14 +100,55 @@ export function CustomDatePicker({
     }
   }, [selectedDate]);
 
+  const updatePosition = useCallback(() => {
+    const trigger = triggerRef.current;
+    if (!trigger) return;
+
+    const rect = trigger.getBoundingClientRect();
+    const popoverHeight = popoverRef.current?.offsetHeight || POPOVER_ESTIMATED_HEIGHT;
+    const width = Math.min(POPOVER_WIDTH, window.innerWidth - VIEWPORT_MARGIN * 2);
+
+    let left = rect.left;
+    if (left + width > window.innerWidth - VIEWPORT_MARGIN) {
+      left = window.innerWidth - VIEWPORT_MARGIN - width;
+    }
+    if (left < VIEWPORT_MARGIN) {
+      left = VIEWPORT_MARGIN;
+    }
+
+    const spaceBelow = window.innerHeight - rect.bottom - VIEWPORT_MARGIN;
+    const spaceAbove = rect.top - VIEWPORT_MARGIN;
+
+    let top: number;
+    if (spaceBelow >= popoverHeight + GAP) {
+      top = rect.bottom + GAP;
+    } else if (spaceAbove >= popoverHeight + GAP) {
+      top = rect.top - popoverHeight - GAP;
+    } else {
+      // Caso a tela seja muito baixa, ancora dentro da área visível sem cortar topo/base
+      top = Math.max(
+        VIEWPORT_MARGIN,
+        Math.min(
+          rect.bottom + GAP,
+          window.innerHeight - popoverHeight - VIEWPORT_MARGIN
+        )
+      );
+    }
+
+    setCoords({ top, left, width });
+  }, []);
+
   useEffect(() => {
     if (!isOpen) return;
 
+    updatePosition();
+    const rafId = requestAnimationFrame(updatePosition);
+
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        wrapperRef.current &&
-        !wrapperRef.current.contains(event.target as Node)
-      ) {
+      const target = event.target as Node;
+      const insideWrapper = wrapperRef.current?.contains(target);
+      const insidePopover = popoverRef.current?.contains(target);
+      if (!insideWrapper && !insidePopover) {
         setIsOpen(false);
       }
     };
@@ -97,24 +159,19 @@ export function CustomDatePicker({
       }
     };
 
+    window.addEventListener("resize", updatePosition);
+    window.addEventListener("scroll", updatePosition, true);
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("keydown", handleKeyDown);
+
     return () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("resize", updatePosition);
+      window.removeEventListener("scroll", updatePosition, true);
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isOpen]);
-
-  const handleToggle = () => {
-    if (!isOpen && triggerRef.current) {
-      const rect = triggerRef.current.getBoundingClientRect();
-      const popoverHeight = 360;
-      const spaceBelow = window.innerHeight - rect.bottom;
-      const spaceAbove = rect.top;
-      setOpenUpward(spaceBelow < popoverHeight && spaceAbove > popoverHeight + 16);
-    }
-    setIsOpen((prev) => !prev);
-  };
+  }, [isOpen, updatePosition]);
 
   const monthTitle = useMemo(() => {
     const formatter = new Intl.DateTimeFormat("pt-BR", {
@@ -185,7 +242,14 @@ export function CustomDatePicker({
 
   const handleToday = () => {
     const now = new Date();
-    const iso = toIsoDate(now);
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    if (
+      (minParsed && todayStart < minParsed) ||
+      (maxParsed && todayStart > maxParsed)
+    ) {
+      return;
+    }
+    const iso = toIsoDate(todayStart);
     setViewYear(now.getFullYear());
     setViewMonth(now.getMonth());
     onChange(iso);
@@ -198,6 +262,88 @@ export function CustomDatePicker({
   };
 
   const formattedValue = formatBrDate(value);
+
+  const popoverContent = isOpen ? (
+    <div
+      ref={popoverRef}
+      role="dialog"
+      aria-label="Selecionar data"
+      className="datepicker-popover"
+      style={{
+        top: `${coords.top}px`,
+        left: `${coords.left}px`,
+        width: `${coords.width}px`,
+      }}
+    >
+      <div className="datepicker-header">
+        <span className="datepicker-month-label">{monthTitle}</span>
+        <div className="datepicker-nav-group">
+          <button
+            type="button"
+            onClick={handlePrevMonth}
+            aria-label="Mês anterior"
+            className="datepicker-nav-btn"
+          >
+            <ChevronUp size={15} />
+          </button>
+          <button
+            type="button"
+            onClick={handleNextMonth}
+            aria-label="Próximo mês"
+            className="datepicker-nav-btn"
+          >
+            <ChevronDown size={15} />
+          </button>
+        </div>
+      </div>
+
+      <div className="datepicker-weekdays">
+        {WEEKDAYS_PT.map((label, index) => (
+          <span key={`${label}-${index}`} className="datepicker-weekday">
+            {label}
+          </span>
+        ))}
+      </div>
+
+      <div className="datepicker-grid">
+        {calendarDays.map((item) => (
+          <button
+            key={item.key}
+            type="button"
+            disabled={item.isDisabled}
+            onClick={() => handleSelectDay(item.iso, item.isDisabled)}
+            className={[
+              "datepicker-day",
+              item.isOutsideMonth ? "outside-month" : "",
+              item.isToday ? "is-today" : "",
+              item.isSelected ? "is-selected" : "",
+            ]
+              .filter(Boolean)
+              .join(" ")}
+          >
+            {item.day}
+          </button>
+        ))}
+      </div>
+
+      <div className="datepicker-footer">
+        <button
+          type="button"
+          onClick={handleClear}
+          className="datepicker-footer-btn"
+        >
+          Limpar
+        </button>
+        <button
+          type="button"
+          onClick={handleToday}
+          className="datepicker-footer-btn"
+        >
+          Hoje
+        </button>
+      </div>
+    </div>
+  ) : null;
 
   return (
     <div
@@ -212,7 +358,7 @@ export function CustomDatePicker({
           name={name}
           value={value}
           required
-          onChange={() => { }}
+          onChange={() => {}}
           className="datepicker-hidden-validator"
         />
       )}
@@ -223,12 +369,16 @@ export function CustomDatePicker({
         type="button"
         aria-expanded={isOpen}
         aria-haspopup="dialog"
-        onClick={handleToggle}
+        onClick={() => setIsOpen((prev) => !prev)}
         className={`input-card datepicker-trigger ${isOpen ? "is-open" : ""}`}
       >
         <span className="datepicker-trigger-left">
           <Calendar size={17} className="datepicker-icon" />
-          <span className={formattedValue ? "datepicker-value" : "datepicker-placeholder"}>
+          <span
+            className={
+              formattedValue ? "datepicker-value" : "datepicker-placeholder"
+            }
+          >
             {formattedValue || placeholder}
           </span>
         </span>
@@ -238,81 +388,7 @@ export function CustomDatePicker({
         />
       </button>
 
-      {isOpen && (
-        <div
-          role="dialog"
-          aria-label="Selecionar data"
-          className={`datepicker-popover ${openUpward ? "open-upward" : ""}`}
-        >
-          <div className="datepicker-header">
-            <span className="datepicker-month-label">{monthTitle}</span>
-            <div className="datepicker-nav-group">
-              <button
-                type="button"
-                onClick={handlePrevMonth}
-                aria-label="Mês anterior"
-                className="datepicker-nav-btn"
-              >
-                <ChevronUp size={16} />
-              </button>
-              <button
-                type="button"
-                onClick={handleNextMonth}
-                aria-label="Próximo mês"
-                className="datepicker-nav-btn"
-              >
-                <ChevronDown size={16} />
-              </button>
-            </div>
-          </div>
-
-          <div className="datepicker-weekdays">
-            {WEEKDAYS_PT.map((label, index) => (
-              <span key={`${label}-${index}`} className="datepicker-weekday">
-                {label}
-              </span>
-            ))}
-          </div>
-
-          <div className="datepicker-grid">
-            {calendarDays.map((item) => (
-              <button
-                key={item.key}
-                type="button"
-                disabled={item.isDisabled}
-                onClick={() => handleSelectDay(item.iso, item.isDisabled)}
-                className={[
-                  "datepicker-day",
-                  item.isOutsideMonth ? "outside-month" : "",
-                  item.isToday ? "is-today" : "",
-                  item.isSelected ? "is-selected" : "",
-                ]
-                  .filter(Boolean)
-                  .join(" ")}
-              >
-                {item.day}
-              </button>
-            ))}
-          </div>
-
-          <div className="datepicker-footer">
-            <button
-              type="button"
-              onClick={handleClear}
-              className="datepicker-footer-btn"
-            >
-              Limpar
-            </button>
-            <button
-              type="button"
-              onClick={handleToday}
-              className="datepicker-footer-btn"
-            >
-              Hoje
-            </button>
-          </div>
-        </div>
-      )}
+      {mounted && popoverContent ? createPortal(popoverContent, document.body) : null}
     </div>
   );
 }
