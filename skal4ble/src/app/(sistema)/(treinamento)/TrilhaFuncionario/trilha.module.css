@@ -1,0 +1,351 @@
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  font-style: normal;
+  color: var(--preto);
+}
+
+.pageWrapper h1,
+.pageWrapper h2 {
+  font-style: normal;
+}
+
+.eloContainer.eloContainer {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  padding: clamp(1.5rem, 3.4vh, 2.85rem) clamp(1.75rem, 3vw, 2.75rem);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: clamp(2.25rem, 5.5vh, 4.25rem);
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+/* ==========================================
+   Linha Superior: Elo Atual + Card de Detalhe
+   ========================================== */
+.topRow {
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: clamp(1.5rem, 2.5vw, 2.5rem);
+}
+
+.eloSummary {
+  flex: 0 0 auto;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.eloGreeting {
+  margin: 0;
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: rgba(17, 14, 0, 0.8);
+}
+
+.currentEloShowcase {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.9rem;
+  margin: 0.1rem 0;
+}
+
+.currentEloImg {
+  width: 92px;
+  height: 108px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 10px rgba(57, 12, 136, 0.22));
+}
+
+.eloBigName {
+  font-family: var(--font-chakra-petch), system-ui, sans-serif;
+  font-size: 3.75rem;
+  font-weight: 800;
+  font-style: normal;
+  line-height: 1;
+  color: var(--roxo-escuro1);
+}
+
+.eloNextHint {
+  margin: 0.15rem 0 0;
+  font-size: 1.04rem;
+  color: var(--roxo-escuro2);
+}
+
+/* Card de Detalhes da Divisão Selecionada (à direita do título) */
+.selectedRewardCard {
+  flex: 1;
+  min-width: 0;
+  min-height: clamp(166px, 18vh, 195px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.65rem;
+  padding: clamp(1.1rem, 2vh, 1.45rem) clamp(1.35rem, 2vw, 1.75rem);
+  background-color: rgba(255, 253, 244, 0.68);
+  border: 1.5px solid rgba(57, 12, 136, 0.24);
+  border-radius: var(--borda-menor);
+  box-sizing: border-box;
+}
+
+.selectedCardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.selectedTag {
+  background-color: var(--roxo-escuro1);
+  color: var(--branco);
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 0.24rem 0.75rem;
+  border-radius: 999px;
+}
+
+.statusDoneText {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--roxo-escuro1);
+}
+
+.statusLockedBadge {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--roxo-escuro2);
+  background-color: rgba(229, 220, 249, 0.85);
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+
+.selectedCardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.selectedRewardTitle {
+  margin: 0;
+  font-family: var(--font-chakra-petch), system-ui, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--preto);
+  line-height: 1.2;
+}
+
+.selectedRewardDesc {
+  margin: 0;
+  font-size: 0.96rem;
+  line-height: 1.38;
+  color: rgba(17, 14, 0, 0.85);
+}
+
+.selectedCardFooter {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(57, 12, 136, 0.14);
+  font-size: 0.9rem;
+  color: var(--roxo-escuro2);
+}
+
+.selectedCardFooter strong {
+  color: var(--roxo-escuro1);
+}
+
+/* ==========================================
+   Trilha Horizontal (4 Divisões)
+   ========================================== */
+.trackArea {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.15rem, 3.6vh, 3rem);
+  width: 100%;
+}
+
+.progressTrack {
+  position: relative;
+  width: 100%;
+  height: 22px;
+  background-color: rgba(229, 220, 249, 0.75);
+  border: 1.5px solid rgba(57, 12, 136, 0.25);
+  border-radius: 999px;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    var(--roxo-escuro1) 0%,
+    var(--roxo-escuro3) 72%,
+    var(--verde) 100%
+  );
+  transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.milestonesOverlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+}
+
+.dotCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.milestoneDot {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  padding: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--branco);
+  border: 2px solid var(--roxo-escuro1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.milestoneDot:hover {
+  transform: scale(1.16);
+  background-color: var(--branco);
+}
+
+.dotUnlocked {
+  background-color: var(--branco);
+  color: var(--roxo-escuro1);
+}
+
+.checkIcon {
+  width: 15px;
+  height: 15px;
+}
+
+/* Marcador da posição atual na barra */
+.dotCurrent {
+  background-color: var(--branco);
+  border: 2px solid var(--roxo-escuro1);
+  color: var(--roxo-escuro1);
+}
+
+.dotCurrent:hover {
+  background-color: var(--branco);
+}
+
+.currentPinIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.dotLocked {
+  background-color: var(--roxo-claro3);
+  border-color: var(--roxo-claro1);
+  color: var(--roxo-escuro2);
+}
+
+.dotLocked:hover {
+  background-color: var(--branco);
+}
+
+.dotSelected {
+  box-shadow: 0 0 0 4px var(--amarelo1);
+  transform: scale(1.12);
+}
+
+.lockIcon {
+  width: 14px;
+  height: 14px;
+}
+
+/* Grid de Escudos e Rótulos dos Elos abaixo da barra */
+.milestonesLabelsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: start;
+  gap: 1rem;
+  width: 100%;
+}
+
+.milestoneItem {
+  width: fit-content;
+  min-width: 185px;
+  justify-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: clamp(0.65rem, 1.2vh, 0.95rem);
+  padding: clamp(0.85rem, 1.6vh, 1.2rem) 1.5rem;
+  border-radius: var(--borda-menor);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.milestoneItem:hover {
+  background-color: rgba(255, 253, 244, 0.5);
+  transform: translateY(-2px);
+}
+
+.milestoneItem:hover .eloEmblemImg {
+  transform: scale(1.06);
+}
+
+.itemSelected {
+  background-color: rgba(255, 253, 244, 0.72);
+  outline: 1.5px solid var(--roxo-escuro1);
+}
+
+.eloTierTitle {
+  font-family: var(--font-chakra-petch), system-ui, sans-serif;
+  font-weight: 800;
+  font-style: normal;
+  font-size: 1.45rem;
+  color: var(--roxo-escuro1);
+}
+
+.eloEmblemImg {
+  width: 120px;
+  height: 140px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 10px rgba(17, 14, 0, 0.2));
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.itemLocked .eloEmblemImg {
+  opacity: 0.5;
+  filter: grayscale(0.5) drop-shadow(0 2px 4px rgba(17, 14, 0, 0.1));
+}
+
+.itemLocked .eloTierTitle {
+  opacity: 0.7;
+}
+
+@media (max-width: 960px) {
+  .topRow {
+    flex-direction: column;
+  }
+}
