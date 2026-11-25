@@ -100,6 +100,7 @@ const PROJECT_FILTER_FIELDS: FilterField[] = [
 export default function ListagemProjetos() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState(INITIAL_FILTERS);
+  const [projetos, setProjetos] = useState<Projeto[]>([]);
 
   const handleFilterChange = (key: string, value: string) => {
     setFilters((prev) => ({
@@ -112,6 +113,8 @@ export default function ListagemProjetos() {
     setFilters(INITIAL_FILTERS);
   };
 
+  const projects = useMemo(() => projetos, [projetos]);
+
   const filteredProjects = useMemo(() => {
     const normalizedSearch = normalizeText(searchQuery);
     const now = new Date();
@@ -121,7 +124,8 @@ export default function ListagemProjetos() {
       now.getDate()
     ).getTime();
 
-    return mockProjects.filter((project) => {
+
+    return projects.filter((project) => {
       // 1. Filtro por texto (nome)
       if (normalizedSearch) {
         const matchesName = normalizeText(project.name).includes(
@@ -132,7 +136,7 @@ export default function ListagemProjetos() {
 
       // 2. Filtro por Criação
       if (filters.createdAt) {
-        const createdTime = parseDateBR(project.createdAt);
+        const createdTime = parseDateBR(project.dataCriacao);
         const daysAgo = Math.floor((today - createdTime) / MS_PER_DAY);
 
         if (filters.createdAt === "7d" && (daysAgo < 0 || daysAgo > 7))
@@ -146,7 +150,7 @@ export default function ListagemProjetos() {
 
       // 3. Filtro por Prazo
       if (filters.deadline) {
-        const deadlineTime = parseDateBR(project.deadline);
+        const deadlineTime = parseDateBR(project.prazo);
         const daysUntil = Math.floor((deadlineTime - today) / MS_PER_DAY);
         const isCompleted = normalizeText(project.status) === "concluido";
 
@@ -187,7 +191,7 @@ export default function ListagemProjetos() {
       // 6. Filtro por Status
       if (filters.status) {
         const normalizedStatus = normalizeText(project.status);
-        const deadlineTime = parseDateBR(project.deadline);
+        const deadlineTime = parseDateBR(project.prazo);
         const isCompleted =
           normalizedStatus === "concluido" || normalizedStatus === "concluidos";
         const isOverdue =
@@ -211,7 +215,7 @@ export default function ListagemProjetos() {
 
       return true;
     });
-  }, [searchQuery, filters]);
+  }, [searchQuery, filters, projects]);
 
   const handleSelectProject = (project: Project) => {
     console.log("Projeto clicado:", project);

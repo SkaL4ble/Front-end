@@ -87,30 +87,26 @@ export default function ListagemFuncionarios() {
   const filteredMembers = useMemo(() => {
     const normalizedSearch = normalizeText(searchQuery);
 
-    return mockMembers.filter((member) => {
-      // 1. Filtro por texto (nome ou cargo)
+    return members.filter((member) => {
       if (normalizedSearch) {
         const matchesName = normalizeText(member.name).includes(normalizedSearch);
         const matchesRoleText = normalizeText(member.role ?? "").includes(
           normalizedSearch
         );
 
-        if (!matchesName && !matchesRoleText) return false;
+        if (!matchesName && !matchesGithub && !matchesRoleText) return false;
       }
 
-      // 2. Filtro por Atuação
       if (filters.affinity) {
         const normalizedAffinity = normalizeText(member.affinity ?? "");
         if (normalizedAffinity !== filters.affinity) return false;
       }
 
-      // 3. Filtro por Cargo
       if (filters.role) {
         const normalizedRole = normalizeText(member.role ?? "");
         if (normalizedRole !== filters.role) return false;
       }
 
-      // 4. Filtro por Apto a Ensinar
       if (filters.canTeach) {
         const isMentor = Boolean(member.canTeach);
         if (filters.canTeach === "sim" && !isMentor) return false;
@@ -119,7 +115,7 @@ export default function ListagemFuncionarios() {
 
       return true;
     });
-  }, [searchQuery, filters]);
+  }, [searchQuery, filters, members]);
 
   const membersForList = useMemo(
     () =>
@@ -152,17 +148,53 @@ export default function ListagemFuncionarios() {
             Pesquise...
           </label>
 
-          {searchQuery && (
+            {searchQuery && (
+              <button
+                type="button"
+                className='search-clear-btn'
+                onClick={() => setSearchQuery('')}
+                aria-label="Limpar pesquisa"
+              >
+                ×
+              </button>
+            )}
+          </div>
+
+          <div ref={filtersRef} className='filter-wrapper'>
             <button
               type="button"
               className="search-clear-btn"
               onClick={() => setSearchQuery("")}
               aria-label="Limpar pesquisa"
             >
-              ×
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <line x1="4" y1="6" x2="20" y2="6" />
+                <line x1="7" y1="12" x2="17" y2="12" />
+                <line x1="10" y1="18" x2="14" y2="18" />
+              </svg>
+
+              <span>Filtros</span>
+
+              {activeFiltersCount > 0 && (
+                <span className='filter-badge'>{activeFiltersCount}</span>
+              )}
+
+              <img
+                src="/icon/IDown.svg"
+                alt=""
+                className={`button-icon filter-chevron ${isFiltersOpen ? 'open' : ''}`}
+              />
             </button>
-          )}
-        </div>
 
         <FilterMenu
           id="menu-filtros-funcionarios"
