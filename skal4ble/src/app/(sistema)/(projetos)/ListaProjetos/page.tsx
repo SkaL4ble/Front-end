@@ -1,10 +1,8 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import {
-  ListaP,
-  Project,
-} from "@/src/components/ui/(listas)/lista-projetos/lista";
+import React, { useState, useMemo, useRef, useEffect } from "react";
+import { ListaP } from "@/src/components/ui/(listas)/lista-projetos/lista";
+import { Projeto } from "@/src/@types/projeto";
 import FilterMenu, { FilterField } from "@/src/components/ui/filter/FilterMenu";
 
 const MS_PER_DAY = 1000 * 60 * 60 * 24;
@@ -16,9 +14,8 @@ const normalizeText = (text: string) =>
     .toLowerCase()
     .trim();
 
-// Aceita tanto "DD/MM/AAAA" quanto ISO (ex.: "2026-11-10") com segurança
-const parseDateSafe = (dateStr?: string) => {
-  if (!dateStr) return NaN;
+const parseDateSafe = (dateStr?: string | null) => {
+  if (!dateStr || dateStr === "N/A") return NaN;
 
   if (dateStr.includes("/")) {
     const [day, month, year] = dateStr.split("/").map(Number);
@@ -98,7 +95,39 @@ const PROJECT_FILTER_FIELDS: FilterField[] = [
 export default function ListagemProjetos() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState(INITIAL_FILTERS);
-  const [projects] = useState<Project[]>([]);
+  const [projects] = useState<Projeto[]>([]);
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
+    null
+  );
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+  const [today, setToday] = useState<number | null>(null);
+  const filtersRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const now = new Date();
+    setToday(
+      new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime()
+    );
+  }, []);
+
+  const activeFiltersCount = useMemo(
+    () => Object.values(filters).filter(Boolean).length,
+    [filters]
+  );
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        filtersRef.current &&
+        !filtersRef.current.contains(event.target as Node)
+      ) {
+        setIsFiltersOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleFilterChange = (key: string, value: string) => {
     setFilters((prev) => ({
@@ -113,30 +142,17 @@ export default function ListagemProjetos() {
 
   const filteredProjects = useMemo(() => {
     const normalizedSearch = normalizeText(searchQuery);
-    const now = new Date();
-    const today = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate()
-    ).getTime();
 
     return projects.filter((project) => {
-      const rawProject = project as Project & {
-        dataCriacao?: string;
-        prazo?: string;
-      };
-
       if (normalizedSearch) {
-        const matchesName = normalizeText(project.name).includes(
+        const matchesName = normalizeText(project.nome ?? "").includes(
           normalizedSearch
         );
         if (!matchesName) return false;
       }
 
-      if (filters.createdAt) {
-        const createdTime = parseDateSafe(
-          project.createdAt ?? rawProject.dataCriacao
-        );
+      if (filters.createdAt && today !== null) {
+        const createdTime = parseDateSafe(project.dataCriacao);
         if (Number.isNaN(createdTime)) return false;
         const daysAgo = Math.floor((today - createdTime) / MS_PER_DAY);
 
@@ -149,13 +165,11 @@ export default function ListagemProjetos() {
         if (filters.createdAt === "mais-90d" && daysAgo <= 90) return false;
       }
 
-      if (filters.deadline) {
-        const deadlineTime = parseDateSafe(
-          project.deadline ?? rawProject.prazo
-        );
+      if (filters.deadline && today !== null) {
+        const deadlineTime = parseDateSafe(project.prazo);
         if (Number.isNaN(deadlineTime)) return false;
         const daysUntil = Math.floor((deadlineTime - today) / MS_PER_DAY);
-        const isCompleted = normalizeText(project.status) === "concluido";
+        const isCompleted = normalizeText(project.status ?? "") === "concluido";
 
         if (filters.deadline === "atrasados" && (daysUntil >= 0 || isCompleted))
           return false;
@@ -167,7 +181,7 @@ export default function ListagemProjetos() {
       }
 
       if (filters.collaborators) {
-        const count = project.collaboratorsCount ?? 0;
+        const count = Number(project.quantidadeColaboradores ?? 0);
         if (filters.collaborators === "na" && count !== 0) return false;
         if (filters.collaborators === "1-4" && (count < 1 || count > 4))
           return false;
@@ -177,29 +191,30 @@ export default function ListagemProjetos() {
       }
 
       if (filters.type) {
-        const normalizedType = normalizeText(project.type);
+        const normalizedType = normalizeText(project.nomeTipo ?? "");
         if (filters.type === "eficiencia" && normalizedType !== "eficiencia") {
           return false;
         }
         if (
           filters.type === "nivelamento" &&
-          normalizedType !== "nivelamento"
+          !normalizedType.includes("nivelamento")
         ) {
           return false;
         }
       }
 
       if (filters.status) {
-        const normalizedStatus = normalizeText(project.status);
-        const deadlineTime = parseDateSafe(
-          project.deadline ?? rawProject.prazo
-        );
+        const normalizedStatus = normalizeText(project.status ?? "");
+        const deadlineTime = parseDateSafe(project.prazo);
         const isCompleted =
           normalizedStatus === "concluido" || normalizedStatus === "concluidos";
         const isOverdue =
           normalizedStatus === "atrasado" ||
           normalizedStatus === "atrasados" ||
-          (!isCompleted && !Number.isNaN(deadlineTime) && deadlineTime < today);
+          (!isCompleted &&
+            today !== null &&
+            !Number.isNaN(deadlineTime) &&
+            deadlineTime < today);
 
         if (
           filters.status === "em andamento" &&
@@ -217,10 +232,12 @@ export default function ListagemProjetos() {
 
       return true;
     });
-  }, [searchQuery, filters, projects]);
+  }, [searchQuery, filters, projects, today]);
 
-  const handleSelectProject = (project: Project) => {
-    console.log("Projeto clicado:", project);
+  const handleSelectProject = (project: Projeto) => {
+    setSelectedProjectId((prev) =>
+      prev === project.projetoId ? null : project.projetoId
+    );
   };
 
   return (
@@ -256,14 +273,54 @@ export default function ListagemProjetos() {
           )}
         </div>
 
-        <FilterMenu
-          id="menu-filtros-projetos"
-          ariaLabel="Filtros de projetos"
-          fields={PROJECT_FILTER_FIELDS}
-          values={filters}
-          onChange={handleFilterChange}
-          onClear={handleClearFilters}
-        />
+        <div ref={filtersRef} className="filter-wrapper">
+          <button
+            type="button"
+            className="filter-toggle-btn"
+            onClick={() => setIsFiltersOpen((prev) => !prev)}
+            aria-expanded={isFiltersOpen}
+            aria-controls="menu-filtros-projetos"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <line x1="4" y1="6" x2="20" y2="6" />
+              <line x1="7" y1="12" x2="17" y2="12" />
+              <line x1="10" y1="18" x2="14" y2="18" />
+            </svg>
+
+            <span>Filtros</span>
+
+            {activeFiltersCount > 0 && (
+              <span className="filter-badge">{activeFiltersCount}</span>
+            )}
+
+            <img
+              src="/icon/IDown.svg"
+              alt=""
+              className={`button-icon filter-chevron ${isFiltersOpen ? "open" : ""}`}
+            />
+          </button>
+
+          {isFiltersOpen && (
+            <FilterMenu
+              id="menu-filtros-projetos"
+              ariaLabel="Filtros de projetos"
+              fields={PROJECT_FILTER_FIELDS}
+              values={filters}
+              onChange={handleFilterChange}
+              onClear={handleClearFilters}
+            />
+          )}
+        </div>
       </div>
 
       <section
@@ -274,7 +331,7 @@ export default function ListagemProjetos() {
           <ListaP
             projects={filteredProjects}
             onSelectProject={handleSelectProject}
-            selectedProjectId={null}
+            selectedProjectId={selectedProjectId}
           />
         </div>
       </section>

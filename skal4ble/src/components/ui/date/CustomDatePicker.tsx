@@ -78,11 +78,15 @@ export function CustomDatePicker({
   const minParsed = useMemo(() => (minDate ? parseIsoDate(minDate) : null), [minDate]);
   const maxParsed = useMemo(() => (maxDate ? parseIsoDate(maxDate) : null), [maxDate]);
 
-  const initialViewDate = selectedDate ?? new Date();
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [viewYear, setViewYear] = useState(initialViewDate.getFullYear());
-  const [viewMonth, setViewMonth] = useState(initialViewDate.getMonth());
+  const [clientTodayIso, setClientTodayIso] = useState<string>("");
+  const [viewYear, setViewYear] = useState<number>(() =>
+    selectedDate ? selectedDate.getFullYear() : 2026
+  );
+  const [viewMonth, setViewMonth] = useState<number>(() =>
+    selectedDate ? selectedDate.getMonth() : 0
+  );
   const [coords, setCoords] = useState<PopoverCoords>({
     top: 0,
     left: 0,
@@ -91,6 +95,12 @@ export function CustomDatePicker({
 
   useEffect(() => {
     setMounted(true);
+    const now = new Date();
+    setClientTodayIso(toIsoDate(now));
+    if (!selectedDate) {
+      setViewYear(now.getFullYear());
+      setViewMonth(now.getMonth());
+    }
   }, []);
 
   useEffect(() => {
@@ -125,7 +135,6 @@ export function CustomDatePicker({
     } else if (spaceAbove >= popoverHeight + GAP) {
       top = rect.top - popoverHeight - GAP;
     } else {
-      // Caso a tela seja muito baixa, ancora dentro da área visível sem cortar topo/base
       top = Math.max(
         VIEWPORT_MARGIN,
         Math.min(
@@ -186,9 +195,6 @@ export function CustomDatePicker({
     const startWeekday = firstOfMonth.getDay(); // 0 = Domingo
     const gridStart = new Date(viewYear, viewMonth, 1 - startWeekday);
 
-    const today = new Date();
-    const todayIso = toIsoDate(today);
-
     return Array.from({ length: 42 }, (_, idx) => {
       const current = new Date(
         gridStart.getFullYear(),
@@ -198,7 +204,7 @@ export function CustomDatePicker({
       const iso = toIsoDate(current);
       const isOutsideMonth = current.getMonth() !== viewMonth;
       const isSelected = value === iso;
-      const isToday = todayIso === iso;
+      const isToday = Boolean(clientTodayIso) && clientTodayIso === iso;
 
       const isBeforeMin = minParsed ? current < minParsed : false;
       const isAfterMax = maxParsed ? current > maxParsed : false;
@@ -214,7 +220,7 @@ export function CustomDatePicker({
         isDisabled,
       };
     });
-  }, [viewYear, viewMonth, value, minParsed, maxParsed]);
+  }, [viewYear, viewMonth, value, minParsed, maxParsed, clientTodayIso]);
 
   const handlePrevMonth = () => {
     if (viewMonth === 0) {
@@ -250,6 +256,7 @@ export function CustomDatePicker({
       return;
     }
     const iso = toIsoDate(todayStart);
+    setClientTodayIso(iso);
     setViewYear(now.getFullYear());
     setViewMonth(now.getMonth());
     onChange(iso);

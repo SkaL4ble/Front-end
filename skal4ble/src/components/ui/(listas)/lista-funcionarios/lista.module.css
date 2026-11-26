@@ -1,3 +1,22 @@
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.avatarInitials {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fffdf4;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  user-select: none;
+}
+
 /* Expande 0.75rem à esquerda para a sombra não ser cortada pelo overflow */
 .wrapper {
   display: flex;

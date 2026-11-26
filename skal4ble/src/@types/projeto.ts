@@ -6,7 +6,7 @@ export interface Projeto
   linkRepositorio: string,
   autorId: string,
   nomeAutor: string,
-  statusId: 0,
+  statusId: number,
   status: string,
   tipoId: number,
   nomeTipo: string,
@@ -22,4 +22,14 @@ export interface CriarProjeto {
   linkRepositorio: string;
   statusProjetoId: number;
   tipoProjetoId: number;
+}
+
+export interface StatusProjeto{
+    statusProjetoId: number,
+    nomeStatusProjeto: string
+}
+
+export interface TipoProjeto{
+    tipoProjetoId: number,
+    nomeTipoProjeto: string
 }

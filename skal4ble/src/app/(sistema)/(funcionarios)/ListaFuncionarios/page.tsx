@@ -1,27 +1,12 @@
 "use client";
 
-import React, { useState, useMemo, useRef, useEffect } from "react";
-import {
-  ListaF,
-  Member,
-} from "@/src/components/ui/(listas)/lista-funcionarios/lista";
+import React, { useState, useMemo } from "react";
+import { ListaF } from "@/src/components/ui/(listas)/lista-funcionarios/lista";
+import { Usuario } from "@/src/@types/usuario";
+import { mockUsuarios } from "@/src/@types/mock";
 import FilterMenu, { FilterField } from "@/src/components/ui/filter/FilterMenu";
 
-type MemberItem = Member & {
-  canTeach?: boolean;
-};
-
-const mockMembers: MemberItem[] = [
-  { id: "1", name: "Kayo", role: "DEV Pleno", affinity: "Full-Stack", avatarUrl: "/avatars/kayo.png", canTeach: true },
-  { id: "2", name: "Mariana Silva", role: "DEV Sênior", affinity: "Back-End", avatarUrl: "/avatars/kayo.png", canTeach: true },
-  { id: "3", name: "Lucas Andrade", role: "DEV Júnior", affinity: "Front-End", avatarUrl: "/avatars/kayo.png", canTeach: false },
-  { id: "4", name: "Beatriz Costa", role: "Tech Lead", affinity: "Full-Stack", avatarUrl: "/avatars/kayo.png", canTeach: true },
-  { id: "5", name: "Rafael Souza", role: "DEV Pleno", affinity: "Back-End", avatarUrl: "/avatars/kayo.png", canTeach: false },
-  { id: "6", name: "Camila Rocha", role: "DEV Sênior", affinity: "Front-End", avatarUrl: "/avatars/kayo.png", canTeach: true },
-  { id: "7", name: "Pedro Henrique", role: "DEV Júnior", affinity: "Back-End", avatarUrl: "/avatars/kayo.png", canTeach: false },
-  { id: "8", name: "Juliana Lima", role: "DEV Pleno", affinity: "Front-End", avatarUrl: "/avatars/kayo.png", canTeach: true },
-];
-
+// Normaliza texto para comparação sem diferenciar acentos ou maiúsculas/minúsculas
 const normalizeText = (text: string) =>
   text
     .normalize("NFD")
@@ -30,14 +15,13 @@ const normalizeText = (text: string) =>
     .trim();
 
 const INITIAL_FILTERS = {
-  affinity: "",
-  role: "",
-  canTeach: "",
+  atuacao: "",
+  cargo: "",
 };
 
 const EMPLOYEE_FILTER_FIELDS: FilterField[] = [
   {
-    key: "affinity",
+    key: "atuacao",
     label: "Atuação",
     placeholder: "Todas as atuações",
     options: [
@@ -47,7 +31,7 @@ const EMPLOYEE_FILTER_FIELDS: FilterField[] = [
     ],
   },
   {
-    key: "role",
+    key: "cargo",
     label: "Cargo",
     placeholder: "Todos os cargos",
     options: [
@@ -57,41 +41,13 @@ const EMPLOYEE_FILTER_FIELDS: FilterField[] = [
       { value: "tech lead", label: "Tech Lead" },
     ],
   },
-  {
-    key: "canTeach",
-    label: "Apto a Ensinar",
-    placeholder: "Todos",
-    options: [
-      { value: "sim", label: "Sim" },
-      { value: "nao", label: "Não" },
-    ],
-  },
 ];
 
 export default function ListagemFuncionarios() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState(INITIAL_FILTERS);
-  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
-  const filtersRef = useRef<HTMLDivElement>(null);
-
-  const activeFiltersCount = useMemo(
-    () => Object.values(filters).filter(Boolean).length,
-    [filters]
-  );
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        filtersRef.current &&
-        !filtersRef.current.contains(event.target as Node)
-      ) {
-        setIsFiltersOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  const [members] = useState<Usuario[]>(mockUsuarios);
+  const [selectedMemberId, setSelectedMemberId] = useState<string | null>(null);
 
   const handleFilterChange = (key: string, value: string) => {
     setFilters((prev) => ({
@@ -107,49 +63,50 @@ export default function ListagemFuncionarios() {
   const filteredMembers = useMemo(() => {
     const normalizedSearch = normalizeText(searchQuery);
 
-    return mockMembers.filter((member) => {
+    return members.filter((member) => {
       if (normalizedSearch) {
-        const matchesName = normalizeText(member.name).includes(normalizedSearch);
-        const matchesRoleText = normalizeText(member.role ?? "").includes(
+        const matchesName = normalizeText(member.nomeUsuario ?? "").includes(
           normalizedSearch
         );
-        const matchesAffinityText = normalizeText(
-          member.affinity ?? ""
+        const matchesRole = normalizeText(member.cargo ?? "").includes(
+          normalizedSearch
+        );
+        const matchesAffinity = normalizeText(member.atuacao ?? "").includes(
+          normalizedSearch
+        );
+        const matchesEmailOrGithub = normalizeText(
+          member.emailPessoal ?? ""
         ).includes(normalizedSearch);
 
-        if (!matchesName && !matchesRoleText && !matchesAffinityText) {
+        if (
+          !matchesName &&
+          !matchesRole &&
+          !matchesAffinity &&
+          !matchesEmailOrGithub
+        ) {
           return false;
         }
       }
 
-      if (filters.affinity) {
-        const normalizedAffinity = normalizeText(member.affinity ?? "");
-        if (normalizedAffinity !== filters.affinity) return false;
+      if (filters.atuacao) {
+        const normalizedAffinity = normalizeText(member.atuacao ?? "");
+        if (normalizedAffinity !== filters.atuacao) return false;
       }
 
-      if (filters.role) {
-        const normalizedRole = normalizeText(member.role ?? "");
-        if (normalizedRole !== filters.role) return false;
-      }
-
-      if (filters.canTeach) {
-        const isMentor = Boolean(member.canTeach);
-        if (filters.canTeach === "sim" && !isMentor) return false;
-        if (filters.canTeach === "nao" && isMentor) return false;
+      if (filters.cargo) {
+        const normalizedRole = normalizeText(member.cargo ?? "");
+        if (normalizedRole !== filters.cargo) return false;
       }
 
       return true;
     });
-  }, [searchQuery, filters]);
+  }, [searchQuery, filters, members]);
 
-  const membersForList = useMemo<Member[]>(
-    () =>
-      filteredMembers.map(({ canTeach, ...member }) => ({
-        ...member,
-        train: member.train ?? (canTeach ? "Sim" : "Não"),
-      })),
-    [filteredMembers]
-  );
+  const handleSelectMember = (member: Usuario) => {
+    setSelectedMemberId((prev) =>
+      prev === member.usuarioId ? null : member.usuarioId
+    );
+  };
 
   return (
     <>
@@ -157,6 +114,7 @@ export default function ListagemFuncionarios() {
         <h1>Lista de Funcionários</h1>
       </header>
 
+      {/* Pesquisa e menu de filtros alinhados abaixo do cabeçalho */}
       <div className="projetos-controls">
         <div className="campo-form header-search">
           <img src="/icon/IPesquisa.svg" alt="" className="input-icon" />
@@ -184,54 +142,14 @@ export default function ListagemFuncionarios() {
           )}
         </div>
 
-        <div ref={filtersRef} className="filter-wrapper">
-          <button
-            type="button"
-            className="filter-toggle-btn"
-            onClick={() => setIsFiltersOpen((prev) => !prev)}
-            aria-expanded={isFiltersOpen}
-            aria-controls="menu-filtros-funcionarios"
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <line x1="4" y1="6" x2="20" y2="6" />
-              <line x1="7" y1="12" x2="17" y2="12" />
-              <line x1="10" y1="18" x2="14" y2="18" />
-            </svg>
-
-            <span>Filtros</span>
-
-            {activeFiltersCount > 0 && (
-              <span className="filter-badge">{activeFiltersCount}</span>
-            )}
-
-            <img
-              src="/icon/IDown.svg"
-              alt=""
-              className={`button-icon filter-chevron ${isFiltersOpen ? "open" : ""}`}
-            />
-          </button>
-
-          {isFiltersOpen && (
-            <FilterMenu
-              id="menu-filtros-funcionarios"
-              ariaLabel="Filtros de funcionários"
-              fields={EMPLOYEE_FILTER_FIELDS}
-              values={filters}
-              onChange={handleFilterChange}
-              onClear={handleClearFilters}
-            />
-          )}
-        </div>
+        <FilterMenu
+          id="menu-filtros-funcionarios"
+          ariaLabel="Filtros de funcionários"
+          fields={EMPLOYEE_FILTER_FIELDS}
+          values={filters}
+          onChange={handleFilterChange}
+          onClear={handleClearFilters}
+        />
       </div>
 
       <section
@@ -239,7 +157,11 @@ export default function ListagemFuncionarios() {
         style={{ minHeight: 0, alignItems: "stretch" }}
       >
         <div style={{ flex: 1, minWidth: 0, width: "100%", height: "95%" }}>
-          <ListaF members={membersForList} />
+          <ListaF
+            members={filteredMembers}
+            onSelectMember={handleSelectMember}
+            selectedMemberId={selectedMemberId}
+          />
         </div>
       </section>
     </>

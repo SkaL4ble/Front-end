@@ -276,7 +276,7 @@ div {
 }
 
 .padding-sidebar {
-  padding: 1.5rem 2rem;
+  padding: 1rem 2rem 1.5rem 2rem;
 }
 
 .hidden {
@@ -307,8 +307,16 @@ header {
 .header-projetos,
 .header-form {
   width: 100%;
-  padding-bottom: 0.5rem;
+  padding-top: 0;
+  padding-bottom: 0.65rem;
   border-bottom: 2px solid var(--preto);
+}
+
+.header-projetos h1,
+.header-form h1 {
+  font-size: 3rem;
+  line-height: 1.2;
+  margin: 0;
 }
 
 .header-projetos {

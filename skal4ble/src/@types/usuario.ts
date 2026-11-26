@@ -2,12 +2,10 @@ export interface Usuario {
     usuarioId: string,
     nomeUsuario: string,
     emailPessoal: string,
-    tipoUsuario: string,
+    tipoUsuario?: string,
     cargo: string,
     atuacao: string,
     imagem: string,
-
-
 }
 export interface ListarFuncionarios{
     usuarioId: string,
