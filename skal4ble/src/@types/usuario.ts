@@ -11,22 +11,27 @@ export interface Usuario {
     fotoFuncionario?: string;
 }
 
-export interface ListarUsuarios{
+export interface ListarUsuarios {
     usuarioId: string,
-    nomeUsuario:string,
-    emailPessoal:string,
-    cargo:string,
-    atuacao:string
+    nomeUsuario: string,
+    emailPessoal: string,
+    cargo: string,
+    atuacao: string
 }
+
+
+
 
 export interface CriarFuncionario {
     nomeUsuario: string;
-    nomeGithub: string;
     emailPessoal: string;
-    emailGithub: string;
-    atuacaoId: number;
+    nomeGit: string;
+    emailsGit: string;
+    dataAdmissao?: string | null;
     cargoId: number;
-    dataInsercao?: string | Date;
-    aptoAEnsinar: boolean;
-    fotoFuncionario?: string;
+    atuacaoId: number;
+    imagem?: string | null;
+    aptoAEnsinar?: string | null;
 }
+
+

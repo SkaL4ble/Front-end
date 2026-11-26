@@ -3,7 +3,6 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-
 import { CriarFuncionario } from "@/src/@types/usuario";
 import { cargo } from "@/src/@types/cargo";
 import { atuacao } from "@/src/@types/atuacao";
@@ -23,6 +22,10 @@ import {
 import { cargoService } from "@/src/services/cargoService";
 import { atuacaoService } from "@/src/services/atuacaoService";
 import { UsuarioService } from "@/src/services/UsuarioService";
+
+// ==========================================
+// ÍCONE DO GITHUB
+// ==========================================
 
 function GithubIcon({
     size = 18,
@@ -49,7 +52,10 @@ function GithubIcon({
     );
 }
 
-// Converte a imagem para Base64
+// ==========================================
+// CONVERTER IMAGEM PARA BASE64
+// ==========================================
+
 function arquivoParaBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -68,6 +74,10 @@ function arquivoParaBase64(file: File): Promise<string> {
     });
 }
 
+// ==========================================
+// COMPONENTE PRINCIPAL
+// ==========================================
+
 export default function CadastroFuncionarios() {
     const router = useRouter();
 
@@ -84,7 +94,10 @@ export default function CadastroFuncionarios() {
     const [cargos, setCargos] = useState<cargo[]>([]);
     const [atuacoes, setAtuacoes] = useState<atuacao[]>([]);
 
-    // Listagem de cargos
+    // ==========================================
+    // LISTAR CARGOS
+    // ==========================================
+
     async function listarCargoUsuario() {
         try {
             const listaCargo = await cargoService.ListarCargo();
@@ -94,7 +107,10 @@ export default function CadastroFuncionarios() {
         }
     }
 
-    // Listagem de atuações
+    // ==========================================
+    // LISTAR ATUAÇÕES
+    // ==========================================
+
     async function listarAtuacaoUsuario() {
         try {
             const listaAtuacao = await atuacaoService.ListarAtuacao();
@@ -104,13 +120,19 @@ export default function CadastroFuncionarios() {
         }
     }
 
-    // Carrega os selects ao abrir a página
+    // ==========================================
+    // CARREGAR SELECTS
+    // ==========================================
+
     useEffect(() => {
         listarCargoUsuario();
         listarAtuacaoUsuario();
     }, []);
 
-    // Gerenciamento do preview da imagem
+    // ==========================================
+    // PREVIEW DA IMAGEM
+    // ==========================================
+
     useEffect(() => {
         if (!selectedFile) {
             setPreviewUrl(null);
@@ -118,7 +140,6 @@ export default function CadastroFuncionarios() {
         }
 
         const objectUrl = URL.createObjectURL(selectedFile);
-
         setPreviewUrl(objectUrl);
 
         return () => {
@@ -126,7 +147,10 @@ export default function CadastroFuncionarios() {
         };
     }, [selectedFile]);
 
-    // Seleção de arquivo
+    // ==========================================
+    // SELECIONAR IMAGEM
+    // ==========================================
+
     const handleFileChange = (
         e: React.ChangeEvent<HTMLInputElement>
     ) => {
@@ -140,8 +164,14 @@ export default function CadastroFuncionarios() {
             return;
         }
 
-        if (!file.type.startsWith("image/")) {
-            alert("Selecione um arquivo de imagem válido.");
+        const formatosAceitos = [
+            "image/jpeg",
+            "image/png",
+            "image/webp",
+        ];
+
+        if (!formatosAceitos.includes(file.type)) {
+            alert("Selecione uma imagem JPG, PNG ou WEBP.");
             e.target.value = "";
             return;
         }
@@ -149,7 +179,10 @@ export default function CadastroFuncionarios() {
         setSelectedFile(file);
     };
 
-    // Arrastar e soltar imagem
+    // ==========================================
+    // ARRASTAR E SOLTAR IMAGEM
+    // ==========================================
+
     const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         setIsDragging(false);
@@ -163,8 +196,14 @@ export default function CadastroFuncionarios() {
             return;
         }
 
-        if (!file.type.startsWith("image/")) {
-            alert("Selecione um arquivo de imagem válido.");
+        const formatosAceitos = [
+            "image/jpeg",
+            "image/png",
+            "image/webp",
+        ];
+
+        if (!formatosAceitos.includes(file.type)) {
+            alert("Selecione uma imagem JPG, PNG ou WEBP.");
             return;
         }
 
@@ -175,7 +214,10 @@ export default function CadastroFuncionarios() {
         }
     };
 
-    // Cadastro do funcionário
+    // ==========================================
+    // CADASTRAR FUNCIONÁRIO
+    // ==========================================
+
     async function SalvarUsuario(
         e: React.FormEvent<HTMLFormElement>
     ) {
@@ -190,67 +232,102 @@ export default function CadastroFuncionarios() {
 
             const formData = new FormData(form);
 
+            // Recuperar IDs
             const cargoId = Number(formData.get("cargo"));
             const atuacaoId = Number(formData.get("atuacao"));
 
-            if (!cargoId || !atuacaoId) {
-                alert("Selecione um cargo e uma atuação.");
+            // Recuperar data
+            const dataAdmissao = String(
+                formData.get("dataAdmissao") ?? ""
+            );
+
+            // Recuperar aptidão
+            const aptoAEnsinar = String(
+                formData.get("aptoAEnsinar") ?? ""
+            );
+
+            // Validar cargo
+            if (!Number.isInteger(cargoId) || cargoId <= 0) {
+                alert("Selecione um cargo válido.");
                 return;
             }
 
+            // Validar atuação
+            if (!Number.isInteger(atuacaoId) || atuacaoId <= 0) {
+                alert("Selecione uma atuação válida.");
+                return;
+            }
+
+            // Validar data
+            if (!dataAdmissao) {
+                alert("Informe a data de admissão.");
+                return;
+            }
+
+            // Validar aptidão
+            if (!aptoAEnsinar) {
+                alert("Informe se o funcionário está apto a ensinar.");
+                return;
+            }
+
+            // Montar objeto de acordo com CriarUsuarioDto
             const dados: CriarFuncionario = {
                 nomeUsuario: String(
                     formData.get("nome") ?? ""
-                ).trim(),
-
-                nomeGithub: String(
-                    formData.get("githubUser") ?? ""
                 ).trim(),
 
                 emailPessoal: String(
                     formData.get("emailPessoal") ?? ""
                 ).trim(),
 
-                emailGithub: String(
+                nomeGit: String(
+                    formData.get("githubUser") ?? ""
+                ).trim(),
+
+                emailsGit: String(
                     formData.get("githubEmail") ?? ""
                 ).trim(),
 
+                dataAdmissao: `${dataAdmissao}T00:00:00`,
+
                 cargoId,
+
                 atuacaoId,
 
-                dataInsercao: String(
-                    formData.get("dataInsercao") ?? ""
-                ),
+                aptoAEnsinar,
 
-                aptoAEnsinar:
-                    formData.get("aptoEnsinar") === "sim",
-
-                fotoFuncionario: selectedFile
+                imagem: selectedFile
                     ? await arquivoParaBase64(selectedFile)
-                    : undefined,
+                    : null,
             };
 
-            console.log("Dados enviados:", dados);
+            console.log("Dados enviados para API:", dados);
 
-            const resposta =
-                await UsuarioService.CadastrarUsuario(dados);
+            // POST /api/Usuario
+            await UsuarioService.CadastrarUsuario(dados);
 
-            console.log("Funcionário cadastrado:", resposta);
+            console.log("Funcionário cadastrado com sucesso!");
 
             alert("Funcionário cadastrado com sucesso!");
 
+            // Limpar formulário
             form.reset();
+
             setSelectedFile(null);
             setIsPreviewOpen(false);
 
-        } catch (error) {
+        } catch (error: any) {
             console.error("Erro ao cadastrar funcionário:", error);
 
-            alert("Não foi possível cadastrar o funcionário.");
+
         } finally {
             setIsLoading(false);
         }
     }
+
+    // ==========================================
+    // RENDERIZAÇÃO
+    // ==========================================
 
     return (
         <>
@@ -262,9 +339,11 @@ export default function CadastroFuncionarios() {
                 onSubmit={SalvarUsuario}
                 className="container-25op form-card flex-1 panel-enter"
             >
-                {/* Seção 1: Dados pessoais e GitHub */}
+
+                {/* SEÇÃO 1: DADOS PESSOAIS E GITHUB */}
 
                 <section className="form-section-card">
+
                     <div className="form-section-header">
                         <User
                             size={18}
@@ -334,7 +413,7 @@ export default function CadastroFuncionarios() {
                             </div>
                         </div>
 
-                        {/* Usuário GitHub */}
+                        {/* Nome GitHub */}
 
                         <div className="form-group">
                             <label
@@ -394,13 +473,14 @@ export default function CadastroFuncionarios() {
                     </div>
                 </section>
 
-                {/* Seção 2: Informações profissionais e registro */}
+                {/* SEÇÃO 2: INFORMAÇÕES PROFISSIONAIS E REGISTRO */}
 
                 <div className="form-sections-row">
 
                     {/* Informações profissionais */}
 
                     <section className="form-section-card">
+
                         <div className="form-section-header">
                             <Briefcase
                                 size={18}
@@ -501,6 +581,7 @@ export default function CadastroFuncionarios() {
                     {/* Ensino e registro */}
 
                     <section className="form-section-card">
+
                         <div className="form-section-header">
                             <GraduationCap
                                 size={18}
@@ -513,21 +594,21 @@ export default function CadastroFuncionarios() {
 
                         <div className="form-section-grid-2">
 
-                            {/* Data de inserção */}
+                            {/* Data de admissão */}
 
                             <div className="form-group">
                                 <label
-                                    htmlFor="dataInsercao"
+                                    htmlFor="dataAdmissao"
                                     className="form-field-label"
                                 >
-                                    Data de Inserção{" "}
+                                    Data de Admissão{" "}
                                     <span className="required-mark">*</span>
                                 </label>
 
                                 <input
-                                    id="dataInsercao"
+                                    id="dataAdmissao"
                                     type="date"
-                                    name="dataInsercao"
+                                    name="dataAdmissao"
                                     className="input-card"
                                     required
                                 />
@@ -537,7 +618,7 @@ export default function CadastroFuncionarios() {
 
                             <div className="form-group">
                                 <label
-                                    htmlFor="aptoEnsinar"
+                                    htmlFor="aptoAEnsinar"
                                     className="form-field-label"
                                 >
                                     Apto a Ensinar{" "}
@@ -546,8 +627,8 @@ export default function CadastroFuncionarios() {
 
                                 <div className="campo-select">
                                     <select
-                                        name="aptoEnsinar"
-                                        id="aptoEnsinar"
+                                        name="aptoAEnsinar"
+                                        id="aptoAEnsinar"
                                         className="select select-card"
                                         defaultValue=""
                                         required
@@ -570,11 +651,13 @@ export default function CadastroFuncionarios() {
 
                         </div>
                     </section>
+
                 </div>
 
-                {/* Seção 3: Foto do funcionário */}
+                {/* SEÇÃO 3: FOTO DO FUNCIONÁRIO */}
 
                 <section className="form-section-card">
+
                     <div className="form-section-header">
                         <Camera
                             size={18}
@@ -586,9 +669,8 @@ export default function CadastroFuncionarios() {
                     </div>
 
                     <div
-                        className={`file-dropzone ${
-                            isDragging ? "dragging" : ""
-                        } ${selectedFile ? "has-file" : ""}`}
+                        className={`file-dropzone ${isDragging ? "dragging" : ""
+                            } ${selectedFile ? "has-file" : ""}`}
                         onClick={() => fileInputRef.current?.click()}
                         onDragOver={(e) => {
                             e.preventDefault();
@@ -597,6 +679,7 @@ export default function CadastroFuncionarios() {
                         onDragLeave={() => setIsDragging(false)}
                         onDrop={handleDrop}
                     >
+
                         <input
                             ref={fileInputRef}
                             type="file"
@@ -608,6 +691,7 @@ export default function CadastroFuncionarios() {
                         />
 
                         <div className="file-dropzone-content">
+
                             <div className="file-dropzone-badge">
                                 <Upload
                                     size={21}
@@ -616,6 +700,7 @@ export default function CadastroFuncionarios() {
                             </div>
 
                             <div className="file-dropzone-text">
+
                                 <span className="file-dropzone-title">
                                     {selectedFile
                                         ? selectedFile.name
@@ -625,10 +710,11 @@ export default function CadastroFuncionarios() {
                                 <span className="file-dropzone-subtitle">
                                     {selectedFile
                                         ? `${(
-                                              selectedFile.size / 1024
-                                          ).toFixed(0)} KB — clique para substituir`
+                                            selectedFile.size / 1024
+                                        ).toFixed(0)} KB — clique para substituir`
                                         : "Formatos aceitos: JPG, PNG ou WEBP (máx. 2 MB)"}
                                 </span>
+
                             </div>
                         </div>
 
@@ -649,12 +735,14 @@ export default function CadastroFuncionarios() {
                                 Visualizar
                             </button>
                         )}
+
                     </div>
                 </section>
 
-                {/* Rodapé de ações */}
+                {/* RODAPÉ DE AÇÕES */}
 
                 <div className="form-actions-start">
+
                     <button
                         type="button"
                         onClick={() => router.back()}
@@ -669,22 +757,29 @@ export default function CadastroFuncionarios() {
                         className="big-button"
                         disabled={isLoading}
                     >
-                        {isLoading ? "Cadastrando..." : "Cadastrar"}
+                        {isLoading
+                            ? "Cadastrando..."
+                            : "Cadastrar"}
                     </button>
+
                 </div>
+
             </form>
 
-            {/* Modal de preview da foto */}
+            {/* MODAL DE PREVIEW DA FOTO */}
 
             {isPreviewOpen && selectedFile && previewUrl && (
+
                 <div
                     className="image-preview-overlay"
                     onClick={() => setIsPreviewOpen(false)}
                 >
+
                     <div
                         className="image-preview-modal"
                         onClick={(e) => e.stopPropagation()}
                     >
+
                         <div className="image-preview-header">
                             <h3>Preview da Foto</h3>
 
@@ -710,6 +805,7 @@ export default function CadastroFuncionarios() {
                         </div>
 
                         <div className="image-preview-meta">
+
                             <span className="image-preview-filename">
                                 {selectedFile.name}
                             </span>
@@ -717,10 +813,13 @@ export default function CadastroFuncionarios() {
                             <span>
                                 {(selectedFile.size / 1024).toFixed(0)} KB
                             </span>
+
                         </div>
+
                     </div>
                 </div>
             )}
+
         </>
     );
 }
