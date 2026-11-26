@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import {
   ListaF,
   Member,
@@ -22,7 +22,6 @@ const mockMembers: MemberItem[] = [
   { id: "8", name: "Juliana Lima", role: "DEV Pleno", affinity: "Front-End", avatarUrl: "/avatars/kayo.png", canTeach: true },
 ];
 
-// Normaliza texto para comparação sem diferenciar acentos ou maiúsculas/minúsculas
 const normalizeText = (text: string) =>
   text
     .normalize("NFD")
@@ -72,6 +71,27 @@ const EMPLOYEE_FILTER_FIELDS: FilterField[] = [
 export default function ListagemFuncionarios() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState(INITIAL_FILTERS);
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+  const filtersRef = useRef<HTMLDivElement>(null);
+
+  const activeFiltersCount = useMemo(
+    () => Object.values(filters).filter(Boolean).length,
+    [filters]
+  );
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        filtersRef.current &&
+        !filtersRef.current.contains(event.target as Node)
+      ) {
+        setIsFiltersOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleFilterChange = (key: string, value: string) => {
     setFilters((prev) => ({
@@ -87,14 +107,19 @@ export default function ListagemFuncionarios() {
   const filteredMembers = useMemo(() => {
     const normalizedSearch = normalizeText(searchQuery);
 
-    return members.filter((member) => {
+    return mockMembers.filter((member) => {
       if (normalizedSearch) {
         const matchesName = normalizeText(member.name).includes(normalizedSearch);
         const matchesRoleText = normalizeText(member.role ?? "").includes(
           normalizedSearch
         );
+        const matchesAffinityText = normalizeText(
+          member.affinity ?? ""
+        ).includes(normalizedSearch);
 
-        if (!matchesName && !matchesGithub && !matchesRoleText) return false;
+        if (!matchesName && !matchesRoleText && !matchesAffinityText) {
+          return false;
+        }
       }
 
       if (filters.affinity) {
@@ -115,13 +140,13 @@ export default function ListagemFuncionarios() {
 
       return true;
     });
-  }, [searchQuery, filters, members]);
+  }, [searchQuery, filters]);
 
-  const membersForList = useMemo(
+  const membersForList = useMemo<Member[]>(
     () =>
-      filteredMembers.map((member) => ({
+      filteredMembers.map(({ canTeach, ...member }) => ({
         ...member,
-        train: member.train ?? (member.canTeach ? "Sim" : "Não"),
+        train: member.train ?? (canTeach ? "Sim" : "Não"),
       })),
     [filteredMembers]
   );
@@ -132,7 +157,6 @@ export default function ListagemFuncionarios() {
         <h1>Lista de Funcionários</h1>
       </header>
 
-      {/* Pesquisa e filtros abaixo da linha, alinhados à esquerda com o título */}
       <div className="projetos-controls">
         <div className="campo-form header-search">
           <img src="/icon/IPesquisa.svg" alt="" className="input-icon" />
@@ -148,62 +172,66 @@ export default function ListagemFuncionarios() {
             Pesquise...
           </label>
 
-            {searchQuery && (
-              <button
-                type="button"
-                className='search-clear-btn'
-                onClick={() => setSearchQuery('')}
-                aria-label="Limpar pesquisa"
-              >
-                ×
-              </button>
-            )}
-          </div>
-
-          <div ref={filtersRef} className='filter-wrapper'>
+          {searchQuery && (
             <button
               type="button"
               className="search-clear-btn"
               onClick={() => setSearchQuery("")}
               aria-label="Limpar pesquisa"
             >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <line x1="4" y1="6" x2="20" y2="6" />
-                <line x1="7" y1="12" x2="17" y2="12" />
-                <line x1="10" y1="18" x2="14" y2="18" />
-              </svg>
-
-              <span>Filtros</span>
-
-              {activeFiltersCount > 0 && (
-                <span className='filter-badge'>{activeFiltersCount}</span>
-              )}
-
-              <img
-                src="/icon/IDown.svg"
-                alt=""
-                className={`button-icon filter-chevron ${isFiltersOpen ? 'open' : ''}`}
-              />
+              ×
             </button>
+          )}
+        </div>
 
-        <FilterMenu
-          id="menu-filtros-funcionarios"
-          ariaLabel="Filtros de funcionários"
-          fields={EMPLOYEE_FILTER_FIELDS}
-          values={filters}
-          onChange={handleFilterChange}
-          onClear={handleClearFilters}
-        />
+        <div ref={filtersRef} className="filter-wrapper">
+          <button
+            type="button"
+            className="filter-toggle-btn"
+            onClick={() => setIsFiltersOpen((prev) => !prev)}
+            aria-expanded={isFiltersOpen}
+            aria-controls="menu-filtros-funcionarios"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <line x1="4" y1="6" x2="20" y2="6" />
+              <line x1="7" y1="12" x2="17" y2="12" />
+              <line x1="10" y1="18" x2="14" y2="18" />
+            </svg>
+
+            <span>Filtros</span>
+
+            {activeFiltersCount > 0 && (
+              <span className="filter-badge">{activeFiltersCount}</span>
+            )}
+
+            <img
+              src="/icon/IDown.svg"
+              alt=""
+              className={`button-icon filter-chevron ${isFiltersOpen ? "open" : ""}`}
+            />
+          </button>
+
+          {isFiltersOpen && (
+            <FilterMenu
+              id="menu-filtros-funcionarios"
+              ariaLabel="Filtros de funcionários"
+              fields={EMPLOYEE_FILTER_FIELDS}
+              values={filters}
+              onChange={handleFilterChange}
+              onClear={handleClearFilters}
+            />
+          )}
+        </div>
       </div>
 
       <section

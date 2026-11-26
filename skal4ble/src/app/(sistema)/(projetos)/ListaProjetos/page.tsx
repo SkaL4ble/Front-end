@@ -7,20 +7,8 @@ import {
 } from "@/src/components/ui/(listas)/lista-projetos/lista";
 import FilterMenu, { FilterField } from "@/src/components/ui/filter/FilterMenu";
 
-const mockProjects: Project[] = [
-  { id: "1", name: "Portal Administrativo", createdAt: "10/11/2026", deadline: "20/11/2026", collaboratorsCount: 7, status: "Em Andamento", type: "Eficiência" },
-  { id: "2", name: "Onboarding Técnico", createdAt: "25/10/2026", deadline: "05/12/2026", collaboratorsCount: 3, status: "Em Andamento", type: "Nivelamento" },
-  { id: "3", name: "Migração Cloud API", createdAt: "02/08/2026", deadline: "28/08/2026", collaboratorsCount: 6, status: "Concluído", type: "Eficiência" },
-  { id: "4", name: "Design System Interno", createdAt: "10/08/2026", deadline: "05/09/2026", collaboratorsCount: 2, status: "Concluído", type: "Nivelamento" },
-  { id: "5", name: "Pesquisa de Arquitetura", createdAt: "01/11/2026", deadline: "10/01/2027", collaboratorsCount: 0, status: "Em Andamento", type: "Nivelamento" },
-  { id: "6", name: "Automação de Deploy", createdAt: "21/08/2026", deadline: "10/10/2026", collaboratorsCount: 5, status: "Atrasado", type: "Eficiência" },
-  { id: "7", name: "Dashboard Analytics", createdAt: "01/09/2026", deadline: "25/09/2026", collaboratorsCount: 4, status: "Concluído", type: "Eficiência" },
-  { id: "8", name: "Workshop React & Next", createdAt: "12/09/2026", deadline: "30/10/2026", collaboratorsCount: 8, status: "Atrasado", type: "Nivelamento" },
-];
-
 const MS_PER_DAY = 1000 * 60 * 60 * 24;
 
-// Normaliza texto para comparação sem diferenciar acentos ou maiúsculas/minúsculas
 const normalizeText = (text: string) =>
   text
     .normalize("NFD")
@@ -28,10 +16,20 @@ const normalizeText = (text: string) =>
     .toLowerCase()
     .trim();
 
-// Converte "DD/MM/AAAA" para timestamp à meia-noite local
-const parseDateBR = (dateStr: string) => {
-  const [day, month, year] = dateStr.split("/").map(Number);
-  return new Date(year, month - 1, day).getTime();
+// Aceita tanto "DD/MM/AAAA" quanto ISO (ex.: "2026-11-10") com segurança
+const parseDateSafe = (dateStr?: string) => {
+  if (!dateStr) return NaN;
+
+  if (dateStr.includes("/")) {
+    const [day, month, year] = dateStr.split("/").map(Number);
+    if (!day || !month || !year) return NaN;
+    return new Date(year, month - 1, day).getTime();
+  }
+
+  const parsed = Date.parse(dateStr);
+  if (Number.isNaN(parsed)) return NaN;
+  const d = new Date(parsed);
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
 };
 
 const INITIAL_FILTERS = {
@@ -100,7 +98,7 @@ const PROJECT_FILTER_FIELDS: FilterField[] = [
 export default function ListagemProjetos() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState(INITIAL_FILTERS);
-  const [projetos, setProjetos] = useState<Projeto[]>([]);
+  const [projects] = useState<Project[]>([]);
 
   const handleFilterChange = (key: string, value: string) => {
     setFilters((prev) => ({
@@ -113,8 +111,6 @@ export default function ListagemProjetos() {
     setFilters(INITIAL_FILTERS);
   };
 
-  const projects = useMemo(() => projetos, [projetos]);
-
   const filteredProjects = useMemo(() => {
     const normalizedSearch = normalizeText(searchQuery);
     const now = new Date();
@@ -124,9 +120,12 @@ export default function ListagemProjetos() {
       now.getDate()
     ).getTime();
 
-
     return projects.filter((project) => {
-      // 1. Filtro por texto (nome)
+      const rawProject = project as Project & {
+        dataCriacao?: string;
+        prazo?: string;
+      };
+
       if (normalizedSearch) {
         const matchesName = normalizeText(project.name).includes(
           normalizedSearch
@@ -134,9 +133,11 @@ export default function ListagemProjetos() {
         if (!matchesName) return false;
       }
 
-      // 2. Filtro por Criação
       if (filters.createdAt) {
-        const createdTime = parseDateBR(project.dataCriacao);
+        const createdTime = parseDateSafe(
+          project.createdAt ?? rawProject.dataCriacao
+        );
+        if (Number.isNaN(createdTime)) return false;
         const daysAgo = Math.floor((today - createdTime) / MS_PER_DAY);
 
         if (filters.createdAt === "7d" && (daysAgo < 0 || daysAgo > 7))
@@ -148,9 +149,11 @@ export default function ListagemProjetos() {
         if (filters.createdAt === "mais-90d" && daysAgo <= 90) return false;
       }
 
-      // 3. Filtro por Prazo
       if (filters.deadline) {
-        const deadlineTime = parseDateBR(project.prazo);
+        const deadlineTime = parseDateSafe(
+          project.deadline ?? rawProject.prazo
+        );
+        if (Number.isNaN(deadlineTime)) return false;
         const daysUntil = Math.floor((deadlineTime - today) / MS_PER_DAY);
         const isCompleted = normalizeText(project.status) === "concluido";
 
@@ -163,7 +166,6 @@ export default function ListagemProjetos() {
         if (filters.deadline === "mais-30d" && daysUntil <= 30) return false;
       }
 
-      // 4. Filtro por N° de Colaboradores
       if (filters.collaborators) {
         const count = project.collaboratorsCount ?? 0;
         if (filters.collaborators === "na" && count !== 0) return false;
@@ -174,7 +176,6 @@ export default function ListagemProjetos() {
         if (filters.collaborators === "9+" && count < 9) return false;
       }
 
-      // 5. Filtro por Tipo
       if (filters.type) {
         const normalizedType = normalizeText(project.type);
         if (filters.type === "eficiencia" && normalizedType !== "eficiencia") {
@@ -188,16 +189,17 @@ export default function ListagemProjetos() {
         }
       }
 
-      // 6. Filtro por Status
       if (filters.status) {
         const normalizedStatus = normalizeText(project.status);
-        const deadlineTime = parseDateBR(project.prazo);
+        const deadlineTime = parseDateSafe(
+          project.deadline ?? rawProject.prazo
+        );
         const isCompleted =
           normalizedStatus === "concluido" || normalizedStatus === "concluidos";
         const isOverdue =
           normalizedStatus === "atrasado" ||
           normalizedStatus === "atrasados" ||
-          (!isCompleted && deadlineTime < today);
+          (!isCompleted && !Number.isNaN(deadlineTime) && deadlineTime < today);
 
         if (
           filters.status === "em andamento" &&
@@ -227,7 +229,6 @@ export default function ListagemProjetos() {
         <h1>Lista de Projetos</h1>
       </header>
 
-      {/* Pesquisa e filtros abaixo da linha, alinhados à esquerda com o título */}
       <div className="projetos-controls">
         <div className="campo-form header-search">
           <img src="/icon/IPesquisa.svg" alt="" className="input-icon" />
