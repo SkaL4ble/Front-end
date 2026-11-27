@@ -1,4 +1,4 @@
-  "use client";
+"use client";
 
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import CustomSelect from "@/src/components/ui/select/CustomSelect";
 import { CustomDatePicker } from "@/src/components/ui/date/CustomDatePicker";
+import styles from "./NP.module.css";
 
 const TECNOLOGIAS_DISPONIVEIS = [
   "JavaScript",
@@ -124,15 +125,15 @@ export default function CadastroProjetos() {
     // Lógica de cadastro aqui (prazo e selectedTechs já estão disponíveis no estado)
   };
 
-    return (
-      <>
-        <header className="header-form">
-          <h1>Novo Projeto</h1>
-        </header>
+  return (
+    <>
+      <header className={`header-form ${styles.formWrapperHeader}`}>
+        <h1>Novo Projeto</h1>
+      </header>
 
       <form
         onSubmit={handleSubmit}
-        className="container-25op form-card flex-1 panel-enter"
+        className={`container-25op form-card flex-1 panel-enter ${styles.formWrapper}`}
       >
         {/* Seção 1: Dados do Projeto */}
         <section className="form-section-card">
@@ -337,7 +338,7 @@ export default function CadastroProjetos() {
         </section>
 
         {/* Seção 2: Cronograma e Status + Repositório */}
-        <div className="form-sections-row">
+        <div className={`form-sections-row ${styles.equalRow}`}>
           <section className="form-section-card">
             <div className="form-section-header">
               <CalendarClock

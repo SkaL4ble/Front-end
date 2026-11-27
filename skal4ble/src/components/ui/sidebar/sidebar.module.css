@@ -6,13 +6,11 @@
   width: 5rem;
   flex-shrink: 0;
   height: calc(100vh - 4rem);
-  /* Transição do branco base para os roxos claros */
-  background: linear-gradient(180deg,
-      rgba(255, 253, 244, 0.80) 50%,
-      /* var(--branco) com 80% opacidade */
-      rgba(188, 177, 248, 0.70) 100%
-      /* var(--roxo-claro2) com 70% opacidade */
-    );
+  background: linear-gradient(
+    180deg,
+    rgba(255, 253, 244, 0.80) 50%,
+    rgba(188, 177, 248, 0.70) 100%
+  );
   padding: 1rem 0.75rem;
   box-sizing: border-box;
   position: relative;
@@ -20,7 +18,6 @@
   overflow: hidden;
   box-shadow: var(--sombra);
   transition: width 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-
   font-family: var(--font-chakra-petch), system-ui, sans-serif;
 }
 
@@ -37,12 +34,15 @@
 
 .header {
   margin-bottom: 2rem;
+  display: flex;
+  align-items: flex-end;
 }
 
 .logo {
   font-size: 3rem;
   font-weight: bold;
   font-style: normal;
+  line-height: 1;
   color: var(--preto);
   margin: 0;
   padding-bottom: 0.65rem;

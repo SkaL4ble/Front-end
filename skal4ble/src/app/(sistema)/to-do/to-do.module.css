@@ -1,0 +1,94 @@
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  padding: 1.5rem 2rem;
+  overflow: hidden;
+}
+
+.projectBar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.projectActions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+.selectBox {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--roxo-claro3);
+  border-radius: var(--borda-menor);
+  box-shadow: var(--sombra-suave);
+}
+
+.selectInput {
+  appearance: none;
+  background: transparent;
+  border: none;
+  color: var(--preto);
+  font-family: var(--font-sansation), system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 0.55rem 2.2rem 0.55rem 1rem;
+  cursor: pointer;
+}
+
+.selectIcon {
+  position: absolute;
+  right: 0.7rem;
+  pointer-events: none;
+}
+
+.board {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  min-height: 0;
+  gap: 1rem;
+  overflow-x: auto;
+  padding: 0.5rem 0.25rem;
+}
+
+.columnCard {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 230px;
+  min-height: 0;
+  padding: 1rem;
+}
+
+.columnDragOver {
+  outline: 2px dashed var(--roxo-escuro1);
+  background-color: rgba(188, 177, 248, 0.35);
+}
+
+.cardsList {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  gap: 0.75rem;
+  overflow-y: auto;
+  margin: 0.75rem 0;
+  padding-right: 0.25rem;
+}
+
+.addButton {
+  justify-content: center;
+  width: 100%;
+}

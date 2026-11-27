@@ -165,14 +165,6 @@ export default function ToDoPage() {
     return tickets.filter((t) => t.status === statusColuna);
   };
 
-  const estiloListaCards: React.CSSProperties = {
-    width: '100%',
-    gap: '0.75rem',
-    overflowY: 'auto',
-    margin: '0.75rem 0',
-    paddingRight: '0.25rem',
-  };
-
   const colunas: { titulo: StatusTicket; textoBotao: string; iconeBotao: string }[] = [
     { titulo: 'Pendentes', textoBotao: 'Adicionar Ticket', iconeBotao: '/icon/IAdd.svg' },
     { titulo: 'Em Andamento', textoBotao: 'Adicionar Ticket', iconeBotao: '/icon/IAdd.svg' },
@@ -182,62 +174,47 @@ export default function ToDoPage() {
 
   return (
     <>
-      <header className='header-projetos'>
+      <header className="header-projetos">
         <h1>To-Do List</h1>
       </header>
 
-      <div
-        className='row'
-        style={{
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '0.5rem',
-        }}
-      >
+      <div className={styles.projectBar}>
         <h2>*Nome do Projeto*</h2>
 
-        <div className='row' style={{ alignItems: 'center', gap: '1rem' }}>
-          <div className='campo-select'>
+        <div className={styles.projectActions}>
+          <div className={styles.campoSelect}>
             <select
-              className='select'
+              className={styles.select}
               value={filtro}
               onChange={(e) => setFiltro(e.target.value as 'tickets' | 'todos')}
             >
-              <option value='todos'>Todos</option>
-              <option value='tickets'>Tickets (Ativos)</option>
+              <option value="todos">Todos</option>
+              <option value="tickets">Tickets (Ativos)</option>
             </select>
-            <img src='/icon/IDown.svg' alt='' className='button-icon' />
+            <img src="/icon/IDown.svg" alt="" className={`button-icon ${styles.selectIcon}`} />
           </div>
 
-          <button type='button' className='big-button'>
-            <img src='/icon/ITrocarProjeto.svg' alt='' className='button-icon-big' />
+          <button type="button" className="big-button">
+            <img src="/icon/ITrocarProjeto.svg" alt="" className="button-icon-big" />
             <span>Trocar Projeto</span>
           </button>
         </div>
       </div>
 
-      <section
-        className='row flex-1'
-        style={{ padding: '1rem', overflowX: 'auto', marginLeft: '-1rem', minHeight: 0 }}
-      >
+      <section className={styles.board}>
         {colunas.map((coluna) => {
           const estaDestacada = colunaEmFoco === coluna.titulo;
 
           return (
             <div
               key={coluna.titulo}
-              className='column container-25op flex-1'
+              className={`container-25op ${styles.columnCard} ${estaDestacada ? styles.columnDragOver : ''}`}
               onDragOver={(e) => permitirSoltar(e, coluna.titulo)}
               onDragLeave={() => setColunaEmFoco(null)}
               onDrop={() => soltarNaColuna(coluna.titulo)}
-              style={{
-                outline: estaDestacada ? '2px dashed var(--roxo-escuro1)' : 'none',
-                backgroundColor: estaDestacada ? 'rgba(188, 177, 248, 0.35)' : undefined,
-                transition: 'background-color 0.2s ease',
-              }}
             >
               <h3>{coluna.titulo}</h3>
-              <div className='column flex-1' style={estiloListaCards}>
+              <div className={styles.cardsList}>
                 {listarPorStatus(coluna.titulo).map((ticket) => (
                   <Ticket
                     key={ticket.id}
@@ -264,11 +241,11 @@ export default function ToDoPage() {
               </div>
 
               <button
-                type='button'
-                className='button-todo'
+                type="button"
+                className={`button-todo ${styles.addButton}`}
                 onClick={() => adicionarTicket(coluna.titulo)}
               >
-                <img src={coluna.iconeBotao} alt='' className='button-icon' />
+                <img src={coluna.iconeBotao} alt="" className="button-icon" />
                 <span>{coluna.textoBotao}</span>
               </button>
             </div>

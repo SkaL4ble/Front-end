@@ -275,10 +275,6 @@ div {
   min-height: 0;
 }
 
-.padding-sidebar {
-  padding: 1rem 2rem 1.5rem 2rem;
-}
-
 .hidden {
   overflow: hidden;
 }
@@ -304,18 +300,26 @@ header {
   align-items: center;
 }
 
+.padding-sidebar {
+  padding: 1rem 2rem 1.5rem 2rem;
+}
+
 .header-projetos,
 .header-form {
   width: 100%;
   padding-top: 0;
   padding-bottom: 0.65rem;
   border-bottom: 2px solid var(--preto);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: flex-end;
 }
 
 .header-projetos h1,
 .header-form h1 {
   font-size: 3rem;
-  line-height: 1.2;
+  line-height: .95;
+  font-weight: 700;
   margin: 0;
 }
 

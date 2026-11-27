@@ -13,6 +13,7 @@ import {
   X,
 } from "lucide-react";
 import CustomSelect from "@/src/components/ui/select/CustomSelect";
+import styles from "./NF.module.css";
 
 const ATUACAO_OPTIONS = [
   { value: "front-end", label: "Front-End" },
@@ -103,13 +104,13 @@ export default function CadastroFuncionarios() {
 
   return (
     <>
-      <header className="header-form">
+      <header className={`header-form ${styles.formWrapperHeader}`}>
         <h1>Novo Funcionário</h1>
       </header>
 
       <form
         onSubmit={handleSubmit}
-        className="container-25op form-card flex-1 panel-enter"
+        className={`container-25op form-card flex-1 panel-enter ${styles.formWrapper}`}
       >
         {/* Seção 1: Dados (Pessoais + GitHub) */}
         <section className="form-section-card">
@@ -190,7 +191,7 @@ export default function CadastroFuncionarios() {
         </section>
 
         {/* Seção 2: Informações Profissionais + Ensino e Registro */}
-        <div className="form-sections-row">
+        <div className={`form-sections-row ${styles.equalRow}`}>
           <section className="form-section-card">
             <div className="form-section-header">
               <Briefcase
