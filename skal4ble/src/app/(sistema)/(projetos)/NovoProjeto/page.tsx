@@ -6,7 +6,6 @@ import {
   FolderKanban,
   CalendarClock,
   Link2,
-  FileText,
   ChevronDown,
   Code2,
   Check,
@@ -122,7 +121,7 @@ export default function CadastroProjetos() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Lógica de cadastro aqui (prazo e selectedTechs já estão disponíveis no estado)
+    // Etapa 1: validar e encaminhar os dados básicos do projeto para a próxima etapa
   };
 
   return (
@@ -406,32 +405,6 @@ export default function CadastroProjetos() {
           </section>
         </div>
 
-        {/* Seção 3: Descrição Ampla */}
-        <section className="form-section-card">
-          <div className="form-section-header">
-            <FileText
-              size={18}
-              strokeWidth={2.3}
-              className="form-section-icon"
-            />
-            <h3>Escopo e Detalhes</h3>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="descricao" className="form-field-label">
-              Descrição <span className="required-mark">*</span>
-            </label>
-            <textarea
-              id="descricao"
-              name="descricao"
-              rows={5}
-              placeholder="Descreva detalhadamente o objetivo do projeto, contexto, requisitos técnicos e entregas esperadas..."
-              className="input-card textarea-card"
-              required
-            />
-          </div>
-        </section>
-
         {/* Rodapé de Ações */}
         <div className="form-actions-start">
           <button
@@ -442,7 +415,7 @@ export default function CadastroProjetos() {
             Voltar
           </button>
           <button type="submit" className="big-button">
-            Cadastrar
+            Avançar
           </button>
         </div>
       </form>
